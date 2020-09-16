@@ -1,4 +1,4 @@
-package org.lejos.ev3.sample.sensorfilter;
+package sample.sensorfilter;
 import java.util.ArrayList;
 
 import lejos.hardware.Brick;

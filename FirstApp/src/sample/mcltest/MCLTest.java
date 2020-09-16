@@ -1,4 +1,4 @@
-package org.lejos.ev3.sample.mcltest;
+package sample.mcltest;
 
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.SensorPort;

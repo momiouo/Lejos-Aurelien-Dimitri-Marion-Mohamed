@@ -1,4 +1,4 @@
-package org.lejos.ev3.sample.helloworld;
+package sample.helloworld;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.Sound;

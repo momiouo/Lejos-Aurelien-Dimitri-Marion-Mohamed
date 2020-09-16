@@ -1,4 +1,4 @@
-package org.lejos.ev3.sample.chassis;
+package sample.chassis;
 
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;

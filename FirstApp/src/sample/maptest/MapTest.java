@@ -1,4 +1,4 @@
-package org.lejos.ev3.sample.maptest;
+package sample.maptest;
 
 import java.io.IOException;
 

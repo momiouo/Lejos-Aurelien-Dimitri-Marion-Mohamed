@@ -1,4 +1,4 @@
-package org.lejos.ev3.sample.pilotparams;
+package sample.pilotparams;
 import java.io.IOException;
 
 import lejos.hardware.Button;

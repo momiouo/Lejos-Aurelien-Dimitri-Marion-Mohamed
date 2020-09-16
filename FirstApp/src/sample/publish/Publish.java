@@ -1,4 +1,4 @@
-package org.lejos.ev3.sample.publish;
+package sample.publish;
 
 import java.io.IOException;
 

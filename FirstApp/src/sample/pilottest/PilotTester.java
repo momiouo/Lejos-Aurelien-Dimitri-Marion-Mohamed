@@ -1,4 +1,4 @@
-package org.lejos.ev3.sample.pilottest;
+package sample.pilottest;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.Font;
