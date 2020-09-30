@@ -1,3 +1,4 @@
+package Vue;
 import lejos.robotics.Color;
 
 public class Perception {

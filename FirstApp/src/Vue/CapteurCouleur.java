@@ -1,3 +1,4 @@
+package Vue;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.Color;
 public class CapteurCouleur {

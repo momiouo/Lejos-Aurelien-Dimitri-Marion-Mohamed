@@ -3,7 +3,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
-public class USSensorDemo {
+public class CapteurUltrasonsExemple {
 
 	private static EV3UltrasonicSensor us1 = new EV3UltrasonicSensor(SensorPort.S1);
 

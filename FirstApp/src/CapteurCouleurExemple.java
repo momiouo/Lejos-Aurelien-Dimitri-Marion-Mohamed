@@ -9,7 +9,7 @@ import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
 //Doc : http://www.lejos.org/ev3/docs/lejos/hardware/sensor/EV3ColorSensor.html
-public class CalculCouleur {
+public class CapteurCouleurExemple {
 
 	//Robot Configuration
 		private static EV3ColorSensor color1 = new EV3ColorSensor(SensorPort.S1);
