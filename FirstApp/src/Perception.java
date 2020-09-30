@@ -9,7 +9,7 @@ public class Perception {
 	protected boolean LigneBlanche;
 	
 	
-	Perception() {
+	public Perception() {
 	}
 	public int getNiveauBatterie() {
 		return this.niveauBatterie;
@@ -17,6 +17,7 @@ public class Perception {
 	public void setNiveauBatterie(int niveau) {
 		this.niveauBatterie=niveau;
 	}
+	
 	public long getDistanceCapteurUltrasons(){
 		return this.distanceCapteurUltrasons;
 	}
