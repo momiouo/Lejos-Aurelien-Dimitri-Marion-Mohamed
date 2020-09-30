@@ -2,4 +2,9 @@
 /Perception.class
 /CapteurTactileExemple.class
 /sample/
+<<<<<<< Upstream, based on branch 'master' of https://github.com/Momiouo/Lejos
 /Moteurs/
+=======
+/CapteurCouleur.class
+/CapteurUltrasons.class
+>>>>>>> 8ff93a5 Toute la partie perception
