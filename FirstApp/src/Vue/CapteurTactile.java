@@ -16,7 +16,7 @@ public class CapteurTactile {
 	}
 	
 	public void setPression() {
-		donneesCapteur = new EV3TouchSensor(SensorPort.S1);
+		donneesCapteur = new EV3TouchSensor(SensorPort.S1); // A faire dans le constructeur ?
 		final SampleProvider sp = donneesCapteur.getTouchMode();
 		boolean touchValue = false;
 		float [] sample = new float[sp.sampleSize()];

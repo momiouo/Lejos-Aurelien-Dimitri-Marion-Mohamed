@@ -22,8 +22,8 @@ public class Deplacement {
         rightMotor.setAcceleration(acceleration);
     }
     
-    public void setAccelerationSpeedMotors() {//Methode pour changer l'acceleration et la vitesse des moteurs
-    	//En fonction des attributs speed et acceleration
+    public void updateAccelerationSpeedMotors() {//Methode pour update l'acceleration et la vitesse des moteurs
+    	//En fonction des attributs speed et acceleration deja set
     	this.rightMotor.setSpeed(speed);
     	this.rightMotor.setAcceleration(acceleration);
     	this.leftMotor.setSpeed(speed);
@@ -49,52 +49,6 @@ public class Deplacement {
 
 	public void setLeftMotor(RegulatedMotor leftMotor) {
 		this.leftMotor = leftMotor;
-	}
-
-	public void avancerSurUneDistance() {
-		this.resetTachoMetre();
-		//Comment marche le tachometre ?
-	}
-	
-	public void avancerJusquaUneLigne() {
-		//Capteur Couleur
-	}
-	
-	public void avancerPourUnTempsDonne(float seconde) {
-		this.leftMotor.forward();
-		this.rightMotor.forward();
-		Delay.msDelay((long) (seconde*1000));
-		this.leftMotor.stop();
-		this.rightMotor.stop();
-	}
-	
-	public void reculerSurUneDistance() {
-		//Tachometre
-	}
-	
-	public void reculerPourUnTemps(float seconde) {
-		this.leftMotor.backward();
-		this.rightMotor.backward();
-		Delay.msDelay((long) (seconde*1000));
-		this.leftMotor.stop();
-		this.rightMotor.stop();
-	}
-	
-	public void pivoterDunDegreDonne(int degre) {
-		this.leftMotor.rotateTo(degre);
-		this.rightMotor.rotateTo(degre);
-	}
-	
-	public void pivoterJusquaDetectionDunPalet() {
-		//Capteur ultrason
-	}
-	
-	public void pivoterJusquaDetecterUneLigne() {
-		//Capteur couleur
-	}
-	
-	public void tournerSurUnTempsEtUneDirection(float seconde, int degre) {
-		//Faire touner un moteur plus vite que l'autre.
 	}
 
 	public int getSpeed() {

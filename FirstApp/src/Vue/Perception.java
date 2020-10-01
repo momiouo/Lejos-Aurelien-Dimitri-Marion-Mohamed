@@ -10,7 +10,7 @@ public class Perception {
 	protected boolean LigneBlanche;
 	
 	
-	public Perception() {
+	public Perception() {//Initialise les valeurs des attributs à 0 ou false.
 	}
 	public int getNiveauBatterie() {
 		return this.niveauBatterie;
@@ -28,7 +28,7 @@ public class Perception {
 	public boolean getPressionCapteurTactile() {
 		return this.pressionCapteurTactile;
 	}
-	public void initCapteurs() {
+	public void initCapteurs() {//Voir diagramme
 		
 	}
 }

@@ -1,6 +1,7 @@
 package Moteurs;
 
-public class Pinces {
+public class Pinces { //A tester plus tard
+	
 	public void InitPositionPinces() {
 
 	}

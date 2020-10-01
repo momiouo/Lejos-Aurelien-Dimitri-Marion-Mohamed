@@ -32,7 +32,7 @@ public class CapteurUltrasons implements SensorPort {
 		float [] sample = new float[sp.sampleSize()];
 		sp.fetchSample(sample, 0);
         distanceValue = (int)sample[0];
-		this.distance = distanceValue;
+		this.distance = distanceValue; //Modifier aussi l'attribut CouleurCapteurCouleur de l'objet Perception passé en paramètre
 	}
 	
 	public SensorPort getPort() {

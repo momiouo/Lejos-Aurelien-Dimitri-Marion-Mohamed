@@ -21,8 +21,8 @@ public class CapteurCouleur {
 	}
 	public boolean couleurEstRouge() {
 		boolean rouge = false;
-		/*if(couleur == blanc) {
-			blanc = true;
+		/*if(couleur == rouge) {
+			rouge = true;
 		}*/
 		return rouge;
 	}
