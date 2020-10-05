@@ -32,5 +32,8 @@ public class Capteur implements SensorPort {
 			this.port=(SensorPort) S4;
 		}
 	}
+	public void setPerception(Perception perception) {
+		this.perception = perception;
+	}
 	
 }
