@@ -3,12 +3,13 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.robotics.SampleProvider;
 
-public class CapteurTactile {
+public class CapteurTactile extends Capteur {
 	private boolean pression;
 	private EV3TouchSensor donneesCapteur;
 	
 	public CapteurTactile(Perception perception){
-		pression = perception.getPressionCapteurTactile();
+		super(perception);
+		setPression();
 	}
 	
 	public boolean getPression() {
@@ -23,6 +24,7 @@ public class CapteurTactile {
         sp.fetchSample(sample, 0);
         touchValue = (sample[0]!=0);
         this.pression = touchValue;
+        super.getPerception().pressionCapteurTactile = touchValue;
 	}
 	
 }

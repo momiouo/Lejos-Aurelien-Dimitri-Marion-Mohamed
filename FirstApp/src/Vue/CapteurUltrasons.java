@@ -3,7 +3,7 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
 
-public class CapteurUltrasons implements SensorPort {
+public class CapteurUltrasons extends Capteur implements SensorPort {
 	private long distance;
 	private EV3UltrasonicSensor donneesCapteur;
 	private SensorPort port;
