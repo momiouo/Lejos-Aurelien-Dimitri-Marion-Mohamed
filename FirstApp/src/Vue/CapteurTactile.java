@@ -1,4 +1,5 @@
 package Vue;
+import lejos.hardware.port.AnalogPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.robotics.SampleProvider;
@@ -17,7 +18,7 @@ public class CapteurTactile extends Capteur {
 	}
 	
 	public void setPression() {
-		donneesCapteur = new EV3TouchSensor(SensorPort.S1); // A faire dans le constructeur ?
+		donneesCapteur = new EV3TouchSensor((AnalogPort) this.getPort()); // A faire dans le constructeur ?
 		final SampleProvider sp = donneesCapteur.getTouchMode();
 		boolean touchValue = false;
 		float [] sample = new float[sp.sampleSize()];

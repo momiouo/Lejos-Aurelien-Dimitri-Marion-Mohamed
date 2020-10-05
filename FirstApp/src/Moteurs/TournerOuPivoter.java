@@ -10,8 +10,9 @@ public class TournerOuPivoter extends Deplacement {
 	}
 	
 	public void pivoterDunDegreDonne(int degre) {
-		this.getLeftMotor().rotateTo(degre);
-		this.getRightMotor().rotateTo(degre);
+		Math.PI*
+		this.getLeftMotor().rotate(degre,true);
+		this.getRightMotor().rotate(degre,true);
 	}
 	
 	public void pivoterJusquaDetectionDunPalet() {

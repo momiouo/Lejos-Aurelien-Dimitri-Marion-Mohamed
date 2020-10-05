@@ -22,16 +22,16 @@ public class AvancerOuReculer extends Deplacement {
 		this.getLeftMotor().forward();
 		this.getRightMotor().forward();
 		Delay.msDelay((long) (seconde*1000));
-		this.getLeftMotor().stop();
-		this.getRightMotor().stop();
+		this.getRightMotor().stop(true);
+		this.getLeftMotor().stop(true);
 	}
 	
 	public void reculerPourUnTemps(float seconde) {
 		this.getLeftMotor().backward();
 		this.getRightMotor().backward();
 		Delay.msDelay((long) (seconde*1000));
-		this.getLeftMotor().stop();
-		this.getRightMotor().stop();
+		this.getRightMotor().stop(true);
+		this.getLeftMotor().stop(true);
 	}
 	
 	public void reculerSurUneDistance() {

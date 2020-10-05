@@ -12,20 +12,21 @@ import lejos.utility.Delay;
 public class CapteurCouleurExemple {
 
 	//Robot Configuration
-		private static EV3ColorSensor color1 = new EV3ColorSensor(SensorPort.S1);
+		private static EV3ColorSensor color1 = new EV3ColorSensor(SensorPort.S4);
 		
 		//Configuration
 		private static int HALF_SECOND = 500;
 		
 		public static void main(String[] args) {
 
+			
 			//Red Mode (Mesure the intensity of a reflected red light)
 			System.out.println("Switching to Red Mode");
 			SampleProvider sp = color1.getRedMode();
 			
 			int sampleSize = sp.sampleSize();
 			float[] sample = new float[sampleSize];
-
+/*
 	        // Takes some samples and prints them
 	        for (int i = 0; i < 10; i++) {
 	        	sp.fetchSample(sample, 0);
@@ -33,7 +34,7 @@ public class CapteurCouleurExemple {
 	            
 	            Delay.msDelay(HALF_SECOND);
 	        }
-
+*/
 	        //Color ID (Mesure the color id of a surface)
 			System.out.println("Switching to Color ID Mode");
 			sp = color1.getColorIDMode();
@@ -42,13 +43,13 @@ public class CapteurCouleurExemple {
 			sample = new float[sampleSize];
 
 	        // Takes some samples and prints them
-	        for (int i = 0; i < 10; i++) {
+	        for (int i = 0; i < 100; i++) {
 	        	sp.fetchSample(sample, 0);
 				System.out.println("N=" + i + " Sample={}" +  (int)sample[0]);
 	            
-	            Delay.msDelay(HALF_SECOND);
+	            Delay.msDelay(3000);
 	        }
-
+/*
 	        //Ambient Mode (Mesure the ambiant light level)
 			System.out.println("Switching to Ambient Mode");
 			sp = color1.getAmbientMode();
@@ -79,6 +80,7 @@ public class CapteurCouleurExemple {
 				System.out.println("N=" + i + " Sample={}" + (int)sample[2]);
 
 	            Delay.msDelay(HALF_SECOND);
-	        }
+	        }*/
 		}
+		
 }
