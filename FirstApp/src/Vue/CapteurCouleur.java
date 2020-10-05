@@ -33,7 +33,7 @@ public class CapteurCouleur extends Capteur {
 		}*/
 		return rouge;
 	}
-	public void setCouleur(Color couleur) {
+	public void setCouleur() {
 		//couleurs :
 		//rouge = 0
 		//bleu = 2
