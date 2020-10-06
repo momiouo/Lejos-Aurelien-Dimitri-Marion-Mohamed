@@ -48,8 +48,10 @@ public class testDeplacement {
 		CapteurCouleur capteurCouleur = new CapteurCouleur(perception);
 		capteurCouleur.setCouleur();//Mets à jour l'attribut couleur de la classe capteurcouleur et perception. 
 		capteurCouleur.setPort(1);//Capteur branché sur le port n°1
-		System.out.println("Avancer jusqu'a une ligne");
-		avanceroureculer.avancerJusquaUneLigne(capteurCouleur, Color));
+		System.out.println("Avancer jusqu'a une ligne blanche rgb (0,0,0)");
+		Color color = new Color(0,0,0);
+		//color.getColor();
+		avanceroureculer.avancerJusquaUneLigne(capteurCouleur, color);
 		
 		System.out.println("Fin du test");
 	}
