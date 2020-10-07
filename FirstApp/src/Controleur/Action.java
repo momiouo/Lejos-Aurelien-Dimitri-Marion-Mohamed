@@ -58,8 +58,7 @@ public class Action {
 		
 	}
 	
-	public void detecterAutourDuRobot(CapteurUltrasons capteurUltrasons) {
-		TournerOuPivoter tournerOuPivoter = new TournerOuPivoter(Motor.B,Motor.C);
+	public void detecterAutourDuRobot(CapteurUltrasons capteurUltrasons, TournerOuPivoter tournerOuPivoter) {
 		tournerOuPivoter.pivoterJusquaDetectionDunPalet(capteurUltrasons);
 	}
 	
