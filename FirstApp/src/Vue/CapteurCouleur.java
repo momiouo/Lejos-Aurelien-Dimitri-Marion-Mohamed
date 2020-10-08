@@ -21,16 +21,16 @@ public class CapteurCouleur extends Capteur {
 	
 	public boolean couleurEstBlanche() {
 		boolean blanc = false;
-		/*if(couleur == blanc) {
+		if(couleur.getColor() == Color.WHITE) {
 			blanc = true;
-		}*/
+		}
 		return blanc;
 	}
 	public boolean couleurEstRouge() {
 		boolean rouge = false;
-		/*if(couleur == rouge) {
+		if(couleur.getColor() == Color.RED) {
 			rouge = true;
-		}*/
+		}
 		return rouge;
 	}
 	public void setCouleur() {
@@ -44,9 +44,17 @@ public class CapteurCouleur extends Capteur {
 		//Le prof à dit qu'il a fourni un code qui permet de calibrer le capteur de couleurs qui renvoie des vecteurs pour 
 		//les couleurs et qu'il faut comparer avec le produit scalaire aux vecteurs qu'on trouve et qu'on renvoie celle qui
 		//est la plus proche pare que ça dépend beauoup de la luminosité
-		SampleProvider sp = color1.getColorIDMode();
-		couleur =((EV3ColorSensor) sp).getColorID();
 		
-		
+		//En attendant de récupérer des valeurs precise on utilise RGBMode pour le test :
+		SampleProvider sp = color1.getRGBMode();
+		int sampleSize = sp.sampleSize();
+		float[] sample = new float[sampleSize];
+		sp.fetchSample(sample, 0);
+		int colorNumberValue1 = (int)sample[0];
+		int colorNumberValue2 = (int)sample[1];
+		int colorNumberValue3 = (int)sample[2];
+		Color couleurDetectee = new Color(colorNumberValue1, colorNumberValue2, colorNumberValue3);
+		this.couleur = couleurDetectee;
+		this.getPerception().CapteurCouleur = couleurDetectee;
 	}
 }

@@ -43,6 +43,8 @@ public class Action {
 	}
 	
 	public void verifChangementAttributPerception() {// Methode complexe a faire plus tard
+		this.perceptionPrec = this.perceptionAct; // Sauvegarde de l'ancienne perception
+		this.perceptionAct.initCapteurs(); // initialisation de la nouvelle perception
 		/*
 		//On verifie si la pression du capteur tactile a changer.
 		if(this.perceptionAct.getPressionCapteurTactile() != this.perceptionPrec.getPressionCapteurTactile()) {
@@ -87,14 +89,14 @@ public class Action {
 				start = false;
 			}
 			if (robotEstBloque()){
-				System.out.println("Je suis bloqué ...");
+				System.out.println("Je suis bloqué ... appeler la fonction reagirRobotBloque");
 				loop = false;
 			}
 			if(!paletattrape && agent.getPerceptionAct().getPressionCapteurTactile() == true) {//On a attrapé le palet
 				agent.getPinces().fermeture();//On ferme les pinces
 				paletattrape = true;
 				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, 1);//On evite le second palet
-				agent.getTournerOuPivoter().pivoterDunDegreDonne(30);//On s'aligne
+				agent.getTournerOuPivoter().pivoterDunDegreDonne(30);//On re s'aligne
 			}
 			if(agent.getPerceptionAct().getCouleurCapteurCouleur().getColor() == Color.WHITE) {//On a atteint la ligne
 				this.deposerLePalet();
@@ -117,8 +119,8 @@ public class Action {
 	}
 	
 	public boolean robotEstBloque() {
-		//Return vrai si le capteur de distance donne une petite valeur
-		return false;
+		//Return vrai si le capteur de distance donne une petite valeur (mur ou robot)
+		return agent.getCapteurUltrasons().murOuRobotDetecte();
 	}
 	
 	public void reagirRobotBloque() {
@@ -132,7 +134,7 @@ public class Action {
 		//On ouvre les pinces
 		agent.getPinces().ouverture();
 		//On recule
-		agent.getAvancerOuReculer().reculerPourUnTemps(2);
+		agent.getAvancerOuReculer().reculerPourUnTemps(3);
 		//on pivote de 50 degrees environ
 		agent.getTournerOuPivoter().pivoterDunDegreDonne(50);
 		//On se stop si c'est la fonction premieresAction qui a déclenché cette fonction sinon on appel la fonction detecterAutourduRobot pour un autre palet

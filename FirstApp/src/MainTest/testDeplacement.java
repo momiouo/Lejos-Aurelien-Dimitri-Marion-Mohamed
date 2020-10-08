@@ -2,6 +2,7 @@ package MainTest;
 import Moteurs.AvancerOuReculer;
 import Moteurs.Deplacement;
 import Moteurs.TournerOuPivoter;
+import Robot.Agent;
 import Vue.CapteurCouleur;
 import Vue.Perception;
 import lejos.hardware.motor.Motor;
@@ -12,7 +13,7 @@ import lejos.robotics.RegulatedMotor;
 public class testDeplacement {
 
 	public static void main(String[] args) {
-		//Les moteurs des roues doivent etre branchés sur le port B et C (A mettre dans la méthode init() classe Action).
+		//Les moteurs des roues doivent etre branchés sur le port B et C
 		RegulatedMotor leftMotor = Motor.B;
 	    RegulatedMotor rightMotor = Motor.C;
 	    
@@ -45,6 +46,14 @@ public class testDeplacement {
 		tourneroupivoter.tournerSurUnTempsEtUneDirectionVague(3, -1);//-1 < 0 => vers la gauche
 		
 		//Continuer a tester toutes les methodes de deplacement ...
+		
+		Agent agent = new Agent();
+		Color blanc = new Color(0,0,0);
+		System.out.println("J'avance jusqu'à une ligne blanche");
+		agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), blanc);//Verifier le constucteur agent utilise les bons ports
+		
+		//Pivoter jusqu'a detection d'un palet faire la fonction verifsiobjetdetecteeestunpalet
+		
 		
 		System.out.println("Fin du test");
 	}
