@@ -6,10 +6,10 @@ import lejos.robotics.SampleProvider;
 public class CapteurUltrasons extends Capteur implements SensorPort {
 	private long distance;
 	private EV3UltrasonicSensor donneesCapteur;
-	private SensorPort port;
 	
-	public CapteurUltrasons(Perception perception) {
-		this.distance = perception.getDistanceCapteurUltrasons();
+	public CapteurUltrasons(Perception perception, SensorPort sensorPort) {
+		super(perception,sensorPort);
+		setDistance();
 	}
 	
 	public boolean VerifSiObjetDetecteEstUnPalet() {
@@ -32,26 +32,9 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		float [] sample = new float[sp.sampleSize()];
 		sp.fetchSample(sample, 0);
         distanceValue = (int)sample[0];
-		this.distance = distanceValue; //Modifier aussi l'attribut CouleurCapteurCouleur de l'objet Perception passé en paramètre
-	}
-	
-	public SensorPort getPort() {
-		return this.port;
-	}
-	
-	public void setPort(int numPort) {
-		if (numPort == 1) {
-			this.port=(SensorPort) S1;
-		}
-		else if (numPort == 2) {
-			this.port=(SensorPort) S2;
-		}
-		else if (numPort == 3) {
-			this.port=(SensorPort) S3;
-		}
-		else if (numPort == 4) {
-			this.port=(SensorPort) S4;
-		}
+		this.distance = distanceValue; 
+		//Modification de l'attribut DistanceCapteurUltrasons de l'objet Perception passé en paramètre du constructeur
+		this.getPerception().distanceCapteurUltrasons = distanceValue;
 	}
 	
 	public boolean murOuRobotDetecte() {

@@ -1,5 +1,8 @@
+package Robot;
 import Controleur.Action;
 import Vue.*;
+import lejos.hardware.motor.Motor;
+import lejos.hardware.port.SensorPort;
 import Moteurs.*;
 
 public class Agent {
@@ -9,23 +12,23 @@ public class Agent {
 	private Perception perceptionPrec;
 	private AvancerOuReculer avancerOuReculer;
 	private TournerOuPivoter tournerOuPivoter;
+	private Pinces pinces;
 	private CapteurUltrasons capteurUltrasons;
 	private CapteurCouleur capteurCouleur;
 	private CapteurTactile capteurTactile;
 	
 	public Agent() {
-		this.action = new Action();
-		this.perceptionAct = new Perception();
-		this.perceptionPrec = new Perception();
+		this.perceptionAct = new Perception(this);
+		this.perceptionPrec = new Perception(this); // Pour la classe Action
+		this.action = new Action(perceptionAct, perceptionPrec, this); //Pas sur que ça marche de mettre this alors qu'il est pas encore créer
 		//Mettre les bons ports pour les capteurs et les moteurs :
-		this.avancerOuReculer = new AvancerOuReculer();
-		this.tournerOuPivoter = new TournerOuPivoter();
-		this.capteurUltrasons = new CapteurUltrasons();
-		this.capteurCouleur = new CapteurCouleur();
-		this.capteurTactile = new CapteurTactile();
+		this.avancerOuReculer = new AvancerOuReculer(Motor.B,Motor.C);
+		this.tournerOuPivoter = new TournerOuPivoter(Motor.B,Motor.C);
+		this.pinces = new Pinces(Motor.A);
+		this.capteurUltrasons = new CapteurUltrasons(perceptionAct, (SensorPort) SensorPort.S1);
+		this.capteurCouleur = new CapteurCouleur(perceptionAct, (SensorPort) SensorPort.S2);
+		this.capteurTactile = new CapteurTactile(perceptionAct, (SensorPort) SensorPort.S3);
 	}
-	
-	
 	
 	public Action getAction() {
 		return action;
@@ -74,6 +77,14 @@ public class Agent {
 	}
 	public void setCapteurTactile(CapteurTactile capteurTactile) {
 		this.capteurTactile = capteurTactile;
+	}
+
+	public Pinces getPinces() {
+		return pinces;
+	}
+
+	public void setPinces(Pinces pinces) {
+		this.pinces = pinces;
 	}
 	
 	

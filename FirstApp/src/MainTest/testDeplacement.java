@@ -5,6 +5,7 @@ import Moteurs.TournerOuPivoter;
 import Vue.CapteurCouleur;
 import Vue.Perception;
 import lejos.hardware.motor.Motor;
+import lejos.hardware.port.SensorPort;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
 
@@ -43,16 +44,7 @@ public class testDeplacement {
 		System.out.println("Je tourne vers la gauche");
 		tourneroupivoter.tournerSurUnTempsEtUneDirectionVague(3, -1);//-1 < 0 => vers la gauche
 		
-		//Creation d'une perception
-		Perception perception = new Perception();
-		//Création d'un objet CapteurCouleur
-		CapteurCouleur capteurCouleur = new CapteurCouleur(perception);
-		capteurCouleur.setCouleur();//Mets à jour l'attribut couleur de la classe capteurcouleur et perception. 
-		capteurCouleur.setPort(1);//Capteur branché sur le port n°1
-		System.out.println("Avancer jusqu'a une ligne blanche rgb (0,0,0)");
-		Color color = new Color(0,0,0);
-		//color.getColor();
-		avanceroureculer.avancerJusquaUneLigne(capteurCouleur, color);
+		//Continuer a tester toutes les methodes de deplacement ...
 		
 		System.out.println("Fin du test");
 	}

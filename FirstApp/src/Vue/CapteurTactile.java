@@ -8,8 +8,8 @@ public class CapteurTactile extends Capteur {
 	private boolean pression;
 	private EV3TouchSensor donneesCapteur;
 	
-	public CapteurTactile(Perception perception){
-		super(perception);
+	public CapteurTactile(Perception perception, SensorPort sensorPort){
+		super(perception, sensorPort);
 		setPression();
 	}
 	

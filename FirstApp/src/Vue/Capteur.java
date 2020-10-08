@@ -9,7 +9,9 @@ public class Capteur implements SensorPort {
 	private Perception perception;
 	private SensorPort port;
 	
-	public Capteur(Perception perception) {
+	public Capteur(Perception perception, SensorPort sensorPort) {
+		this.perception = perception;
+		this.port = sensorPort;
 	}
 	
 	public Perception getPerception() {

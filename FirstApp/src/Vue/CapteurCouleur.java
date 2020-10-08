@@ -10,8 +10,8 @@ public class CapteurCouleur extends Capteur {
 	private Color couleur;
 	private EV3ColorSensor color1 = new EV3ColorSensor(SensorPort.S1);
 	
-	public CapteurCouleur(Perception perception) {
-		super(perception);
+	public CapteurCouleur(Perception perception, SensorPort sensorPort) {
+		super(perception, sensorPort);
 		setCouleur();
 	}
 	
