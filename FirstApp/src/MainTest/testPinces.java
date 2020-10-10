@@ -12,7 +12,7 @@ public class testPinces {
 		Pinces pinces = new Pinces(Motor.A);
 		
 		System.out.println("On mets les pinces en position initiales");
-		pinces.InitPositionPinces();
+		pinces.initPositionPinces();
 		
 		System.out.println("On ouvre les pinces");
 		pinces.ouverture();

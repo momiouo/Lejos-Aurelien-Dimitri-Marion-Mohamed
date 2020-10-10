@@ -87,6 +87,10 @@ public class Agent {
 		this.pinces = pinces;
 	}
 	
+	public void positionInitiale() {//Methode pour indiquer la position de notre robot et celle du robot adverse lors du demarrage 
+		//de la partie
+		
+	}
 	
 	
 

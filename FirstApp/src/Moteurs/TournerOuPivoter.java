@@ -10,7 +10,6 @@ public class TournerOuPivoter extends Deplacement {
 
 	public TournerOuPivoter(RegulatedMotor left, RegulatedMotor right) {
 		super(left, right);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void pivoterDunDegreDonne(int degre) {

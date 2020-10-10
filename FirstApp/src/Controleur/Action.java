@@ -14,11 +14,13 @@ public class Action {
 	private Agent agent;
 	private Perception perceptionAct;
 	private Perception perceptionPrec;
+	private int historiqueDegres;
 	
 	public Action(Perception p1, Perception p2, Agent agent) {
 		this.setPerceptionAct(p1);
 		this.setPerceptionPrec(p2);
 		this.setAgent(agent);
+		this.setHistoriqueDegres(0);
 	}
 	
 	public Agent getAgent() {
@@ -41,7 +43,14 @@ public class Action {
 	public void setPerceptionAct(Perception perceptionAct) {
 		this.perceptionAct = perceptionAct;
 	}
-	
+	public int getHistoriqueDegres() {
+		return historiqueDegres;
+	}
+
+	public void setHistoriqueDegres(int historiqueDegres) {
+		this.historiqueDegres = historiqueDegres;
+	}
+
 	public void verifChangementAttributPerception() {// Methode complexe a faire plus tard
 		this.perceptionPrec = this.perceptionAct; // Sauvegarde de l'ancienne perception
 		this.perceptionAct.initCapteurs(); // initialisation de la nouvelle perception
@@ -139,8 +148,5 @@ public class Action {
 		agent.getTournerOuPivoter().pivoterDunDegreDonne(50);
 		//On se stop si c'est la fonction premieresAction qui a déclenché cette fonction sinon on appel la fonction detecterAutourduRobot pour un autre palet
 	}
-
-
-
 
 }

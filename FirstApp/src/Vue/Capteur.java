@@ -3,9 +3,8 @@ package Vue;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3TouchSensor;
 
-public class Capteur implements SensorPort {
+public abstract class Capteur implements SensorPort {
 
-	private EV3TouchSensor donneesCapteur;
 	private Perception perception;
 	private SensorPort port;
 	

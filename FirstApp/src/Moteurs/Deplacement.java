@@ -4,7 +4,7 @@ import lejos.hardware.motor.Motor;
 import lejos.robotics.RegulatedMotor;
 import lejos.utility.Delay;
 
-public class Deplacement {
+public abstract class Deplacement {
 	
     private RegulatedMotor leftMotor;
     private RegulatedMotor rightMotor;
@@ -22,19 +22,6 @@ public class Deplacement {
         rightMotor.setAcceleration(acceleration);
     }
     
-    public void updateAccelerationSpeedMotors() {//Methode pour update l'acceleration et la vitesse des moteurs
-    	//En fonction des attributs speed et acceleration deja set
-    	this.rightMotor.setSpeed(speed);
-    	this.rightMotor.setAcceleration(acceleration);
-    	this.leftMotor.setSpeed(speed);
-    	this.leftMotor.setAcceleration(acceleration);
-    }
-    
-    public void resetTachoMetre() {
-    	leftMotor.resetTachoCount();
-        rightMotor.resetTachoCount();
-    }
-
 	public RegulatedMotor getRightMotor() {
 		return rightMotor;
 	}
@@ -66,6 +53,21 @@ public class Deplacement {
 	public void setAcceleration(int acceleration) {
 		this.acceleration = acceleration;
 	}
+    
+    public void updateAccelerationSpeedMotors() {//Methode pour update l'acceleration et la vitesse des moteurs
+    	//En fonction des attributs speed et acceleration deja set
+    	this.rightMotor.setSpeed(speed);
+    	this.rightMotor.setAcceleration(acceleration);
+    	this.leftMotor.setSpeed(speed);
+    	this.leftMotor.setAcceleration(acceleration);
+    }
+    
+    public void resetTachoMetre() {
+    	leftMotor.resetTachoCount();
+        rightMotor.resetTachoCount();
+    }
+
+
 
 	
 }

@@ -12,7 +12,7 @@ public class Pinces { //A tester plus tard
 		this.pincesOuvertes = false;
 	}
 	
-	public void InitPositionPinces() {//Pinces en mode ouvert
+	public void initPositionPinces() {//Pinces en mode ouvert
 		//A tester positionnement des pinces
 		this.moteurPinces.resetTachoCount();//Reset compte tour
 		this.moteurPinces.rotate(0);//mets les pinces à 0 (on imagine c'est fermé)

@@ -2,13 +2,15 @@ package Vue;
 
 import lejos.hardware.port.AnalogPort;
 import lejos.hardware.port.SensorPort;
+import lejos.hardware.port.UARTPort;
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 public class CapteurCouleur extends Capteur {
 	private Color couleur;
-	private EV3ColorSensor color1 = new EV3ColorSensor(SensorPort.S1);
+	private EV3ColorSensor donneesCapteur;
 	
 	public CapteurCouleur(Perception perception, SensorPort sensorPort) {
 		super(perception, sensorPort);
@@ -46,7 +48,8 @@ public class CapteurCouleur extends Capteur {
 		//est la plus proche pare que ça dépend beauoup de la luminosité
 		
 		//En attendant de récupérer des valeurs precise on utilise RGBMode pour le test :
-		SampleProvider sp = color1.getRGBMode();
+		donneesCapteur = new EV3ColorSensor((UARTPort) this.getPort());
+		SampleProvider sp = donneesCapteur.getRGBMode();
 		int sampleSize = sp.sampleSize();
 		float[] sample = new float[sampleSize];
 		sp.fetchSample(sample, 0);
