@@ -60,4 +60,8 @@ public class CapteurCouleur extends Capteur {
 		this.couleur = couleurDetectee;
 		this.getPerception().CapteurCouleur = couleurDetectee;
 	}
+	
+	public void calibrer() {
+		
+	}
 }
