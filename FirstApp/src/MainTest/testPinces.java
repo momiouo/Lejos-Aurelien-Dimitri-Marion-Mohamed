@@ -2,6 +2,7 @@ package MainTest;
 
 import Moteurs.Pinces;
 import lejos.hardware.motor.Motor;
+import lejos.utility.Delay;
 
 public class testPinces {
 
@@ -9,10 +10,7 @@ public class testPinces {
 		// TODO Auto-generated method stub
 		
 		System.out.println("Test des pinces sur le port A");
-		Pinces pinces = new Pinces(Motor.A);
-		
-		System.out.println("On mets les pinces en position initiales");
-		pinces.initPositionPinces();
+		Pinces pinces = new Pinces(Motor.D);
 		
 		System.out.println("On ouvre les pinces");
 		pinces.ouverture();
