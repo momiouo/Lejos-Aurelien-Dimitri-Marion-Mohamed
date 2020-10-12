@@ -24,7 +24,7 @@ public class Agent {
 		//Mettre les bons ports pour les capteurs et les moteurs :
 		this.avancerOuReculer = new AvancerOuReculer(Motor.B,Motor.C);
 		this.tournerOuPivoter = new TournerOuPivoter(Motor.B,Motor.C);
-		this.pinces = new Pinces(Motor.A);
+		this.pinces = new Pinces(Motor.D);
 		this.capteurUltrasons = new CapteurUltrasons(perceptionAct, (SensorPort) SensorPort.S1);
 		this.capteurCouleur = new CapteurCouleur(perceptionAct, (SensorPort) SensorPort.S2);
 		this.capteurTactile = new CapteurTactile(perceptionAct, (SensorPort) SensorPort.S3);
