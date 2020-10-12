@@ -97,15 +97,17 @@ public class Action {
 				agent.getAvancerOuReculer().avancerPourUnTemps(3);//On avance
 				start = false;
 			}
-			if (robotEstBloque()){
+		/*	if (robotEstBloque()){
 				System.out.println("Je suis bloqué ... appeler la fonction reagirRobotBloque");
 				loop = false;
-			}
+			}*/
 			if(!paletattrape && agent.getPerceptionAct().getPressionCapteurTactile() == true) {//On a attrapé le palet
 				agent.getPinces().fermeture();//On ferme les pinces
 				paletattrape = true;
 				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, 1);//On evite le second palet
-				agent.getTournerOuPivoter().pivoterDunDegreDonne(30);//On re s'aligne
+				//agent.getTournerOuPivoter().pivoterDunDegreDonne(30);//On re s'aligne
+				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, -1);//On evite le second palet
+
 			}
 			if(agent.getPerceptionAct().getCouleurCapteurCouleur().getColor() == Color.WHITE) {//On a atteint la ligne
 				this.deposerLePalet();

@@ -20,7 +20,6 @@ public class testDeplacement {
 	    //Création des objets pour le déplacement
 		//AvancerOuReculer avanceroureculer = agent.getAvancerOuReculer();
 		TournerOuPivoter tourneroupivoter = agent.getTournerOuPivoter();
-		CapteurUltrasons capteurUltrasons = new CapteurUltrasons(agent.getPerceptionAct(), (SensorPort) SensorPort.S1);
 /*
 		System.out.println("J'avance 3 secondes");
 		avanceroureculer.avancerPourUnTemps(3);

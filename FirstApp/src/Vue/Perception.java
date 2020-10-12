@@ -5,7 +5,7 @@ import lejos.robotics.Color;
 public class Perception {
 	protected boolean pressionCapteurTactile;
 	protected Color CapteurCouleur;
-	protected long distanceCapteurUltrasons;
+	protected float distanceCapteurUltrasons;
 	protected int niveauBatterie;
 	protected boolean unRobotMurEstDetecte;
 	protected boolean LigneBlanche;
@@ -23,7 +23,7 @@ public class Perception {
 		this.niveauBatterie=niveau;
 	}
 	
-	public long getDistanceCapteurUltrasons(){
+	public float getDistanceCapteurUltrasons(){
 		return this.distanceCapteurUltrasons;
 	}
 	public Color getCouleurCapteurCouleur() {

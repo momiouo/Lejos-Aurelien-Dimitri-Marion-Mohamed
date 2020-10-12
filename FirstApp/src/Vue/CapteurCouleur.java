@@ -22,7 +22,7 @@ public class CapteurCouleur extends Capteur {
 
 	
 	
-	public CapteurCouleur(Perception perception, SensorPort sensorPort) {
+	public CapteurCouleur(Perception perception, Port sensorPort) {
 		super(perception, sensorPort);
 		setCouleur();
 	}
@@ -77,17 +77,19 @@ public class CapteurCouleur extends Capteur {
 	}
 	
 	public void setCouleur() {
+		donneesCapteur = new EV3ColorSensor(this.getPort());
 		SampleProvider average = new MeanFilter(donneesCapteur.getRGBMode(), 1);
 		boolean again = true;
 		while (again) {
 			float[] sample = new float[average.sampleSize()];
+			blue = new float[average.sampleSize()];
 			System.out.println("\nPress enter to detect a color...");
 			Button.ENTER.waitForPressAndRelease();
 			average.fetchSample(sample, 0);
 			double minscal = Double.MAX_VALUE;
 			String color = "";
 			
-			double scalaire = TestColor.scalaire(sample, blue);
+			double scalaire = scalaire(sample, blue);
 			//Button.ENTER.waitForPressAndRelease();
 			//System.out.println(scalaire);
 			
@@ -96,7 +98,7 @@ public class CapteurCouleur extends Capteur {
 				color = "blue";
 			}
 			
-			scalaire = TestColor.scalaire(sample, red);
+			scalaire = scalaire(sample, red);
 			//System.out.println(scalaire);
 			//Button.ENTER.waitForPressAndRelease();
 			if (scalaire < minscal) {
@@ -104,7 +106,7 @@ public class CapteurCouleur extends Capteur {
 				color = "red";
 			}
 			
-			scalaire = TestColor.scalaire(sample, green);
+			scalaire = scalaire(sample, green);
 			//System.out.println(scalaire);
 			//Button.ENTER.waitForPressAndRelease();
 			if (scalaire < minscal) {
@@ -112,7 +114,7 @@ public class CapteurCouleur extends Capteur {
 				color = "green";
 			}
 			
-			scalaire = TestColor.scalaire(sample, black);
+			scalaire = 	scalaire(sample, black);
 			//System.out.println(scalaire);
 			//Button.ENTER.waitForPressAndRelease();
 			if (scalaire < minscal) {

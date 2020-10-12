@@ -1,6 +1,8 @@
 package MainTest;
 
 import Robot.Agent;
+import Vue.CapteurUltrasons;
+import Vue.Perception;
 import lejos.utility.Delay;
 
 public class testCapteurUS {

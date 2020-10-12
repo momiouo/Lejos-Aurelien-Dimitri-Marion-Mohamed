@@ -12,10 +12,10 @@ public class TournerOuPivoter extends Deplacement {
 		super(left, right);
 	}
 	
-	public void pivoterDunDegreDonne(int degre) {
+	public void pivoterDunDegreDonne(int degre) {//valeur positive == vers la droite
 		this.getLeftMotor().resetTachoCount();
 		//this.getLeftMotor().rotateTo(0);
-		this.getLeftMotor().rotate(degre);
+		this.getLeftMotor().rotate((int) (degre*4.5));
 		//this.getRightMotor().rotate(degre,true);
 	}
 	

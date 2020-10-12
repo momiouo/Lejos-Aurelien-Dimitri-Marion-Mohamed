@@ -1,5 +1,6 @@
 package Vue;
 import lejos.hardware.port.AnalogPort;
+import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.robotics.SampleProvider;
@@ -8,7 +9,7 @@ public class CapteurTactile extends Capteur {
 	private boolean pression;
 	private EV3TouchSensor donneesCapteur;
 	
-	public CapteurTactile(Perception perception, SensorPort sensorPort){
+	public CapteurTactile(Perception perception, Port sensorPort){
 		super(perception, sensorPort);
 		setPression();
 	}
