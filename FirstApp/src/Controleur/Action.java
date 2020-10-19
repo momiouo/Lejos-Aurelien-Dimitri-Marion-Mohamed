@@ -112,12 +112,27 @@ public class Action {
 	
 	public void allerVersLenButAdverse() {
 		//On oriente notre robot vers l'en but adverse en regardant de combien on a deja pivoter de degré notre robot.
+		if(historiqueDegres<=180) {
+			agent.getTournerOuPivoter().pivoterDunDegreDonne(-historiqueDegres);
+		}
+		else if(historiqueDegres>180) {
+			agent.getTournerOuPivoter().pivoterDunDegreDonne(360-historiqueDegres);
+		}
+		else if(historiqueDegres<=-180) {
+			agent.getTournerOuPivoter().pivoterDunDegreDonne(-360-historiqueDegres);
+		}
 		
 	}
 	
 	public void enregistrerPositionRobot(int degre) {//Fonction appelée par la classe tourner et/ou pivoter voir si on met un attribut agent dans le constructeur de cette classe
 		//A chaque rotation on enregistre les degrees
 		this.historiqueDegres += degre;
+		if(historiqueDegres>=360) {
+			historiqueDegres = historiqueDegres -360;
+		}
+		else if (historiqueDegres <= -360) {
+			historiqueDegres = historiqueDegres + 360;
+		}
 		//A chaque passage sur une ligne de couleur on enregistre la couleur si elle nous intérresse (Notre camp + couleur blanche)
 	}
 	
