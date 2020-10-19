@@ -1,5 +1,6 @@
 package Moteurs;
 
+import Robot.Agent;
 import Vue.CapteurCouleur;
 import Vue.CapteurUltrasons;
 import lejos.robotics.Color;
@@ -19,19 +20,20 @@ public class TournerOuPivoter extends Deplacement {
 		//this.getRightMotor().rotate(degre,true);
 	}
 	
-	public void pivoterJusquaDetectionDunPalet(CapteurUltrasons capteurUltrasons) {
+	public void pivoterJusquaDetectionDunPalet(Agent agent) {
 		//Capteur ultrasons
 		boolean boucle = true;
 		while(boucle) {
 			//On set la couleur
-			capteurUltrasons.setDistance();
+			agent.getCapteurUltrasons().setDistance();
 			//On tourne tq ce n'est pas un palet
-			if (capteurUltrasons.VerifSiObjetDetecteEstUnPalet() == false) {
+			if (agent.getCapteurUltrasons().VerifSiObjetDetecteEstUnPalet(agent.getAvancerOuReculer()) == false) {
 				this.getLeftMotor().forward();
 			}else{
 				//On a trouvé un palet on arrete de tourner
 				this.getLeftMotor().stop();
 				boucle = false;
+				//On lance ensuite une procédure un peu comme premieres action mais qui devra ammener le robot dans la bonne direction grace à enregistrerpositionrobot
 			}
 		}
 	}

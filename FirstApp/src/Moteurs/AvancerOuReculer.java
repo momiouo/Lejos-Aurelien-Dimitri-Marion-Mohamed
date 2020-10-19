@@ -1,6 +1,7 @@
 package Moteurs;
 
 import Vue.CapteurCouleur;
+import Vue.CapteurTactile;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
 import lejos.utility.Delay;
@@ -9,6 +10,16 @@ public class AvancerOuReculer extends Deplacement {
 
 	public AvancerOuReculer(RegulatedMotor left, RegulatedMotor right) {
 		super(left, right);
+	}
+	
+	public void avancer() {
+		this.getLeftMotor().forward();
+		this.getRightMotor().forward();
+	}
+	
+	public void sarreter() {
+		this.getRightMotor().stop(true);
+		this.getLeftMotor().stop(true);
 	}
 	
 	public void avancerJusquaUneLigne(CapteurCouleur capteurCouleur,Color couleur) {
@@ -42,6 +53,17 @@ public class AvancerOuReculer extends Deplacement {
 		this.getLeftMotor().forward();
 		this.getRightMotor().forward();
 		Delay.msDelay((long) (seconde*1000));
+		this.getRightMotor().stop(true);
+		this.getLeftMotor().stop(true);
+	}
+	
+	public void avancerTqCapteurPressionPasEnfonce(CapteurTactile capteur) {
+		while(capteur.getPression() == false) {
+			this.getLeftMotor().forward();
+			this.getRightMotor().forward();
+			capteur.setPression();
+		}
+		//Fin on a détecter une pression on arrete le robot :
 		this.getRightMotor().stop(true);
 		this.getLeftMotor().stop(true);
 	}

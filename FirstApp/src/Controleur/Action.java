@@ -6,6 +6,7 @@ import Moteurs.TournerOuPivoter;
 import Robot.Agent;
 import Vue.CapteurUltrasons;
 import Vue.Perception;
+import lejos.hardware.Button;
 import lejos.hardware.motor.Motor;
 import lejos.robotics.Color;
 
@@ -76,8 +77,8 @@ public class Action {
 		
 	}
 	
-	public void detecterAutourDuRobot(CapteurUltrasons capteurUltrasons, TournerOuPivoter tournerOuPivoter) {
-		tournerOuPivoter.pivoterJusquaDetectionDunPalet(capteurUltrasons);
+	public void detecterAutourDuRobot() {
+		agent.getTournerOuPivoter().pivoterJusquaDetectionDunPalet(this.agent);
 	}
 	
 	public void init() {//ouvre les pinces du robot, remet à O les tachometres, perceptionprec = perceptionact
@@ -88,33 +89,23 @@ public class Action {
 	
 	public void premieresActions() {
 		boolean loop = true;
-		boolean start = true;
-		boolean paletattrape = false;
+		System.out.println("Press enter to run premieresActions...");
+		Button.ENTER.waitForPressAndRelease();
 		while(loop) {
-			agent.getPerceptionAct().initCapteurs();//On mets toujours à jour les valeurs des capteurs
-			if(start) {
-				this.init();//On ouvre les pinces (position initiale)
-				agent.getAvancerOuReculer().avancerPourUnTemps(3);//On avance
-				start = false;
-			}
-		/*	if (robotEstBloque()){
+			agent.getPerceptionAct().initCapteurs();//On mets à jour les valeurs des capteurs
+			if (robotEstBloque()){
 				System.out.println("Je suis bloqué ... appeler la fonction reagirRobotBloque");
 				loop = false;
-			}*/
-			if(!paletattrape && agent.getPerceptionAct().getPressionCapteurTactile() == true) {//On a attrapé le palet
+			}else {
+				this.init();//On ouvre les pinces (position initiale)
+				agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonce(agent.getCapteurTactile());//On avance tq on a pas toucher le palet
 				agent.getPinces().fermeture();//On ferme les pinces
-				paletattrape = true;
-				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, 1);//On evite le second palet
-				//agent.getTournerOuPivoter().pivoterDunDegreDonne(30);//On re s'aligne
-				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, -1);//On evite le second palet
-
-			}
-			if(agent.getPerceptionAct().getCouleurCapteurCouleur().getColor() == Color.WHITE) {//On a atteint la ligne
-				this.deposerLePalet();
+				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, 1);//On evite les autres palets
+				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, -1);
+				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), new Color(0,0,0));//On avance tant que la couleur n'est pas blanche
+				this.deposerLePalet();//On lance les actions pour déposer le palet (codé en dur).
 				loop = false;
 				System.out.println("Fin de la fonction premieresActions");
-			}else if(paletattrape) {
-				agent.getAvancerOuReculer().avancerPourUnTemps(3);//On avance tant que la couleur n'est pas white
 			}
 		}
 	}
@@ -124,19 +115,20 @@ public class Action {
 		
 	}
 	
-	public void enregistrerPositionRobot() {
+	public void enregistrerPositionRobot(int degre) {//Fonction appelée par la classe tourner et/ou pivoter voir si on met un attribut agent dans le constructeur de cette classe
 		//A chaque rotation on enregistre les degrees
+		this.historiqueDegres += degre;
 		//A chaque passage sur une ligne de couleur on enregistre la couleur si elle nous intérresse (Notre camp + couleur blanche)
 	}
 	
 	public boolean robotEstBloque() {
-		//Return vrai si le capteur de distance donne une petite valeur (mur ou robot)
 		return agent.getCapteurUltrasons().murOuRobotDetecte();
 	}
 	
 	public void reagirRobotBloque() {
-		//On recule
-		//On pivote pour recup des distances et voir dans quelle direction on peut aller
+		agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
+		agent.getTournerOuPivoter().pivoterDunDegreDonne(180);//On fait demi tour
+		//Suite : On pivote pour recup des distances et voir quelle est la meilleur direction ou on peut aller.
 	}
 	
 	public void deposerLePalet() {

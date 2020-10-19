@@ -1,4 +1,5 @@
 package Vue;
+import Moteurs.AvancerOuReculer;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
@@ -14,12 +15,18 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		setDistance();
 	}
 
-	public boolean VerifSiObjetDetecteEstUnPalet() {
+	public boolean VerifSiObjetDetecteEstUnPalet(AvancerOuReculer moteurdeplacement) {
 		boolean palet = true;
-		//avancer
-		/*if (distance < valeurOuOnVoitPlusLePalet) {
+		while (distance > 0.350) {//Avancer jusqu'a la limite
+			moteurdeplacement.avancer();
+			this.setDistance();
+		}
+		moteurdeplacement.sarreter();//On s'arrete
+		moteurdeplacement.avancerPourUnTemps((float) 0.5);//On avance legerement
+		this.setDistance();
+		if (distance < 0.326) {//Si la distance est inférieur c'est un mur ou un robot
 			palet = false;
-		}*/
+		}
 		return palet;
 	}
 	
@@ -41,10 +48,10 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 	
 	public boolean murOuRobotDetecte() {
 		boolean murOuRobot = false;
-		//avancer
-		/*if (distance < valeurOuOnVoitPlusLePalet) {
+		this.setDistance();
+		if (distance < 0.300) {
 			murOuRobot = true;
-		}*/
+		}
 		return murOuRobot;
 	}
 }
