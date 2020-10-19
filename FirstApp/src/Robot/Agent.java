@@ -1,6 +1,7 @@
 package Robot;
 import Controleur.Action;
 import Vue.*;
+import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.SensorPort;
 import Moteurs.*;
@@ -24,10 +25,10 @@ public class Agent {
 		//Mettre les bons ports pour les capteurs et les moteurs :
 		this.avancerOuReculer = new AvancerOuReculer(Motor.B,Motor.C);
 		this.tournerOuPivoter = new TournerOuPivoter(Motor.B,Motor.C);
-		this.pinces = new Pinces(Motor.A);
-		this.capteurUltrasons = new CapteurUltrasons(perceptionAct, SensorPort.S2);
-		this.capteurCouleur = new CapteurCouleur(perceptionAct, SensorPort.S3);
-		this.capteurTactile = new CapteurTactile(perceptionAct, SensorPort.S1);
+		this.pinces = new Pinces(Motor.D);
+		this.capteurUltrasons = new CapteurUltrasons(perceptionAct, LocalEV3.get().getPort("S2"));
+		this.capteurCouleur = new CapteurCouleur(perceptionAct, LocalEV3.get().getPort("S3"));
+		this.capteurTactile = new CapteurTactile(perceptionAct, LocalEV3.get().getPort("S1"));
 	}
 	
 	public Action getAction() {

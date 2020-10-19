@@ -13,58 +13,91 @@ import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 import lejos.utility.Delay;
 public class CapteurCouleur extends Capteur {
-	private Color couleur;
+	private String couleur;
 	private EV3ColorSensor donneesCapteur;
-	private static float[] blue;
-	private static float[] red;
-	private static float[] green;
-	private static float[] black;
-
+	private static float[] blue = {(float)0.014705882,(float)0.03137254,(float)0.055882353};
+	private static float[] red = {(float)0.10980393,(float)0.025490196,(float)0.019607844};
+	private static float[] green = {(float)0.04411705,(float)0.087254904,(float)0.0362745};
+	private static float[] black = {(float)0.019607844,(float)0.025490196,(float)0.023529412};
+	private static float[] blanc = {(float) 0.20588236,(float) 0.18921569,(float) 0.17156863};
+	private static float[] jaune = {(float) 0.20294118,(float) 0.16862746,(float) 0.04411765};
+	private static float[] gris = {(float) 0.07058824,(float) 0.07647059,(float) 0.073529415};
 	
 	
 	public CapteurCouleur(Perception perception, Port sensorPort) {
 		super(perception, sensorPort);
+		donneesCapteur = new EV3ColorSensor(this.getPort());
+		//calibrer();
 		setCouleur();
 	}
 	
-	public Color getCouleur() {
+	public String getCouleur() {
 		return this.couleur;
 	}
 	
 	public void calibrer() {		
-		Port port = LocalEV3.get().getPort("S4");
+		Port port = this.getPort();
 		SampleProvider average = new MeanFilter(donneesCapteur.getRGBMode(), 1);
 		donneesCapteur.setFloodlight(Color.WHITE);
+		
+		blue = new float[average.sampleSize()];
+		red = new float[average.sampleSize()];
+		green = new float[average.sampleSize()];
+		black = new float[average.sampleSize()];
 		
 		System.out.println("Press enter to calibrate blue...");
 		Button.ENTER.waitForPressAndRelease();		
 		average.fetchSample(blue, 0);
+		
+		for (float o : blue) {
+		    System.out.print(o + " ");
+		}
+		System.out.println();
+		
 		
 		
 		System.out.println("Press enter to calibrate red...");
 		Button.ENTER.waitForPressAndRelease();
 		average.fetchSample(red, 0);
 		
+		for (float o : red) {
+		    System.out.print(o + " ");
+		}
+		System.out.println();
+		
+		
 		System.out.println("Press enter to calibrate green...");
 		Button.ENTER.waitForPressAndRelease();
 		average.fetchSample(green, 0);
+		
+		for (float o : green) {
+		    System.out.print(o + " ");
+		}
+		System.out.println();
 
 		System.out.println("Press enter to calibrate black...");
 		Button.ENTER.waitForPressAndRelease();
 		average.fetchSample(black, 0);
-		System.out.println("Black calibrated");
+		
+		for (float o : black) {
+		    System.out.print(o + " ");
+		}
+		System.out.println();
+		
+		System.out.println("Press enter to finish...");
+		Button.ENTER.waitForPressAndRelease();
 	}
 	
 	public boolean couleurEstBlanche() {
 		boolean blanc = false;
-		if(couleur.getColor() == Color.WHITE) {
+		if(couleur == "blanc") {
 			blanc = true;
 		}
 		return blanc;
 	}
 	public boolean couleurEstRouge() {
 		boolean rouge = false;
-		if(couleur.getColor() == Color.RED) {
+		if(couleur == "rouge") {
 			rouge = true;
 		}
 		return rouge;
@@ -77,71 +110,72 @@ public class CapteurCouleur extends Capteur {
 	}
 	
 	public void setCouleur() {
-		donneesCapteur = new EV3ColorSensor(this.getPort());
+		
 		SampleProvider average = new MeanFilter(donneesCapteur.getRGBMode(), 1);
 		boolean again = true;
+		String color = "null";
 		while (again) {
 			float[] sample = new float[average.sampleSize()];
-			blue = new float[average.sampleSize()];
-			System.out.println("\nPress enter to detect a color...");
-			Button.ENTER.waitForPressAndRelease();
+			
 			average.fetchSample(sample, 0);
 			double minscal = Double.MAX_VALUE;
-			String color = "";
 			
 			double scalaire = scalaire(sample, blue);
-			//Button.ENTER.waitForPressAndRelease();
-			//System.out.println(scalaire);
-			
 			if (scalaire < minscal) {
 				minscal = scalaire;
-				color = "blue";
+				color = "bleu";
+				again = false;
 			}
 			
 			scalaire = scalaire(sample, red);
-			//System.out.println(scalaire);
-			//Button.ENTER.waitForPressAndRelease();
 			if (scalaire < minscal) {
 				minscal = scalaire;
-				color = "red";
+				color = "rouge";
+				again = false;
 			}
 			
 			scalaire = scalaire(sample, green);
-			//System.out.println(scalaire);
-			//Button.ENTER.waitForPressAndRelease();
 			if (scalaire < minscal) {
 				minscal = scalaire;
-				color = "green";
+				color = "vert";
+				again = false;
 			}
 			
 			scalaire = 	scalaire(sample, black);
-			//System.out.println(scalaire);
-			//Button.ENTER.waitForPressAndRelease();
 			if (scalaire < minscal) {
 				minscal = scalaire;
-				color = "black";
-			}
-			
-			System.out.println("The color is " + color + " \n");
-			System.out.println("Press ENTER to continue \n");
-			System.out.println("ESCAPE to exit");
-			Button.waitForAnyPress();
-			if(Button.ESCAPE.isDown()) {
-				donneesCapteur.setFloodlight(false);
+				color = "noir";
 				again = false;
 			}
+			
+			scalaire = 	scalaire(sample, blanc);
+			if (scalaire < minscal) {
+				minscal = scalaire;
+				color = "blanc";
+				again = false;
+			}
+			
+			scalaire = 	scalaire(sample, jaune);
+			if (scalaire < minscal) {
+				minscal = scalaire;
+				color = "jaune";
+				again = false;
+			}
+			
+			scalaire = 	scalaire(sample, gris);
+			if (scalaire < minscal) {
+				minscal = scalaire;
+				color = "gris";
+				again = false;
+			}			
+
+			//donneesCapteur.setFloodlight(false);
+			
+				
 		}
-		/*
-		donneesCapteur = new EV3ColorSensor((UARTPort) this.getPort());
-		SampleProvider sp = donneesCapteur.getRGBMode();
-		int sampleSize = sp.sampleSize();
-		float[] sample = new float[sampleSize];
-		sp.fetchSample(sample, 0);
-		int colorNumberValue1 = (int)sample[0];
-		int colorNumberValue2 = (int)sample[1];
-		int colorNumberValue3 = (int)sample[2];
-		Color couleurDetectee = new Color(colorNumberValue1, colorNumberValue2, colorNumberValue3);
-		this.couleur = couleurDetectee;
-		this.getPerception().CapteurCouleur = couleurDetectee;*/
+		
+		this.couleur = color;
+
 	}
+		
 }

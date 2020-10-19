@@ -3,6 +3,7 @@ import lejos.hardware.port.AnalogPort;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3TouchSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
 
 public class CapteurTactile extends Capteur {
@@ -11,6 +12,7 @@ public class CapteurTactile extends Capteur {
 	
 	public CapteurTactile(Perception perception, Port sensorPort){
 		super(perception, sensorPort);
+		donneesCapteur = new EV3TouchSensor((lejos.hardware.port.Port) this.getPort());
 		setPression();
 	}
 	
@@ -19,7 +21,6 @@ public class CapteurTactile extends Capteur {
 	}
 	
 	public void setPression() {
-		donneesCapteur = new EV3TouchSensor((AnalogPort) this.getPort());
 		final SampleProvider sp = donneesCapteur.getTouchMode();
 		boolean touchValue = false;
 		float [] sample = new float[sp.sampleSize()];

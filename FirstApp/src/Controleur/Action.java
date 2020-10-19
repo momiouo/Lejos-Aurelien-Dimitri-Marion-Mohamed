@@ -100,14 +100,18 @@ public class Action {
 				this.init();//On ouvre les pinces (position initiale)
 				agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonce(agent.getCapteurTactile());//On avance tq on a pas toucher le palet
 				agent.getPinces().fermeture();//On ferme les pinces
-				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, 1);//On evite les autres palets
-				agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, -1);
-				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), new Color(0,0,0));//On avance tant que la couleur n'est pas blanche
+				
+				agent.getTournerOuPivoter().pivoterDunDegreDonne(-45);//On evite les autres palets
+				agent.getAvancerOuReculer().avancerPourUnTemps(1);
+				agent.getTournerOuPivoter().pivoterDunDegreDonne(45);
+				
+				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");//On avance tant que la couleur n'est pas blanche
 				this.deposerLePalet();//On lance les actions pour déposer le palet (codé en dur).
 				loop = false;
 				System.out.println("Fin de la fonction premieresActions");
 			}
 		}
+		agent.getPinces().fermeture();
 	}
 	
 	public void allerVersLenButAdverse() {

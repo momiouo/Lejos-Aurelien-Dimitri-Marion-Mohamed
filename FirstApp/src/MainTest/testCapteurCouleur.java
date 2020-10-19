@@ -7,7 +7,9 @@ public class testCapteurCouleur {
 
 	public static void main(String[] args) {
 		Agent agent = new Agent();
-		agent.getCapteurCouleur().calibrer();
+		//agent.getCapteurCouleur().calibrer();
+		
+		
 		boolean loop = true;
 		int i = 0;
 		while(loop) {

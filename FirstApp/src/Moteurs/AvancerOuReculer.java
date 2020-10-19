@@ -4,12 +4,15 @@ import Vue.CapteurCouleur;
 import Vue.CapteurTactile;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
+import lejos.robotics.chassis.Chassis;
 import lejos.utility.Delay;
 
 public class AvancerOuReculer extends Deplacement {
 
 	public AvancerOuReculer(RegulatedMotor left, RegulatedMotor right) {
 		super(left, right);
+		RegulatedMotor[] syncList = {right};
+		left.synchronizeWith(syncList);		
 	}
 	
 	public void avancer() {
@@ -22,7 +25,7 @@ public class AvancerOuReculer extends Deplacement {
 		this.getLeftMotor().stop(true);
 	}
 	
-	public void avancerJusquaUneLigne(CapteurCouleur capteurCouleur,Color couleur) {
+	public void avancerJusquaUneLigne(CapteurCouleur capteurCouleur,String couleur) {
 		boolean boucle = true;
 		while(boucle) {
 			//On set la couleur
