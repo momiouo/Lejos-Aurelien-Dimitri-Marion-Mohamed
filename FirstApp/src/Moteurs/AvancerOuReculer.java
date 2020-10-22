@@ -1,7 +1,9 @@
 package Moteurs;
 
+import Controleur.Action;
 import Vue.CapteurCouleur;
 import Vue.CapteurTactile;
+import Vue.CapteurUltrasons;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.Chassis;
@@ -11,8 +13,8 @@ public class AvancerOuReculer extends Deplacement {
 
 	public AvancerOuReculer(RegulatedMotor left, RegulatedMotor right) {
 		super(left, right);
-		RegulatedMotor[] syncList = {right};
-		left.synchronizeWith(syncList);		
+		left.synchronizeWith(new RegulatedMotor[] {right});		
+		left.startSynchronization();//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
 	}
 	
 	public void avancer() {
@@ -39,6 +41,29 @@ public class AvancerOuReculer extends Deplacement {
 				this.getRightMotor().stop(true);
 				this.getLeftMotor().stop(true);
 				boucle = false;
+			}
+		}
+	}
+	
+	public void avancerJusquaUneLigneEtEviterObstacle(CapteurCouleur capteurCouleur,CapteurUltrasons capteurUltrasons,Action action,String couleur) {
+		boolean boucle = true;
+		while(boucle) {
+			if(!capteurUltrasons.murOuRobotDetecte()) {//Pas de mur ni de robot + pas de palet (+tard)
+				//On set la couleur
+				capteurCouleur.setCouleur();
+				//On avance si c'est pas la bonne couleur
+				if (capteurCouleur.getCouleur() != couleur) {
+					this.getLeftMotor().forward();
+					this.getRightMotor().forward();
+				}else{
+					//On a trouvé la bonne couleur on s'arrete
+					this.getRightMotor().stop(true);
+					this.getLeftMotor().stop(true);
+					action.deposerLePalet();
+					boucle = false;
+				}
+			}else {//On doit changer de trajectoire
+				
 			}
 		}
 	}
