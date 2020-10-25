@@ -18,7 +18,7 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 	public boolean VerifSiObjetDetecteEstUnPalet(AvancerOuReculer moteurdeplacement) {
 		boolean palet = true;
 		while (distance > 0.350) {//Avancer jusqu'a la limite
-			moteurdeplacement.avancer();
+			moteurdeplacement.avancerSynchro();
 			this.setDistance();
 		}
 		moteurdeplacement.sarreter();//On s'arrete
@@ -40,7 +40,7 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		float [] sample = new float[sp.sampleSize()];
 		sp.fetchSample(sample, 0);
         distanceValue = sample[0];//0.326
-        System.out.println("Valeur recup par le capteur ultrason : " + distanceValue);
+        //System.out.println("Valeur recup par le capteur ultrason : " + distanceValue);
 		this.distance = distanceValue; 
 		//Modification de l'attribut DistanceCapteurUltrasons de l'objet Perception passé en paramètre du constructeur
 		this.getPerception().distanceCapteurUltrasons = distanceValue;

@@ -10,37 +10,45 @@ import lejos.hardware.motor.Motor;
 import lejos.hardware.port.SensorPort;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
+import lejos.utility.Delay;
 
 public class testDeplacement {
 
 	public static void main(String[] args) {
 		//Les moteurs des roues doivent etre branchés sur le port B et C
 		Agent agent = new Agent();
-	    
-	    //Création des objets pour le déplacement
-		//AvancerOuReculer avanceroureculer = agent.getAvancerOuReculer();
-		TournerOuPivoter tourneroupivoter = agent.getTournerOuPivoter();
-/*
-		System.out.println("J'avance 3 secondes");
-		avanceroureculer.avancerPourUnTemps(3);
+
+		/*
+		System.out.println("J'avance 5 secondes");
+		agent.getAvancerOuReculer().avancerPourUnTemps(5);
+		
+		Delay.msDelay(2000);
 		
 		System.out.println("Je recule 3 secondes");
-		avanceroureculer.reculerPourUnTemps(3);
+		agent.getAvancerOuReculer().reculerPourUnTemps(3);
 		
+		Delay.msDelay(2000);
 		*/
-		System.out.println("Je pivote de 90 degrés dans un sens");
-		tourneroupivoter.pivoterDunDegreDonne(90);
 		
-		System.out.println("Je pivote de 90 degrés dans l'autre sens");
-		tourneroupivoter.pivoterDunDegreDonne(-90);
+		System.out.println("On test de combien de centimètre j'avance pour 30 cm");
+		agent.getAvancerOuReculer().avancerSurUneDistance(300);
+		
+		Delay.msDelay(2000);
+		
+		System.out.println("On test de combien de centimètre je recule pour 30 cm");
+		agent.getAvancerOuReculer().reculerSurUneDistance(300);
 		
 		/*
-		System.out.println("On test de combien de centimètre j'avance pour 1 révolution");
-		avanceroureculer.avancerSurUneDistance(0);
+			
+		System.out.println("Je pivote de 90 degrés dans un sens");
+		agent.getTournerOuPivoter().pivoterDunDegreDonne(90);
 		
-		System.out.println("On test de combien de centimètre j'avance pour 1 révolution");
-		avanceroureculer.reculerSurUneDistance(0);
+		Delay.msDelay(2000);
 		
+		System.out.println("Je pivote de 90 degrés dans l'autre sens");
+		agent.getTournerOuPivoter().pivoterDunDegreDonne(-90);
+		
+		/*
 		System.out.println("Je tourne vers la droite");
 		tourneroupivoter.tournerSurUnTempsEtUneDirectionVague(3, 1);//1 > 0 => vers la droite
 		

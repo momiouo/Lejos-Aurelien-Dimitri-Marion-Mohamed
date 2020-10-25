@@ -4,27 +4,38 @@ import Controleur.Action;
 import Vue.CapteurCouleur;
 import Vue.CapteurTactile;
 import Vue.CapteurUltrasons;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.Chassis;
+import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
 
 public class AvancerOuReculer extends Deplacement {
 
-	public AvancerOuReculer(RegulatedMotor left, RegulatedMotor right) {
+	public AvancerOuReculer(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) {
 		super(left, right);
-		left.synchronizeWith(new RegulatedMotor[] {right});		
-		left.startSynchronization();//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
+		right.synchronizeWith(new EV3LargeRegulatedMotor[] {left});		
+		//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
 	}
 	
-	public void avancer() {
+	public void avancerSynchro() {
+		this.getLeftMotor().startSynchronization();
 		this.getLeftMotor().forward();
 		this.getRightMotor().forward();
+		this.getLeftMotor().endSynchronization();
 	}
 	
-	public void sarreter() {
+	public void reculerSynchro() {
+		this.getLeftMotor().startSynchronization();
+		this.getLeftMotor().backward();
+		this.getRightMotor().backward();
+		this.getLeftMotor().endSynchronization();
+	}
+	
+	public void sarreterSynchro() {
 		this.getRightMotor().stop(true);
-		this.getLeftMotor().stop(true);
+		this.getLeftMotor().stop();
 	}
 	
 	public void avancerJusquaUneLigne(CapteurCouleur capteurCouleur,String couleur) {
@@ -34,12 +45,10 @@ public class AvancerOuReculer extends Deplacement {
 			capteurCouleur.setCouleur();
 			//On avance si c'est pas la bonne couleur
 			if (capteurCouleur.getCouleur() != couleur) {
-				this.getLeftMotor().forward();
-				this.getRightMotor().forward();
+				avancerSynchro();
 			}else{
 				//On a trouvé la bonne couleur on s'arrete
-				this.getRightMotor().stop(true);
-				this.getLeftMotor().stop(true);
+				sarreterSynchro();
 				boucle = false;
 			}
 		}
@@ -53,12 +62,10 @@ public class AvancerOuReculer extends Deplacement {
 				capteurCouleur.setCouleur();
 				//On avance si c'est pas la bonne couleur
 				if (capteurCouleur.getCouleur() != couleur) {
-					this.getLeftMotor().forward();
-					this.getRightMotor().forward();
+					avancerSynchro();
 				}else{
 					//On a trouvé la bonne couleur on s'arrete
-					this.getRightMotor().stop(true);
-					this.getLeftMotor().stop(true);
+					sarreterSynchro();
 					action.deposerLePalet();
 					boucle = false;
 				}
@@ -68,51 +75,36 @@ public class AvancerOuReculer extends Deplacement {
 		}
 	}
 	
-	public void avancerSurUneDistance(int distance) {//Distance en centimètres
-		this.resetTachoMetre();
-		//Le tachometre enregistre l'angle en degres de combien tourne le moteur dans son axe.
-		//Il faut calculer de combien de centimetres on se déplace pour 1 révolution (360 degrees)
-		//Methode avec les deux paramètres pour que ça finisse en meme temps
-		this.getLeftMotor().rotate(360,true);
-		this.getRightMotor().rotate(360,true);
+	public void avancerSurUneDistance(float distance) {//Distance en mm
+		//56 == diametre en mm de la roue et 147mm == distance entre les deux roues
+		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),false);
+		movePilot.travel(distance);
+	}
+	
+	public void reculerSurUneDistance(float distance) { //distance en mm
+		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),true);
+		movePilot.travel(distance);
 	}
 	
 	public void avancerPourUnTemps(float seconde) {
-		this.getLeftMotor().forward();
-		this.getRightMotor().forward();
+		avancerSynchro();
 		Delay.msDelay((long) (seconde*1000));
-		this.getRightMotor().stop(true);
-		this.getLeftMotor().stop(true);
+		sarreterSynchro();
 	}
 	
 	public void avancerTqCapteurPressionPasEnfonce(CapteurTactile capteur) {
 		while(capteur.getPression() == false) {
-			this.getLeftMotor().forward();
-			this.getRightMotor().forward();
+			avancerSynchro();
 			capteur.setPression();
 		}
 		//Fin on a détecter une pression on arrete le robot :
-		this.getRightMotor().stop(true);
-		this.getLeftMotor().stop(true);
+		sarreterSynchro();
 	}
 	
 	public void reculerPourUnTemps(float seconde) {
-		this.getLeftMotor().backward();
-		this.getRightMotor().backward();
+		this.reculerSynchro();
 		Delay.msDelay((long) (seconde*1000));
-		this.getRightMotor().stop(true);
-		this.getLeftMotor().stop(true);
+		sarreterSynchro();
 	}
 	
-	public void reculerSurUneDistance(int distance) {//Distance en centimètres
-		this.resetTachoMetre();
-		//Le tachometre enregistre l'angle en degres de combien tourne le moteur dans son axe.
-		//Il faut calculer de combien de centimetres on se déplace pour 1 révolution (360 degrees)
-		//Methode avec les deux paramètres pour que ça finisse en meme temps
-		this.getLeftMotor().rotate(-360,true);
-		this.getRightMotor().rotate(-360,true);
-	}
-	
-
-
 }

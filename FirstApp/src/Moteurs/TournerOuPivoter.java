@@ -10,6 +10,7 @@ import Controleur.Action;
 import Robot.Agent;
 import Vue.CapteurCouleur;
 import Vue.CapteurUltrasons;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
 import lejos.utility.Delay;
@@ -18,21 +19,22 @@ public class TournerOuPivoter extends Deplacement {
 
 	private Action action;
 
-	public TournerOuPivoter(RegulatedMotor left, RegulatedMotor right) {
+	public TournerOuPivoter(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right, Action action) {
 		super(left, right);
-		left.synchronizeWith(new RegulatedMotor[] {right});		
-		left.startSynchronization();//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
+		this.action = action;
 	}
 	
 	public void CrochetOuPivoterAvecDeuxRoues() {
+		//left.synchronizeWith(new EV3LargeRegulatedMotor[] {right});		
+		//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
 		//A tester :
 		//=> http://ev3fga.weebly.com/faire-tourner-le-robot.html
 		//=> http://www.sitedunxt.fr/articles/print.php?id=13
 	}
 
-	public void pivoterDunDegreDonne(int degre) {//valeur positive == vers la droite
-		this.getLeftMotor().resetTachoCount();
+	public void pivoterDunDegreDonneEnCrochet(int degre) {//valeur positive == vers la droite
 		this.getLeftMotor().rotate((int) (degre*4.5),true);
+		this.getLeftMotor().waitComplete();
 		action.enregistrerPositionRobot(degre);
 	}
 	

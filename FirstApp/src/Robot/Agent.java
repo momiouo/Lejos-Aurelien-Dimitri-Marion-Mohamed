@@ -2,8 +2,11 @@ package Robot;
 import Controleur.Action;
 import Vue.*;
 import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.Motor;
+import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
+import lejos.robotics.RegulatedMotor;
 import Moteurs.*;
 
 public class Agent {
@@ -19,16 +22,20 @@ public class Agent {
 	private CapteurTactile capteurTactile;
 	
 	public Agent() {
+		System.out.println("Création d'un Agent ... ... ...");
 		this.perceptionAct = new Perception(this);
 		this.perceptionPrec = new Perception(this); // Pour la classe Action
 		this.action = new Action(perceptionAct, perceptionPrec, this); //Pas sur que ça marche de mettre this alors qu'il est pas encore créer
 		//Mettre les bons ports pour les capteurs et les moteurs :
-		this.avancerOuReculer = new AvancerOuReculer(Motor.B,Motor.C);
-		this.tournerOuPivoter = new TournerOuPivoter(Motor.B,Motor.C);
-		this.pinces = new Pinces(Motor.D);
+		EV3LargeRegulatedMotor motorB = new EV3LargeRegulatedMotor(MotorPort.B);
+		EV3LargeRegulatedMotor motorC = new EV3LargeRegulatedMotor(MotorPort.C);
+		this.avancerOuReculer = new AvancerOuReculer(motorB,motorC);
+		this.tournerOuPivoter = new TournerOuPivoter(avancerOuReculer.getLeftMotor(),avancerOuReculer.getRightMotor(), action);
+		this.pinces = new Pinces(new EV3LargeRegulatedMotor(MotorPort.D));
 		this.capteurUltrasons = new CapteurUltrasons(perceptionAct, LocalEV3.get().getPort("S2"));
 		this.capteurCouleur = new CapteurCouleur(perceptionAct, LocalEV3.get().getPort("S3"));
 		this.capteurTactile = new CapteurTactile(perceptionAct, LocalEV3.get().getPort("S1"));
+		System.out.println("Fin de la création de l'Agent.");
 	}
 	
 	public Action getAction() {

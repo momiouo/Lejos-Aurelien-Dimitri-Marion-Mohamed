@@ -102,7 +102,7 @@ public class Action {
 		//fonction qui avance le robot pour verif si c'est un palet
 		if(agent.getCapteurUltrasons().VerifSiObjetDetecteEstUnPalet(agent.getAvancerOuReculer())) {
 			//On a un palet en face de soit, on avance juste pour declenche la pression capteur tactile dans la fonction verifperceptionchangement
-			agent.getAvancerOuReculer().avancer();
+			agent.getAvancerOuReculer().avancerSynchro();
 		}else {
 			//C'est un mur ou robot adverse
 			detecterAutourDuRobot();
