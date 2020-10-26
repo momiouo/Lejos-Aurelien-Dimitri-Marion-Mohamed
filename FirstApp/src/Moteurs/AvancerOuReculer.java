@@ -16,8 +16,10 @@ public class AvancerOuReculer extends Deplacement {
 	public AvancerOuReculer(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) {
 		super(left, right);
 		right.synchronizeWith(new EV3LargeRegulatedMotor[] {left});		
-		//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
+		//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. 
 	}
+	
+	// => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
 	
 	public void avancerSynchro() {
 		this.getLeftMotor().startSynchronization();
@@ -40,18 +42,11 @@ public class AvancerOuReculer extends Deplacement {
 	
 	public void avancerJusquaUneLigne(CapteurCouleur capteurCouleur,String couleur) {
 		boolean boucle = true;
-		while(boucle) {
-			//On set la couleur
+		avancerSynchro();
+		while(capteurCouleur.getCouleur() != couleur) {
 			capteurCouleur.setCouleur();
-			//On avance si c'est pas la bonne couleur
-			if (capteurCouleur.getCouleur() != couleur) {
-				avancerSynchro();
-			}else{
-				//On a trouvé la bonne couleur on s'arrete
-				sarreterSynchro();
-				boucle = false;
-			}
 		}
+		sarreterSynchro();
 	}
 	
 	public void avancerJusquaUneLigneEtEviterObstacle(CapteurCouleur capteurCouleur,CapteurUltrasons capteurUltrasons,Action action,String couleur) {
@@ -69,8 +64,8 @@ public class AvancerOuReculer extends Deplacement {
 					action.deposerLePalet();
 					boucle = false;
 				}
-			}else {//On doit changer de trajectoire
-				
+			}else {//A faire : On doit changer de trajectoire
+				action.reagirRobotBloque();
 			}
 		}
 	}
@@ -92,18 +87,28 @@ public class AvancerOuReculer extends Deplacement {
 		sarreterSynchro();
 	}
 	
-	public void avancerTqCapteurPressionPasEnfonce(CapteurTactile capteur) {
+	public void reculerPourUnTemps(float seconde) {
+		this.reculerSynchro();
+		Delay.msDelay((long) (seconde*1000));
+		sarreterSynchro();
+	}
+	
+	public void avancerTqCapteurPressionPasEnfonce(CapteurTactile capteur, Action action) {
+		avancerSynchro();
 		while(capteur.getPression() == false) {
-			avancerSynchro();
 			capteur.setPression();
 		}
 		//Fin on a détecter une pression on arrete le robot :
 		sarreterSynchro();
+		action.onAUnPalet();
 	}
 	
-	public void reculerPourUnTemps(float seconde) {
-		this.reculerSynchro();
-		Delay.msDelay((long) (seconde*1000));
+	public void avancerTqCapteurPressionPasEnfonceTest(CapteurTactile capteur) {//Pour le codage en moyen dur premieresAction
+		avancerSynchro();
+		while(capteur.getPression() == false) {
+			capteur.setPression();
+		}
+		//Fin on a détecter une pression on arrete le robot :
 		sarreterSynchro();
 	}
 	

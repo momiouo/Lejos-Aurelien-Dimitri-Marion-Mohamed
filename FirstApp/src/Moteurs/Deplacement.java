@@ -12,7 +12,7 @@ public abstract class Deplacement {
     private int speed;
     private int acceleration;
     
-    public Deplacement(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) { //Parametre exemple MotorPort:  Motor.B;Motor.C;
+    public Deplacement(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) {
     	this.setLeftMotor(left);
     	this.setRightMotor(right);
     	this.setSpeed(1000);//Car probleme de moteur
@@ -52,8 +52,8 @@ public abstract class Deplacement {
 		this.acceleration = acceleration;
 	}
     
-    public void updateAccelerationSpeedMotors() {//Methode pour update l'acceleration et la vitesse des moteurs
-    	//En fonction des attributs speed et acceleration deja set
+    public void updateAccelerationSpeedMotors() {//Methode pour mettre à jour l'acceleration et la vitesse des moteurs
+    	//En fonction des attributs speed et acceleration deja initialisés.
     	this.rightMotor.setSpeed(speed);
     	this.rightMotor.setAcceleration(acceleration);
     	this.leftMotor.setSpeed(speed);

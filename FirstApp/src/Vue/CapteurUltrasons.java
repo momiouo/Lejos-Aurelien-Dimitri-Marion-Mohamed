@@ -9,8 +9,8 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 	private float distance;
 	private EV3UltrasonicSensor donneesCapteur;
 	
-	public CapteurUltrasons(Perception perception, Port sensorPort) {
-		super(perception,sensorPort);
+	public CapteurUltrasons(Perception perception, Port port) {
+		super(perception,port);
 		donneesCapteur = new EV3UltrasonicSensor((lejos.hardware.port.Port) this.getPort());
 		setDistance();
 	}
@@ -21,7 +21,7 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 			moteurdeplacement.avancerSynchro();
 			this.setDistance();
 		}
-		moteurdeplacement.sarreter();//On s'arrete
+		moteurdeplacement.sarreterSynchro();//On s'arrete
 		moteurdeplacement.avancerPourUnTemps((float) 0.5);//On avance legerement
 		this.setDistance();
 		if (distance < 0.326) {//Si la distance est inférieur c'est un mur ou un robot

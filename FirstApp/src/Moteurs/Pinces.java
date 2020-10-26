@@ -30,7 +30,7 @@ public class Pinces { //A tester plus tard
 
 	public void ouverture() {//Ouverture des pinces seulement si pincesOuvertes == false
 		if (!this.pincesOuvertes) {
-			this.moteurPinces.rotate(1000);//Soit on fait rotate soit on calcule le temps qu'il faut pour fermer les pinces et ouvrir et on fait avec forward et backward
+			this.moteurPinces.rotate(1000);
 		}
 		this.pincesOuvertes = true;
 	}

@@ -24,8 +24,8 @@ public class CapteurCouleur extends Capteur {
 	private static float[] gris = {(float) 0.07058824,(float) 0.07647059,(float) 0.073529415};
 	
 	
-	public CapteurCouleur(Perception perception, Port sensorPort) {
-		super(perception, sensorPort);
+	public CapteurCouleur(Perception perception, Port port) {
+		super(perception, port);
 		donneesCapteur = new EV3ColorSensor(this.getPort());
 		//calibrer();
 		setCouleur();

@@ -10,8 +10,8 @@ public class CapteurTactile extends Capteur {
 	private boolean pression;
 	private EV3TouchSensor donneesCapteur;
 	
-	public CapteurTactile(Perception perception, Port sensorPort){
-		super(perception, sensorPort);
+	public CapteurTactile(Perception perception, Port port){
+		super(perception, port);
 		donneesCapteur = new EV3TouchSensor((lejos.hardware.port.Port) this.getPort());
 		setPression();
 	}

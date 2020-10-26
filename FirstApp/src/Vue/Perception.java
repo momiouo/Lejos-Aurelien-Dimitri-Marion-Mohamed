@@ -12,7 +12,7 @@ public class Perception {
 	private Agent agent;
 	
 	
-	public Perception(Agent agent) {//Initialise les valeurs des attributs à 0 ou false.
+	public Perception(Agent agent) {
 		this.agent = agent;
 	}
 	

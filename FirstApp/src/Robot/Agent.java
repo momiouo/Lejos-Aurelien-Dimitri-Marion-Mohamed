@@ -20,15 +20,16 @@ public class Agent {
 	private CapteurUltrasons capteurUltrasons;
 	private CapteurCouleur capteurCouleur;
 	private CapteurTactile capteurTactile;
+	private String positionInitiale;
 	
 	public Agent() {
 		System.out.println("Création d'un Agent ... ... ...");
 		this.perceptionAct = new Perception(this);
-		this.perceptionPrec = new Perception(this); // Pour la classe Action
-		this.action = new Action(perceptionAct, perceptionPrec, this); //Pas sur que ça marche de mettre this alors qu'il est pas encore créer
-		//Mettre les bons ports pour les capteurs et les moteurs :
-		EV3LargeRegulatedMotor motorB = new EV3LargeRegulatedMotor(MotorPort.B);
-		EV3LargeRegulatedMotor motorC = new EV3LargeRegulatedMotor(MotorPort.C);
+		this.perceptionPrec = new Perception(this);
+		this.action = new Action(perceptionAct, perceptionPrec, this);
+		//On initialise les differents moteurs et capteurs pour le robot avec leurs ports correspondants
+		EV3LargeRegulatedMotor motorB = new EV3LargeRegulatedMotor(MotorPort.C);
+		EV3LargeRegulatedMotor motorC = new EV3LargeRegulatedMotor(MotorPort.B);
 		this.avancerOuReculer = new AvancerOuReculer(motorB,motorC);
 		this.tournerOuPivoter = new TournerOuPivoter(avancerOuReculer.getLeftMotor(),avancerOuReculer.getRightMotor(), action);
 		this.pinces = new Pinces(new EV3LargeRegulatedMotor(MotorPort.D));
@@ -95,11 +96,13 @@ public class Agent {
 		this.pinces = pinces;
 	}
 	
-	public void positionInitiale() {//Methode pour indiquer la position de notre robot et celle du robot adverse lors du demarrage 
+	public void setPositionInitiale(String positionDuRobot) {//Methode pour indiquer la position de notre robot et celle du robot adverse lors du demarrage 
 		//de la partie
-		
+		this.positionInitiale = positionDuRobot;
 	}
-	
-	
+
+	public String getPositionInitiale() {
+		return positionInitiale;
+	}
 
 }

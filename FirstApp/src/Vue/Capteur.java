@@ -9,31 +9,23 @@ public abstract class Capteur implements SensorPort {
 	private Perception perception;
 	private Port port;
 	
-	public Capteur(Perception perception, Port sensorPort) {
+	public Capteur(Perception perception, Port port) {
 		this.perception = perception;
-		this.port = sensorPort;
+		this.port = port;
 	}
 	
 	public Perception getPerception() {
 		return this.perception;
 	}
+	
 	public Port getPort() {
 		return port;
 	}
-	public void setPort(int numPort) {
-		if (numPort == 1) {
-			this.port=(Port) S1;
-		}
-		else if (numPort == 2) {
-			this.port=(Port) S2;
-		}
-		else if (numPort == 3) {
-			this.port=(Port) S3;
-		}
-		else if (numPort == 4) {
-			this.port=(Port) S4;
-		}
+	
+	public void setPort(Port port) {
+		this.port = port;
 	}
+	
 	public void setPerception(Perception perception) {
 		this.perception = perception;
 	}
