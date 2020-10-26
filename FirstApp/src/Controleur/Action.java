@@ -61,7 +61,7 @@ public class Action {
 		if(this.perceptionAct.getPressionCapteurTactile() != this.perceptionPrec.getPressionCapteurTactile()) {
 			pressionCourante = this.getPerceptionAct().getPressionCapteurTactile();
 			if (pressionCourante) {
-				agent.getAvancerOuReculer().sarreter();
+				agent.getAvancerOuReculer().sarreterSynchro();
 				agent.getPinces().fermeture();
 				agent.getAction().allerVersLenButAdverse();
 				
@@ -129,9 +129,9 @@ public class Action {
 				agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonce(agent.getCapteurTactile());//On avance tq on a pas toucher le palet
 				agent.getPinces().fermeture();//On ferme les pinces
 				
-				agent.getTournerOuPivoter().pivoterDunDegreDonne(-45);//On evite les autres palets
+				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-45);//On evite les autres palets
 				agent.getAvancerOuReculer().avancerPourUnTemps(1);
-				agent.getTournerOuPivoter().pivoterDunDegreDonne(45);//On re s'aligne
+				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(45);//On re s'aligne
 				
 				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");//On avance tant que la couleur n'est pas blanche
 				this.deposerLePalet();//On lance les actions pour déposer le palet (codé en dur).
@@ -145,13 +145,13 @@ public class Action {
 	public void allerVersLenButAdverse() {
 		//On oriente notre robot vers l'en but adverse en regardant de combien on a deja pivoter de degré notre robot.
 		if(historiqueDegres<=180) {
-			agent.getTournerOuPivoter().pivoterDunDegreDonne(-historiqueDegres);
+			agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-historiqueDegres);
 		}
 		else if(historiqueDegres>180) {
-			agent.getTournerOuPivoter().pivoterDunDegreDonne(360-historiqueDegres);
+			agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(360-historiqueDegres);
 		}
 		else if(historiqueDegres<=-180) {
-			agent.getTournerOuPivoter().pivoterDunDegreDonne(-360-historiqueDegres);
+			agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-360-historiqueDegres);
 		}
 		//Avancer jusqu'a la ligne blanche tout en evitant les murs, robot et palet
 		agent.getAvancerOuReculer().avancerJusquaUneLigneEtEviterObstacle(agent.getCapteurCouleur(),agent.getCapteurUltrasons(),agent.getAction(),"blanc");
@@ -175,7 +175,7 @@ public class Action {
 	
 	public void reagirRobotBloque() {//ça c'est plus si le robot est coincé vraiment dans un coin
 		agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
-		agent.getTournerOuPivoter().pivoterDunDegreDonne(180);//On fait demi tour
+		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(180);//On fait demi tour
 		//Suite : On pivote pour recup des distances et voir quelle est la meilleur direction ou on peut aller.
 	}
 	
@@ -187,7 +187,7 @@ public class Action {
 		//On recule
 		agent.getAvancerOuReculer().reculerPourUnTemps(2);
 		//on pivote de 50 degrees environ
-		agent.getTournerOuPivoter().pivoterDunDegreDonne(50);
+		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(50);
 		//On se stop si c'est la fonction premieresAction qui a déclenché cette fonction sinon on appel la fonction detecterAutourduRobot pour un autre palet
 		
 		//Si on veut finir : 

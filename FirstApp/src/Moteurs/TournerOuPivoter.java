@@ -48,7 +48,7 @@ public class TournerOuPivoter extends Deplacement {
 		int i = 1;
 		
 		while (i <= degre) {
-			pivoterDunDegreDonne(2);//On pivote de 2 degrés à chaque fois
+			pivoterDunDegreDonneEnCrochet(2);//On pivote de 2 degrés à chaque fois
 			//On recupère une distance
 			agent.getCapteurUltrasons().setDistance();
 			distancecourante = agent.getCapteurUltrasons().getDistance();
@@ -67,7 +67,7 @@ public class TournerOuPivoter extends Deplacement {
 		}
 		int degremin = lespositions.get(minIndice);//Recupere la position en degre de l'objet le plus proche
 
-		pivoterDunDegreDonne(-360+degremin);//Pour se remettre dans la direction de l'objet le plus proche
+		pivoterDunDegreDonneEnCrochet(-360+degremin);//Pour se remettre dans la direction de l'objet le plus proche
 	}
 
 	public void tournerJusquaDetecterUneLigne(CapteurCouleur capteurCouleur) {
