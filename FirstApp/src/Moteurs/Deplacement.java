@@ -15,7 +15,7 @@ public abstract class Deplacement {
     public Deplacement(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) {
     	this.setLeftMotor(left);
     	this.setRightMotor(right);
-    	this.setSpeed(1000);//Car probleme de moteur
+    	this.setSpeed((int)left.getMaxSpeed());//Car probleme de moteur
     	this.setAcceleration(500);
     	this.updateAccelerationSpeedMotors();
     }

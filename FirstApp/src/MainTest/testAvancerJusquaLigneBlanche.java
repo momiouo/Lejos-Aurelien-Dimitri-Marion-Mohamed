@@ -1,6 +1,7 @@
 package MainTest;
 
 import Robot.Agent;
+import lejos.utility.Delay;
 
 public class testAvancerJusquaLigneBlanche {
 
@@ -8,6 +9,7 @@ public class testAvancerJusquaLigneBlanche {
 		// TODO Auto-generated method stub
 		Agent agent = new Agent();
 		agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");
+		
 	}
 
 }

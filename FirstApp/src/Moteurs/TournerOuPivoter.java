@@ -13,6 +13,7 @@ import Vue.CapteurUltrasons;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
+import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
 
 public class TournerOuPivoter extends Deplacement {
@@ -24,15 +25,20 @@ public class TournerOuPivoter extends Deplacement {
 		this.action = action;
 	}
 	
-	public void CrochetOuPivoterAvecDeuxRoues() {
-		//left.synchronizeWith(new EV3LargeRegulatedMotor[] {right});		
-		//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
-		//A tester :
-		//=> http://ev3fga.weebly.com/faire-tourner-le-robot.html
-		//=> http://www.sitedunxt.fr/articles/print.php?id=13
+	public void pivoterAvecDeuxRouesVersLaGauche(int degre) {
+		MovePilot movePilot = new MovePilot(56,56,117,this.getLeftMotor(),this.getRightMotor(),false);
+		movePilot.rotate(degre);
+		action.enregistrerPositionRobot(-degre);
+	}
+	
+	public void pivoterAvecDeuxRouesVersLaDroite(int degre) {
+		MovePilot movePilot = new MovePilot(56,56,117,this.getLeftMotor(),this.getRightMotor(),true);
+		movePilot.rotate(degre);
+		action.enregistrerPositionRobot(degre);
 	}
 
 	public void pivoterDunDegreDonneEnCrochet(int degre) {//valeur positive == vers la droite
+		//System.out.println("pivoterDunDegreDonneEnCrochet");
 		this.getLeftMotor().rotate((int) (degre*4.5),true);
 		this.getLeftMotor().waitComplete();
 		action.enregistrerPositionRobot(degre);
@@ -40,6 +46,7 @@ public class TournerOuPivoter extends Deplacement {
 	
 	//Fonction qui pivote le robot à 360 et detecte tout les objets autour puis aligne le robot vers l'objet le plus proche
 	public void pivoterEtDetecterSurUnDegreDonne(Agent agent, int degre) {		
+		System.out.println("pivoterEtDetecterSurUnDegreDonne");
 		int miniRotate = 0;
 		float distancecourante = 0;
 		int degrecourant = 0;
@@ -48,14 +55,14 @@ public class TournerOuPivoter extends Deplacement {
 		int i = 1;
 		
 		while (i <= degre) {
-			pivoterDunDegreDonneEnCrochet(2);//On pivote de 2 degrés à chaque fois
+			pivoterDunDegreDonneEnCrochet(10);//On pivote de 10 degrés à chaque fois
 			//On recupère une distance
 			agent.getCapteurUltrasons().setDistance();
 			distancecourante = agent.getCapteurUltrasons().getDistance();
 			//On la sauvegarde avec une position correspondante
 			lesdistances.add(distancecourante);
 			lespositions.add(i+1);
-			i+=2;
+			i+=10;
 		}
 		
 		//On récupère la position de la plus petite valeur (objet le plus proche)
@@ -66,8 +73,13 @@ public class TournerOuPivoter extends Deplacement {
 			minIndice = lesdistances.indexOf(Collections.min(lesdistances));
 		}
 		int degremin = lespositions.get(minIndice);//Recupere la position en degre de l'objet le plus proche
-
-		pivoterDunDegreDonneEnCrochet(-360+degremin);//Pour se remettre dans la direction de l'objet le plus proche
+	
+		//---------------------------
+		System.out.println("Objet le plus proche" + degremin);	
+		//----------------------------
+		
+		pivoterDunDegreDonneEnCrochet(-degre+(degremin+10));//+10 pour bien s'aligner en face du palet (marge d'erreur)
+		
 	}
 
 	public void tournerJusquaDetecterUneLigne(CapteurCouleur capteurCouleur) {

@@ -16,12 +16,14 @@ public class Action {
 	private Perception perceptionAct;
 	private Perception perceptionPrec;
 	private int historiqueDegres;
+	private int nbPaletMarque;
 	
 	public Action(Perception p1, Perception p2, Agent agent) {
 		this.setPerceptionAct(p1);
 		this.setPerceptionPrec(p2);
 		this.setAgent(agent);
 		this.setHistoriqueDegres(0);
+		this.setNbPaletMarque(0);
 	}
 	
 	public Agent getAgent() {
@@ -53,20 +55,29 @@ public class Action {
 	}
 	
 	public void onAUnPalet() {
+		System.out.println("onAUnPalet");
 		agent.getPinces().fermeture();
 		agent.getAction().allerVersLenButAdverse();
 	}
 	
-	public void detecterAutourDuRobot() {
+	public void detecterAutourDuRobot(boolean start, boolean detectionDecalee) {
+		System.out.println("detecterAutourDuRobot");
+		int nbligneblancheAfranchir;
+		if(start) {
+			agent.getPinces().ouverture();
+		}if(detectionDecalee) {
+			agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(90);
+		}
 		//Fonction qui aligne le robot vers un objet
 		agent.getTournerOuPivoter().pivoterEtDetecterSurUnDegreDonne(agent, 180);
 		//fonction qui avance le robot pour verif si c'est un palet
-		if(agent.getCapteurUltrasons().VerifSiObjetDetecteEstUnPalet(agent.getAvancerOuReculer())) {
+		if(agent.getCapteurUltrasons().VerifSiObjetDetecteEstUnPalet(agent.getAvancerOuReculer(),agent.getCapteurTactile(),agent.getCapteurCouleur())) {
+			System.out.println("On a un palet en face de soit !!!!");
 			//On a un palet en face de soit, on avance pour declenche la pression capteur tactile.
-			agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonce(agent.getCapteurTactile(),this);
+			agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonce(agent.getCapteurTactile(),this,agent.getCapteurCouleur());
 		}else {
-			//C'est un mur ou robot adverse
-			detecterAutourDuRobot();
+			//C'est un mur ou robot adverse ou un palet derriere ligne blanche on recommence la recherche
+			detecterAutourDuRobot(false,true);
 		}
 	}
 	
@@ -95,7 +106,7 @@ public class Action {
 				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(45);//On re s'aligne
 				
 				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");//On avance tant que la couleur n'est pas blanche
-				this.deposerLePalet();//On lance les actions pour déposer le palet (codé en dur).
+				this.deposerLePalet(true);//On lance les actions pour déposer le palet (codé en dur).
 				loop = false;
 				System.out.println("Fin de la fonction premieresActions");
 			}
@@ -103,6 +114,7 @@ public class Action {
 	}
 	
 	public void allerVersLenButAdverse() {
+		System.out.println("allerVersLenButAdverse");
 		//On oriente notre robot vers l'en but adverse en regardant de combien on a deja pivoter de degré notre robot.
 		if(historiqueDegres<=180) {
 			agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-historiqueDegres);
@@ -133,24 +145,56 @@ public class Action {
 	}
 	
 	public void reagirRobotBloque() {//ça c'est plus si le robot est coincé vraiment dans un coin
+		System.out.println("reagirRobotBloque");
 		agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
 		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(180);//On fait demi tour
+		
+		allerVersLenButAdverse();
+		
 		//A faire : On pivote pour recup des distances et voir quelle est la meilleur direction où on peut aller.
 	}
 	
-	public void deposerLePalet() {
-		//On avance un peu
-		//agent.getAvancerOuReculer().avancerPourUnTemps((float)0.4);
+	public void deposerLePalet(boolean premieresAction) {
+		System.out.println("deposerLePalet");
+		nbPaletMarque++;
+		//On recule un peu
+		agent.getAvancerOuReculer().reculerPourUnTemps(0.4f);
 		//On ouvre les pinces
 		agent.getPinces().ouverture();
 		//On recule
 		agent.getAvancerOuReculer().reculerPourUnTemps(0.8f);
 		//on pivote de 50 degrees environ
 		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(90);
-		//On se stop si c'est la fonction premieresAction qui a déclenché cette fonction sinon on appel la fonction detecterAutourduRobot pour un autre palet
 		
-		//Si on veut finir et/ou c'est le test premieres actions : 
-		agent.getPinces().fermeture();
+		
+		//------------------ Les cas d'arrets ------------------------
+		
+		if(premieresAction) {//Fin test premieresActions
+			agent.getPinces().fermeture();
+			System.exit(0);
+		}else {
+			//Pour le test d'1 palet on se stop--------------
+			agent.getPinces().fermeture();
+			System.exit(0);
+			//---------------------------------
+			
+			//Sinon
+			if(nbPaletMarque == 4) {//On donne un nombre de palet à rentrer puis on le stop si il a atteint
+				agent.getPinces().fermeture();
+				System.exit(0);
+			}else {
+				this.detecterAutourDuRobot(false,false);
+			}
+		}
+		
+	}
+
+	public int getNbPaletMarque() {
+		return nbPaletMarque;
+	}
+
+	public void setNbPaletMarque(int nbPaletMarque) {
+		this.nbPaletMarque = nbPaletMarque;
 	}
 
 }
