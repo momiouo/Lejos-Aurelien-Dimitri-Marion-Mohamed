@@ -146,11 +146,16 @@ public class Action {
 	
 	public void reagirRobotBloque() {//ça c'est plus si le robot est coincé vraiment dans un coin
 		System.out.println("reagirRobotBloque");
-		agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
-		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(180);//On fait demi tour
+		if(agent.getPinces().isPincesOuvertes()==false) {
+				agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
+				allerVersLenButAdverse();
+		}
+		else {
+			agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
+			detecterAutourDuRobot(true, true);
+		}
 		
-		allerVersLenButAdverse();
-		
+		//utiliser detecterAutourDuRobot ?
 		//A faire : On pivote pour recup des distances et voir quelle est la meilleur direction où on peut aller.
 	}
 	
