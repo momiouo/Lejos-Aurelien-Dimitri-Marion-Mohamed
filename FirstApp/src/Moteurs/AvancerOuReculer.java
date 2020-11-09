@@ -1,10 +1,12 @@
 package Moteurs;
 
 import Controleur.Action;
+import Robot.Agent;
 import Vue.CapteurCouleur;
 import Vue.CapteurTactile;
 import Vue.CapteurUltrasons;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.MotorPort;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.chassis.Chassis;
@@ -72,9 +74,8 @@ public class AvancerOuReculer extends Deplacement {
 	}
 	
 	public void avancerSurUneDistance(float distance) {//Distance en mm
-		//56 == diametre en mm de la roue et 147mm == distance entre les deux roues
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),false);
-		movePilot.travel(distance,true);
+		movePilot.travel(distance);
 	}
 	
 	/*public void avancerSurUneDistanceStopLigneBlanche(float distance,CapteurCouleur capteurCouleur) {//Distance en mm
@@ -89,13 +90,20 @@ public class AvancerOuReculer extends Deplacement {
 	
 	public void reculerSurUneDistance(float distance) { //distance en mm
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),true);
-		movePilot.travel(distance,true);
+		movePilot.travel(distance);
 	}
 	
 	public void avancerPourUnTemps(float seconde) {
 		avancerSynchro();
 		Delay.msDelay((long) (seconde*1000));
 		sarreterSynchro();
+	}
+	
+	public void avancerPourUnTempsMovePilot(float seconde) {
+		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),false);
+		movePilot.forward();
+		Delay.msDelay((long) (seconde*1000));
+		movePilot.stop();
 	}
 	
 	public void reculerPourUnTemps(float seconde) {
