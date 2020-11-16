@@ -1,53 +1,44 @@
 package Moteurs;
 
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.Motor;
 import lejos.robotics.RegulatedMotor;
 import lejos.utility.Delay;
 
-public class Deplacement {
+public abstract class Deplacement {
 	
-    private RegulatedMotor leftMotor;
-    private RegulatedMotor rightMotor;
+    private EV3LargeRegulatedMotor leftMotor;
+    private EV3LargeRegulatedMotor rightMotor;
     private int speed;
     private int acceleration;
     
-    public Deplacement(RegulatedMotor left, RegulatedMotor right) { //Parametre exemple MotorPort:  Motor.B;Motor.C;
+    public Deplacement(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) {
     	this.setLeftMotor(left);
     	this.setRightMotor(right);
-    	this.setSpeed(400);
-    	this.setAcceleration(800);
-    	leftMotor.setSpeed(speed);
-        rightMotor.setSpeed(speed);
-        leftMotor.setAcceleration(acceleration);
-        rightMotor.setAcceleration(acceleration);
-    }
-    
-    public void updateAccelerationSpeedMotors() {//Methode pour update l'acceleration et la vitesse des moteurs
-    	//En fonction des attributs speed et acceleration deja set
+    	
+    	this.setSpeed((int)right.getMaxSpeed());//Car probleme de moteur
+    	
     	this.rightMotor.setSpeed(speed);
-    	this.rightMotor.setAcceleration(acceleration);
     	this.leftMotor.setSpeed(speed);
-    	this.leftMotor.setAcceleration(acceleration);
+    	
+    	
+    	//this.setAcceleration(500);
+    	//this.updateAccelerationSpeedMotors();
     }
     
-    public void resetTachoMetre() {
-    	leftMotor.resetTachoCount();
-        rightMotor.resetTachoCount();
-    }
-
-	public RegulatedMotor getRightMotor() {
+	public EV3LargeRegulatedMotor getRightMotor() {
 		return rightMotor;
 	}
 
-	public void setRightMotor(RegulatedMotor rightMotor) {
+	public void setRightMotor(EV3LargeRegulatedMotor rightMotor) {
 		this.rightMotor = rightMotor;
 	}
 
-	public RegulatedMotor getLeftMotor() {
+	public EV3LargeRegulatedMotor getLeftMotor() {
 		return leftMotor;
 	}
 
-	public void setLeftMotor(RegulatedMotor leftMotor) {
+	public void setLeftMotor(EV3LargeRegulatedMotor leftMotor) {
 		this.leftMotor = leftMotor;
 	}
 
@@ -66,6 +57,21 @@ public class Deplacement {
 	public void setAcceleration(int acceleration) {
 		this.acceleration = acceleration;
 	}
+    
+    public void updateAccelerationSpeedMotors() {//Methode pour mettre à jour l'acceleration et la vitesse des moteurs
+    	//En fonction des attributs speed et acceleration deja initialisés.
+    	this.rightMotor.setSpeed(speed);
+    	this.rightMotor.setAcceleration(acceleration);
+    	this.leftMotor.setSpeed(speed);
+    	this.leftMotor.setAcceleration(acceleration);
+    }
+    
+    public void resetTachoMetre() {
+    	leftMotor.resetTachoCount();
+        rightMotor.resetTachoCount();
+    }
+
+
 
 	
 }

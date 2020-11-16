@@ -13,6 +13,7 @@ public class MainTest {
 		
 		Agent agent = new Agent();
 		
+<<<<<<< HEAD
 		
 		//Bug refermer les pinces
 		//agent.getPinces().setPincesOuvertes(true);
@@ -30,6 +31,16 @@ public class MainTest {
 		Delay.msDelay(20000);
 		
 			
+=======
+		//Bug refermer les pinces
+		//agent.getPinces().setPincesOuvertes(true);
+		//agent.getPinces().fermeture();
+		
+		agent.getAction().detecterAutourDuRobot(true,false);
+		
+		System.out.println("Fin du test");
+		Delay.msDelay(20000);
+>>>>>>> branch 'master' of https://github.com/Momiouo/Lejos.git
 	}
 
 }

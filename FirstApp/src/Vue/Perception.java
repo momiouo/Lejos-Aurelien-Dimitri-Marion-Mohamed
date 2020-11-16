@@ -1,17 +1,21 @@
 package Vue;
+import Robot.Agent;
 import lejos.robotics.Color;
 
 public class Perception {
 	protected boolean pressionCapteurTactile;
 	protected Color CapteurCouleur;
-	protected long distanceCapteurUltrasons;
+	protected float distanceCapteurUltrasons;
 	protected int niveauBatterie;
 	protected boolean unRobotMurEstDetecte;
 	protected boolean LigneBlanche;
+	private Agent agent;
 	
 	
-	public Perception() {//Initialise les valeurs des attributs à 0 ou false.
+	public Perception(Agent agent) {
+		this.agent = agent;
 	}
+	
 	public int getNiveauBatterie() {
 		return this.niveauBatterie;
 	}
@@ -19,7 +23,7 @@ public class Perception {
 		this.niveauBatterie=niveau;
 	}
 	
-	public long getDistanceCapteurUltrasons(){
+	public float getDistanceCapteurUltrasons(){
 		return this.distanceCapteurUltrasons;
 	}
 	public Color getCouleurCapteurCouleur() {
@@ -28,7 +32,9 @@ public class Perception {
 	public boolean getPressionCapteurTactile() {
 		return this.pressionCapteurTactile;
 	}
-	public void initCapteurs() {//Voir diagramme
-		
+	public void initCapteurs() {//Recupère les résultat des capteurs et set la valeur des attributs correspondants.
+		agent.getCapteurCouleur().setCouleur();
+		agent.getCapteurTactile().setPression();
+		agent.getCapteurUltrasons().setDistance();
 	}
 }
