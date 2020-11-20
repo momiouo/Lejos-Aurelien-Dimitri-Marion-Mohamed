@@ -16,10 +16,11 @@ public abstract class Deplacement {
     	this.setLeftMotor(left);
     	this.setRightMotor(right);
     	
-    	this.setSpeed((int)right.getMaxSpeed());//Car probleme de moteur
-    	
-    	this.rightMotor.setSpeed(speed);
-    	this.leftMotor.setSpeed(speed);
+    	//this.setSpeed((int)right.getMaxSpeed());//Car probleme de moteur
+    	this.rightMotor.setAcceleration(300);
+    	this.leftMotor.setAcceleration(300);
+    	this.rightMotor.setSpeed(600);
+    	this.leftMotor.setSpeed(600);
     	
     	
     	//this.setAcceleration(500);

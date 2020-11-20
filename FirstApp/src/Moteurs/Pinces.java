@@ -30,14 +30,14 @@ public class Pinces { //A tester plus tard
 
 	public void ouverture() {//Ouverture des pinces seulement si pincesOuvertes == false
 		if (!this.pincesOuvertes) {
-			this.moteurPinces.rotate(1000);
+			this.moteurPinces.rotate(800);//C'etait 1000 avant
 		}
 		this.pincesOuvertes = true;
 	}
 
 	public void fermeture() {//Fermeture seulement si pinceOuvertes == true
 		if (this.pincesOuvertes) {
-			this.moteurPinces.rotate(-1000);
+			this.moteurPinces.rotate(-800);
 		}
 		this.pincesOuvertes = false;
 	}

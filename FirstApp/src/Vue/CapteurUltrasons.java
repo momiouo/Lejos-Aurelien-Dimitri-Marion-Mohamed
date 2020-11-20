@@ -76,7 +76,7 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 	}
 	
 	public boolean murOuRobotDetecte() {
-		System.out.println("murOuRobotDetecte");
+		//System.out.println("murOuRobotDetecte");
 		boolean murOuRobot = false;
 		this.setDistance();
 		if (distance < 0.300) {

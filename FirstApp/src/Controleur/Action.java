@@ -152,7 +152,7 @@ public class Action {
 		}
 		else {
 			agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
-			detecterAutourDuRobot(true, true);
+			detecterAutourDuRobot(false, true);
 		}
 		
 		//utiliser detecterAutourDuRobot ?
@@ -163,11 +163,11 @@ public class Action {
 		System.out.println("deposerLePalet");
 		nbPaletMarque++;
 		//On recule un peu
-		agent.getAvancerOuReculer().reculerPourUnTemps(0.4f);
+		//agent.getAvancerOuReculer().reculerPourUnTemps(0.4f);en commentaire car il va pas si vite
 		//On ouvre les pinces
 		agent.getPinces().ouverture();
 		//On recule
-		agent.getAvancerOuReculer().reculerPourUnTemps(0.8f);
+		agent.getAvancerOuReculer().reculerPourUnTemps(0.8f); 
 		//on pivote de 50 degrees environ
 		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(90);
 		

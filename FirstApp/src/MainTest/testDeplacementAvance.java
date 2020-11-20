@@ -16,16 +16,16 @@ public class testDeplacementAvance {
 		Agent agent = new Agent();
 		
 		//Avancer jusqu'a détéction d'une ligne blanche
-		System.out.println("J'avance jusqu'à une ligne blanche");
-		agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");
-		Delay.msDelay(2000);
+		//System.out.println("J'avance jusqu'à une ligne blanche");
+		//agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");
+		//Delay.msDelay(2000);
 		
 		//Avancer jusqu'a ce que le capteur tactile s'enfonce
-		agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonce(agent.getCapteurTactile(), agent.getAction(), agent.getCapteurCouleur());
-		Delay.msDelay(2000);
+		//agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonce(agent.getCapteurTactile(), agent.getAction(), agent.getCapteurCouleur());
+		//Delay.msDelay(2000);
 		
 		//Pivoter jusqu'a detection d'un palet 
-		agent.getAction().detecterAutourDuRobot(true,false);
+		agent.getTournerOuPivoter().pivoterEtDetecterSurUnDegreDonne(agent, 180);
 		Delay.msDelay(2000);
 		
 		//fonction verifsiobjetdetecteeestunpalet

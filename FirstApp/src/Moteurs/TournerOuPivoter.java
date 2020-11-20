@@ -13,6 +13,9 @@ import Vue.CapteurUltrasons;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
+import lejos.robotics.chassis.Chassis;
+import lejos.robotics.chassis.Wheel;
+import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
 
@@ -26,9 +29,12 @@ public class TournerOuPivoter extends Deplacement {
 	}
 	
 	public void pivoterAvecDeuxRouesVersLaGauche(int degre) {
-		MovePilot movePilot = new MovePilot(56,56,117,this.getLeftMotor(),this.getRightMotor(),false);
-		movePilot.rotate(degre);
-		action.enregistrerPositionRobot(-degre);
+		 Wheel wheel1 = WheeledChassis.modelWheel(this.getLeftMotor(), 56).offset(-72);
+		 Wheel wheel2 = WheeledChassis.modelWheel(this.getRightMotor(), 56).offset(72);
+		 Chassis chassis = new WheeledChassis(new Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL); 
+		 MovePilot pilot = new MovePilot(chassis);
+		 pilot.rotate(degre);
+		 action.enregistrerPositionRobot(-degre);
 	}
 	
 	public void pivoterAvecDeuxRouesVersLaDroite(int degre) {
@@ -62,7 +68,7 @@ public class TournerOuPivoter extends Deplacement {
 			//On la sauvegarde avec une position correspondante
 			lesdistances.add(distancecourante);
 			lespositions.add(i+1);
-			i+=10;
+			i+=5;
 		}
 		
 		//On récupère la position de la plus petite valeur (objet le plus proche)
