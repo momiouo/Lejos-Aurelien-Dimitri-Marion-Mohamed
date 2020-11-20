@@ -14,7 +14,6 @@ public class MainTest {
 		System.out.println("Press enter to run MainTest...");
 		Button.ENTER.waitForPressAndRelease();
 
-=======
 		//Bug refermer les pinces
 		//agent.getPinces().setPincesOuvertes(true);
 		//agent.getPinces().fermeture();

@@ -21,10 +21,6 @@ public class CapteurTactile extends Capteur {
 	}
 	
 	public void setPression() {
-<<<<<<< HEAD
-		donneesCapteur = new EV3TouchSensor((AnalogPort)this.getPort()); // A faire dans le constructeur ?
-=======
->>>>>>> branch 'master' of https://github.com/Momiouo/Lejos.git
 		final SampleProvider sp = donneesCapteur.getTouchMode();
 		boolean touchValue = false;
 		float [] sample = new float[sp.sampleSize()];
