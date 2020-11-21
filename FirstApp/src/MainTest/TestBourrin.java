@@ -77,14 +77,16 @@ public class TestBourrin {
 			codeBourrinCarLeRobotAvancePasDroit();
 			return;
 		}else {//Pression tactile
-			System.out.println("Pression tactile détéctée");
+			System.out.println("Pression tactile détéctée : direction == " + degrestournes);
 			Delay.msDelay(5000);
 			agent.getPinces().fermeture();
 			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(degrestournes);//Direction l'en but adverse
+			degrestournes -= degrestournes; //- car vers la gauche
+			verifResetDegreCar360();
 			this.avancerJusquaLenButAdverseEnEvitantLesMurs();//Risque de pousser les autres palets
 			//On depose le palet :
 			agent.getPinces().ouverture();
-			agent.getAvancerOuReculer().reculerPourUnTemps(0.8f); 
+			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f); 
 			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
 			degrestournes+=180;
 			verifResetDegreCar360();
@@ -111,28 +113,36 @@ public class TestBourrin {
 		agent.getPinces().fermeture();
 	}
 	
-	public void avancerJusquaLenButAdverseEnEvitantLesMurs() {
+	public void avancerJusquaLenButAdverseEnEvitantLesMurs() throws Exception {
 		System.out.println("avancerJusquaUneLigneBlancheEtEviterObstacle");
 		boolean boucle = true;
 		while(boucle) {
-			if(!agent.getCapteurUltrasons().murOuRobotDetecte()) {//Pas de mur ni de robot + pas de palet (+tard)
-				//On set la couleur
-				agent.getCapteurCouleur().setCouleur();
-				//On avance si c'est pas la bonne couleur
-				if (agent.getCapteurCouleur().getCouleur() != "blanc") {
-					agent.getAvancerOuReculer().avancerSynchro();
-				}else{
-					//On a trouvé la bonne couleur on s'arrete
-					agent.getAvancerOuReculer().sarreterSynchro();
-					boucle = false;
-				}
-			}else {//A faire : On doit changer de trajectoire
-				agent.getAvancerOuReculer().reculerPourUnTemps(2);
-				agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(degrestournes);
-				avancerJusquaLenButAdverseEnEvitantLesMurs();
+			if(agent.getCapteurUltrasons().murOuRobotDetecte()) {//Cas d'arret 1
+				agent.getAvancerOuReculer().sarreterSynchro();
+				robotEstBloque();
 				break;
+			}else {
+				agent.getCapteurCouleur().setCouleur();
+				if (agent.getCapteurCouleur().getCouleur() == "blanc") {//Cas d'arret 2
+					agent.getAvancerOuReculer().sarreterSynchro();
+					break;
+				}
+				agent.getAvancerOuReculer().avancerSynchro();
 			}
 		}
 	}
 
+	public void robotEstBloque() throws Exception {
+		System.out.println("Le Robot Est Bloqué on le remet en direction de l'en but");//Normalement il est déja en bonne direction vers l'en but ici c'est le cas ou le robot rencontre un autre robot
+		Delay.msDelay(5000);
+		agent.getAvancerOuReculer().reculerPourUnTemps(2);
+		agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(degrestournes);
+		degrestournes -= degrestournes; //- car vers la gauche
+		verifResetDegreCar360();
+		avancerJusquaLenButAdverseEnEvitantLesMurs();
+	}
+	
+	//Trop chiant d'utiliser les degres pour se localiser il vaut mieux utiliser les lignes de couleurs a donner en parametre au debut du match
+	//Si on fait noir puis vert on sait qu'on est dans la bonne direction par exemple. Mais si on fait noir puis bleu alors pas bon
+	
 }
