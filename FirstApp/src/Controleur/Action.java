@@ -169,14 +169,14 @@ public class Action {
 		//On recule
 		agent.getAvancerOuReculer().reculerPourUnTemps(0.8f); 
 		//on pivote de 50 degrees environ
-		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(90);
+		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(180);
 		
 		
 		//------------------ Les cas d'arrets ------------------------
 		
 		if(premieresAction) {//Fin test premieresActions
-			agent.getPinces().fermeture();
-			System.exit(0);
+			//agent.getPinces().fermeture();
+			//System.exit(0); pour le test bourrin
 		}else {
 			//Pour le test d'1 palet on se stop--------------
 			agent.getPinces().fermeture();

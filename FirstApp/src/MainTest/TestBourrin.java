@@ -9,6 +9,7 @@ public class TestBourrin {
 	public static void main(String[] args) throws Exception {	
 				
 		TestBourrin test = new TestBourrin();
+		
 		test.start();
 		//test.fermerLesPinces();//car pince ouvertes au depart sinon a enlever
 		test.codeBourrinCarLeRobotAvancePasDroit();
@@ -22,9 +23,10 @@ public class TestBourrin {
 	
 	public void start() {
 		agent = new Agent();
-		degrestournes = 0;//Faire avec les couleurs peut-etre.
-		System.out.println("Press enter to run testBourrin...");
-		Button.ENTER.waitForPressAndRelease();
+		agent.getAction().premieresActions();
+		degrestournes = 180;//Faire avec les couleurs peut-etre.
+		//System.out.println("Press enter to run testBourrin...");
+		//Button.ENTER.waitForPressAndRelease();
 	}
 	
 	public void codeBourrinCarLeRobotAvancePasDroit() throws Exception {	
