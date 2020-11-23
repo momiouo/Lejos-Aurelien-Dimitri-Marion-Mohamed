@@ -58,7 +58,7 @@ public class TestBourrinAvecCouleur {
 		if(agent.getAction().robotEstBloque()) {
 			System.out.println("Le Robot Est Bloqué");
 			Delay.msDelay(5000);
-			agent.getAvancerOuReculer().reculerPourUnTemps(2);
+			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
 			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(45);
 			System.out.println("Fin du débloquage");
 			Delay.msDelay(5000);
@@ -67,8 +67,8 @@ public class TestBourrinAvecCouleur {
 		}else if(agent.getCapteurCouleur().couleurEstBlanche()) {
 			System.out.println("Couleur blanche détéctée sans palet");
 			Delay.msDelay(5000);
-			agent.getAvancerOuReculer().reculerPourUnTemps(2);
-			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(45);
+			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(135);
 			System.out.println("Fin du traitement de la couleur blanche");
 			Delay.msDelay(5000);
 			codeBourrinCarLeRobotAvancePasDroit();
@@ -80,7 +80,7 @@ public class TestBourrinAvecCouleur {
 			this.avancerJusquaLenButAdverseEnEvitantLesMurs();//Risque de pousser les autres palets
 			//On depose le palet :
 			agent.getPinces().ouverture();
-			agent.getAvancerOuReculer().reculerPourUnTemps(2f); 
+			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f); 
 			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180); 
 			System.out.println("Fin du traitement de la pression tactile");
 			Delay.msDelay(5000);
@@ -98,7 +98,7 @@ public class TestBourrinAvecCouleur {
 		System.out.println("avancerJusquaUneLigneBlancheEtEviterObstacle");
 		boolean boucle = true;
 		while(boucle) {
-			if(agent.getCapteurUltrasons().murOuRobotDetecte()) {//Cas d'arret 1
+			if(agent.getCapteurUltrasons().murOuRobotDetecteAvecDistance(0.150f)) {//Cas d'arret 1
 				agent.getAvancerOuReculer().sarreterSynchro();
 				robotEstBloque();
 				break;
@@ -107,7 +107,7 @@ public class TestBourrinAvecCouleur {
 				if (agent.getCapteurCouleur().getCouleur() == "blanc") {//Cas d'arret 2
 					agent.getAvancerOuReculer().sarreterSynchro();
 					
-					if(this.couleurprec == "bleu") {
+					if(this.couleurprec == "vert") {//Inversé
 						System.out.println("On est dans le camp côté bleu");
 						Delay.msDelay(3000);
 						break;
