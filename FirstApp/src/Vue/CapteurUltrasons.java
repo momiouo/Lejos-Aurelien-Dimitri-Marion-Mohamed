@@ -10,12 +10,21 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 	private float distance;
 	private EV3UltrasonicSensor donneesCapteur;
 	
+	// Constructeur:
+	
 	public CapteurUltrasons(Perception perception, Port port) {
 		super(perception,port);
 		donneesCapteur = new EV3UltrasonicSensor((lejos.hardware.port.Port) this.getPort());
 		setDistance();
 	}
-
+	
+	// Methodes :
+	
+/*
+ * Methode qui permet de verifier si l'objet detecter est un palet
+ * On a pas le droit de franchir la ligne blanche afin de ne pas recuperer les palais deja deposer ou dans l'enbut adverse
+ * Prends en compte si un palet est attrapé pendant le deplacement
+ */
 	public boolean VerifSiObjetDetecteEstUnPalet(AvancerOuReculer moteurdeplacement, CapteurTactile capteurTactile, CapteurCouleur capteurCouleur) {
 		System.out.println("VerifSiObjetDetecteEstUnPalet");
 		boolean palet = true;
@@ -58,11 +67,16 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		}
 		return palet;
 	}
-	
+/*
+ * Methode qui permet de récupérer la distance entre le robot (capteur) et un éventuel objet (mur, palet, robot adverse)
+ */
 	public float getDistance() {
 		return this.distance;
 	}
 	
+/*
+ * Methode qui permet de changer la valeur de l’attribut distance dans la classe CapteurUltrason et l’objet Perception.
+ */
 	public void setDistance() {
 		final SampleProvider sp = donneesCapteur.getDistanceMode();
 		float distanceValue = 0;
@@ -75,6 +89,9 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		this.getPerception().distanceCapteurUltrasons = distanceValue;
 	}
 	
+/*
+ * Verifier si l'objet detecter est un mur ou un robot
+ */
 	public boolean murOuRobotDetecte() {
 		//System.out.println("murOuRobotDetecte");
 		boolean murOuRobot = false;
@@ -85,6 +102,9 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		return murOuRobot;
 	}
 	
+/*
+ * Verifier si l'objet detecter sur une distance est un mur ou un robot
+ */
 	public boolean murOuRobotDetecteAvecDistance(float distanceparam) {
 		//System.out.println("murOuRobotDetecte");
 		boolean murOuRobot = false;

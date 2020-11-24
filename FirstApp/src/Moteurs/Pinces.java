@@ -2,7 +2,9 @@ package Moteurs;
 
 import lejos.robotics.RegulatedMotor;
 
-public class Pinces { //A tester plus tard
+public class Pinces { 
+
+// Les pinces sont fermé à l'état initial
 	
 	private RegulatedMotor moteurPinces;
 	private boolean pincesOuvertes;
@@ -11,7 +13,7 @@ public class Pinces { //A tester plus tard
 		this.moteurPinces = moteurPinces;
 		this.pincesOuvertes = false;
 	}
-	
+
 	public RegulatedMotor getMoteurPinces() {
 		return moteurPinces;
 	}
@@ -28,14 +30,19 @@ public class Pinces { //A tester plus tard
 		this.pincesOuvertes = pincesOuvertes;
 	}
 
-	public void ouverture() {//Ouverture des pinces seulement si pincesOuvertes == false
+/*
+ * Ouverture des pinces seulement si pincesOuvertes == false
+ */
+	public void ouverture() {
 		if (!this.pincesOuvertes) {
 			this.moteurPinces.rotate(800);//C'etait 1000 avant
 		}
 		this.pincesOuvertes = true;
 	}
-
-	public void fermeture() {//Fermeture seulement si pinceOuvertes == true
+/*
+ * Fermeture seulement si pinceOuvertes == true
+ */
+	public void fermeture() {
 		if (this.pincesOuvertes) {
 			this.moteurPinces.rotate(-800);
 		}

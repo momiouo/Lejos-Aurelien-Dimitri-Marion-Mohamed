@@ -42,6 +42,9 @@ public class AvancerOuReculer extends Deplacement {
 		this.getLeftMotor().stop();
 	}
 	
+/*Methode pour avancer jusqu'à une ligne de couleur passé en parametre
+ *Utilise le capteur couleur
+ * */
 	public void avancerJusquaUneLigne(CapteurCouleur capteurCouleur,String couleur) {
 		boolean boucle = true;
 		avancerSynchro();
@@ -51,6 +54,10 @@ public class AvancerOuReculer extends Deplacement {
 		sarreterSynchro();
 	}
 	
+/*Methode pour avancer jusqu'à une ligne de couleur passé en parametre, en evitant les obstacles, càd les murs ou le robot adverse
+ *Permet de reagir face à un obstacle, si par exemple le robot fait face à un mur ou est bloqué
+ *Utilise le capteur couleur et ultrasons
+ * */
 	public void avancerJusquaUneLigneEtEviterObstacle(CapteurCouleur capteurCouleur,CapteurUltrasons capteurUltrasons,Action action,String couleur) {
 		System.out.println("avancerJusquaUneLigneEtEviterObstacle");
 		boolean boucle = true;
@@ -72,7 +79,9 @@ public class AvancerOuReculer extends Deplacement {
 			}
 		}
 	}
-	
+
+/* Avancer sur une distance passé en parametre
+ * */
 	public void avancerSurUneDistance(float distance) {//Distance en mm
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),false);
 		movePilot.travel(distance);
@@ -88,11 +97,15 @@ public class AvancerOuReculer extends Deplacement {
 		}
 	}*/
 	
+/* Reculer sur une distance passé en parametre
+* */
 	public void reculerSurUneDistance(float distance) { //distance en mm
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),true);
 		movePilot.travel(distance);
 	}
-	
+
+/* Avancer pendant un temps precis
+ */
 	public void avancerPourUnTemps(float seconde) {
 		avancerSynchro();
 		Delay.msDelay((long) (seconde*1000));
@@ -105,13 +118,15 @@ public class AvancerOuReculer extends Deplacement {
 		Delay.msDelay((long) (seconde*1000));
 		movePilot.stop();
 	}
-	
+/* Reculer pendant un temps precis
+ */
 	public void reculerPourUnTemps(float seconde) {
 		this.reculerSynchro();
 		Delay.msDelay((long) (seconde*1000));
 		sarreterSynchro();
 	}
-	
+
+
 	public void avancerTqCapteurPressionPasEnfonce(CapteurTactile capteurTactile, Action action, CapteurCouleur capteurCouleur) {
 		System.out.println("avancerTqCapteurPressionPasEnfonce");
 		capteurCouleur.setCouleur();

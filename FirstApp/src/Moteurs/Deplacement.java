@@ -58,15 +58,18 @@ public abstract class Deplacement {
 	public void setAcceleration(int acceleration) {
 		this.acceleration = acceleration;
 	}
-    
-    public void updateAccelerationSpeedMotors() {//Methode pour mettre à jour l'acceleration et la vitesse des moteurs
-    	//En fonction des attributs speed et acceleration deja initialisés.
+  
+/*
+ * Methode pour mettre à jour l'acceleration et la vitesse des moteurs,en fonction des attributs speed 
+ * et acceleration deja initialisés.
+ */
+    public void updateAccelerationSpeedMotors() {
     	this.rightMotor.setSpeed(speed);
     	this.rightMotor.setAcceleration(acceleration);
     	this.leftMotor.setSpeed(speed);
     	this.leftMotor.setAcceleration(acceleration);
     }
-    
+   
     public void resetTachoMetre() {
     	leftMotor.resetTachoCount();
         rightMotor.resetTachoCount();

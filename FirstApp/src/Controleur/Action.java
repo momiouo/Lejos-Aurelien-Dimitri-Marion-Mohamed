@@ -10,6 +10,8 @@ import lejos.hardware.Button;
 import lejos.hardware.motor.Motor;
 import lejos.robotics.Color;
 
+// Classe pour les actions requises à la compétition
+
 public class Action {
 	
 	private Agent agent;
@@ -18,6 +20,7 @@ public class Action {
 	private int historiqueDegres;
 	private int nbPaletMarque;
 	
+	// Constructeur:
 	public Action(Perception p1, Perception p2, Agent agent) {
 		this.setPerceptionAct(p1);
 		this.setPerceptionPrec(p2);
@@ -25,6 +28,7 @@ public class Action {
 		this.setHistoriqueDegres(0);
 		this.setNbPaletMarque(0);
 	}
+	// Methodes :
 	
 	public Agent getAgent() {
 		return agent;
@@ -33,16 +37,19 @@ public class Action {
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
-	
+//Récupère l’objet perception précédent
 	public Perception getPerceptionPrec() {
 		return perceptionPrec;
 	}
+//Change ou initialise l’attribut perceptionPrec.
 	public void setPerceptionPrec(Perception perceptionPrec) {
 		this.perceptionPrec = perceptionPrec;
 	}
+//Récupère l’objet perception le plus récent
 	public Perception getPerceptionAct() {
 		return perceptionAct;
 	}
+//Change ou initialise l’attribut perceptionAct.
 	public void setPerceptionAct(Perception perceptionAct) {
 		this.perceptionAct = perceptionAct;
 	}
@@ -53,13 +60,14 @@ public class Action {
 	public void setHistoriqueDegres(int historiqueDegres) {
 		this.historiqueDegres = historiqueDegres;
 	}
-	
+
+//Reaction du robot à la recupération d'un palet
 	public void onAUnPalet() {
 		System.out.println("onAUnPalet");
 		agent.getPinces().fermeture();
 		agent.getAction().allerVersLenButAdverse();
 	}
-	
+//Permet de faire pivoter le robot doucement afin de récupérer la majorité des distances des objets environnants
 	public void detecterAutourDuRobot(boolean start, boolean detectionDecalee) {
 		System.out.println("detecterAutourDuRobot");
 		int nbligneblancheAfranchir;
@@ -80,13 +88,14 @@ public class Action {
 			detecterAutourDuRobot(false,true);
 		}
 	}
-	
-	public void init() {//ouvre les pinces du robot, remet à O les tachometres, perceptionprec = perceptionact
+//ouvre les pinces du robot, remet à O les tachometres, perceptionprec = perceptionact
+	public void init() {
 		this.perceptionPrec = this.perceptionAct;
 		agent.getPinces().ouverture();
 		agent.getAvancerOuReculer().resetTachoMetre();
 	}
 	
+//Methode pour la 1er action: Recuperer le premier paler et le deposer dans l'enbut adverse
 	public void premieresActions() {
 		boolean loop = true;
 		System.out.println("Press enter to run premieresActions...");
@@ -113,6 +122,12 @@ public class Action {
 		}
 	}
 	
+/*Methode pour aller vers l'enbut adverse
+ * Cette fonction permet d’une part d’orienter le robot en direction de l’en-but adverse en le faisant pivoter du nombre
+ * de degré pivoté depuis le lancement du programme (de + ou - 360 degrés selon la direction souhaitée)
+ * Et d’une autre part, une fois le robot orienté en direction de l’en-but adverse, la fonction permet de faire avancer le robot
+ jusqu’à atteindre la ligne blanche
+ */
 	public void allerVersLenButAdverse() {
 		System.out.println("allerVersLenButAdverse");
 		//On oriente notre robot vers l'en but adverse en regardant de combien on a deja pivoter de degré notre robot.
@@ -129,7 +144,8 @@ public class Action {
 		agent.getAvancerOuReculer().avancerJusquaUneLigneEtEviterObstacle(agent.getCapteurCouleur(),agent.getCapteurUltrasons(),agent.getAction(),"blanc");
 	}
 	
-	public void enregistrerPositionRobot(int degre) {//Fonction qui permet d'enregistrer de combien le robot pivote.
+//Methode qui permet d'enregistrer de combien le robot pivote.
+	public void enregistrerPositionRobot(int degre) {
 		this.historiqueDegres += degre;
 		if(historiqueDegres>=360) {
 			historiqueDegres = historiqueDegres -360;
@@ -139,11 +155,21 @@ public class Action {
 		}
 		//Eventuellement : A chaque passage sur une ligne de couleur on enregistre la couleur si elle nous intérresse (Notre camp + couleur blanche)
 	}
-	
+
+/*Verifier si le robot est bloqué
+ * Cette fonction permet de calculer de combien de degré le robot a pivoté depuis le lancement du programme
+ */
 	public boolean robotEstBloque() {
 		return agent.getCapteurUltrasons().murOuRobotDetecte();
 	}
-	
+
+/*Reagir quand le robot est bloqué
+ * Cette fonction permet de réagir en cas de blocage du robot : si les pinces sont fermées (= le robot tient un palet) alors
+ * on fait reculer le robot pendant 2 secondes puis on le fait aller vers l’en-but adverse.
+ * Si les pinces sont ouvertes (= pas de palet entre les pinces) la fonction fait reculer le robot pendant 2 secondes puis lui
+ fait chercher un palet en analysant ce qui l’entoure
+ */
+
 	public void reagirRobotBloque() {//ça c'est plus si le robot est coincé vraiment dans un coin
 		System.out.println("reagirRobotBloque");
 		if(agent.getPinces().isPincesOuvertes()==false) {
@@ -158,7 +184,11 @@ public class Action {
 		//utiliser detecterAutourDuRobot ?
 		//A faire : On pivote pour recup des distances et voir quelle est la meilleur direction où on peut aller.
 	}
-	
+
+/*Deposer le palet
+ * Cette fonction permet de déposer le palet : le robot recule pendant un court instant, ouvre les pinces pour relacher 
+ * le palet, recule de nouveau puis pivote de 50 degrés (ou 90 ?)
+ */
 	public void deposerLePalet(boolean premieresAction) {
 		System.out.println("deposerLePalet");
 		nbPaletMarque++;

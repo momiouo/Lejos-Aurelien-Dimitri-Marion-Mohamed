@@ -23,6 +23,7 @@ public class CapteurCouleur extends Capteur {
 	private static float[] jaune = {(float) 0.20294118,(float) 0.16862746,(float) 0.04411765};
 	private static float[] gris = {(float) 0.07058824,(float) 0.07647059,(float) 0.073529415};
 	
+	// Constructeur:
 	
 	public CapteurCouleur(Perception perception, Port port) {
 		super(perception, port);
@@ -31,20 +32,27 @@ public class CapteurCouleur extends Capteur {
 		setCouleur();
 	}
 	
+	// Methodes :
 	public String getCouleur() {
 		return this.couleur;
 	}
-	
+
+/*
+ * Methode pour calibrer le capteur couleur avec les couleurs du plateau
+ * Calibre toutes les couleurs en une seul fois
+ */
 	public void calibrer() {		
 		Port port = this.getPort();
 		SampleProvider average = new MeanFilter(donneesCapteur.getRGBMode(), 1);
 		donneesCapteur.setFloodlight(Color.WHITE);
 		
+		//Attributs couleurs pour recuperer les couleurs du plateau
 		blue = new float[average.sampleSize()];
 		red = new float[average.sampleSize()];
 		green = new float[average.sampleSize()];
 		black = new float[average.sampleSize()];
 		
+		// A faire avec le controleur
 		System.out.println("Press enter to calibrate blue...");
 		Button.ENTER.waitForPressAndRelease();		
 		average.fetchSample(blue, 0);
@@ -87,7 +95,10 @@ public class CapteurCouleur extends Capteur {
 		System.out.println("Press enter to finish...");
 		Button.ENTER.waitForPressAndRelease();
 	}
-	
+
+/*
+ * Verifier si la couleur detecté est blanche
+ */
 	public boolean couleurEstBlanche() {
 		boolean blanc = false;
 		if(couleur == "blanc") {
@@ -95,6 +106,9 @@ public class CapteurCouleur extends Capteur {
 		}
 		return blanc;
 	}
+/*
+ * Verifier si la couleur detecté est rouge
+ */
 	public boolean couleurEstRouge() {
 		boolean rouge = false;
 		if(couleur == "rouge") {
@@ -108,7 +122,10 @@ public class CapteurCouleur extends Capteur {
 				Math.pow(v1[1] - v2[1], 2.0) +
 				Math.pow(v1[2] - v2[2], 2.0));
 	}
-	
+
+/*
+ * Methode qui permet de changer la valeur de l’attribut couleur dans la classe CapteurCouleur et l’objet Perception.
+ */
 	public void setCouleur() {
 		
 		SampleProvider average = new MeanFilter(donneesCapteur.getRGBMode(), 1);

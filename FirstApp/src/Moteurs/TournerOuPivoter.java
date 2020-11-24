@@ -27,7 +27,11 @@ public class TournerOuPivoter extends Deplacement {
 		super(left, right);
 		this.action = action;
 	}
-	
+
+/*
+* Pivoter à gauche d’un degré passé en paramètre
+* La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré du pivot
+*/
 	public void pivoterAvecDeuxRouesVersLaGauche(int degre) {
 		 Wheel wheel1 = WheeledChassis.modelWheel(this.getLeftMotor(), 56).offset(-72);
 		 Wheel wheel2 = WheeledChassis.modelWheel(this.getRightMotor(), 56).offset(72);
@@ -36,6 +40,11 @@ public class TournerOuPivoter extends Deplacement {
 		 pilot.rotate(degre);
 		 action.enregistrerPositionRobot(-degre);
 	}
+
+/*
+* Pivoter à droite d’un degré passé en paramètre
+* La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré du pivot
+*/
 	
 	public void pivoterAvecDeuxRouesVersLaDroite(int degre) {
 		MovePilot movePilot = new MovePilot(56,56,117,this.getLeftMotor(),this.getRightMotor(),true);
@@ -43,6 +52,10 @@ public class TournerOuPivoter extends Deplacement {
 		action.enregistrerPositionRobot(degre);
 	}
 
+/*
+ * Pivoter en crochet d’un degré passé en paramètre
+ * La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré du pivot
+ */
 	public void pivoterDunDegreDonneEnCrochet(int degre) {//valeur positive == vers la droite
 		//System.out.println("pivoterDunDegreDonneEnCrochet");
 		this.getLeftMotor().rotate((int) (degre*4.5),true);
@@ -50,7 +63,9 @@ public class TournerOuPivoter extends Deplacement {
 		action.enregistrerPositionRobot(degre);
 	}
 	
-	//Fonction qui pivote le robot à 360 et detecte tout les objets autour puis aligne le robot vers l'objet le plus proche
+/* 
+ * Methode qui fait pivoter le robot à 360 et detecte tout les objets autour puis aligne le robot vers l'objet le plus proche
+ */
 	public void pivoterEtDetecterSurUnDegreDonne(Agent agent, int degre) {		
 		System.out.println("pivoterEtDetecterSurUnDegreDonne");
 		int miniRotate = 0;
@@ -92,8 +107,11 @@ public class TournerOuPivoter extends Deplacement {
 		//Vraiment utile ?
 	}
 
+/*
+ * Methode pour faire touner un moteur plus vite que l'autre.
+ */
 	public void tournerSurUnTempsEtUneDirectionVague(float seconde, int degre) {
-		//Faire touner un moteur plus vite que l'autre.
+
 		this.getLeftMotor().forward();
 		this.getRightMotor().forward();
 		Delay.msDelay((long) (seconde*1000));

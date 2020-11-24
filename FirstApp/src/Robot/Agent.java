@@ -22,6 +22,8 @@ public class Agent {
 	private CapteurTactile capteurTactile;
 	private String positionInitiale;
 	
+	// Constructeur:
+	
 	public Agent() {
 		System.out.println("Création d'un Agent ... ... ...");
 		this.perceptionAct = new Perception(this);

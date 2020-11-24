@@ -9,17 +9,26 @@ import lejos.robotics.SampleProvider;
 public class CapteurTactile extends Capteur {
 	private boolean pression;
 	private EV3TouchSensor donneesCapteur;
-	
+
+	// Constructeur:
 	public CapteurTactile(Perception perception, Port port){
 		super(perception, port);
 		donneesCapteur = new EV3TouchSensor((lejos.hardware.port.Port) this.getPort());
 		setPression();
 	}
 	
+	// Methodes :
+	
+/*
+ * Methode qui permet de récupérer la valeur de l’attribut perception
+ */
 	public boolean getPression() {
 		return this.pression;
 	}
-	
+
+/*
+ * Methode qui permet de changer la valeur de l’attribut pression dans la classe CapteurTactile et l’objet Perception.
+ */
 	public void setPression() {
 		final SampleProvider sp = donneesCapteur.getTouchMode();
 		boolean touchValue = false;

@@ -9,11 +9,12 @@ public abstract class Capteur implements SensorPort {
 	private Perception perception;
 	private Port port;
 	
+	// Constructeur:
 	public Capteur(Perception perception, Port port) {
 		this.perception = perception;
 		this.port = port;
 	}
-	
+	// Methodes :
 	public Perception getPerception() {
 		return this.perception;
 	}
