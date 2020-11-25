@@ -1,54 +1,51 @@
-package MainTest;
+package MainTest.AncienTests;
 
 import Robot.Agent;
 import lejos.hardware.Button;
 import lejos.utility.Delay;
 
-public class TestFinal2DemiTour {
-	
-	public static void main(String[] args) throws Exception {	
+public class TestFinal3 {
+
+	public static void main(String[] args) throws Exception {
 		
-		TestFinal2 test = new TestFinal2();
+		//Pour ce test il faut indiquer la couleur du camp adverse au lancement et etre sur que le vert et le bleu se detecte bien et voir le chevauchement du rouge et du jaune sur le bleu et le vert.
+
+		TestFinal3 test = new TestFinal3();
 		test.start();
-		//test.fermerLesPinces();//car pince ouvertes au depart sinon a enlever
+		//test.fermerLesPinces();
 		test.codeBourrinCarLeRobotAvancePasDroit();
 		
 		System.out.println("Fin du test");
 		Delay.msDelay(20000);
+		
 	}
-
+	
 	private Agent agent;
-	private int degrestournes;
-	private Boolean bonneDirection;
-	private int nbDemiTour;
+	private String couleurprec; // blanc<-vert<-Noir-> Bleu -> Blanc
 	
 	public void start() {
 		agent = new Agent();
-		bonneDirection = true;
-		nbDemiTour = 0;
-		//degrestournes = 0;//Faire avec les couleurs peut-etre.
+		couleurprec = "blanc";
 		System.out.println("Press enter to run testBourrin...");
 		Button.ENTER.waitForPressAndRelease();
 	}
 	
 	public void codeBourrinCarLeRobotAvancePasDroit() throws Exception {	
 		boolean loop = true;
-		agent.getPerceptionAct().initCapteurs();//On init la valeur initiale à tous les capteurs
+		agent.getPerceptionAct().initCapteurs();
 		
-		agent.getPinces().ouverture();//Ouvre que si pas déja ouvert
-		agent.getAvancerOuReculer().avancerSynchro(); // On avance
-		//Boucle : 
+		agent.getPinces().ouverture();
+		agent.getAvancerOuReculer().avancerSynchro();
+
 		while(loop) {
-			//agent.getPerceptionAct().initCapteurs();//On set la valeur des capteurs à chaque boucle
-			agent.getCapteurCouleur().setCouleur();
-			if(agent.getCapteurCouleur().couleurEstBlanche()) {
+			detectCouleur();
+			if(agent.getCapteurCouleur().getCouleur() == "blanc") {
 				break;
 			}
 			agent.getCapteurTactile().setPression();
 			if(agent.getCapteurTactile().getPression()) {
 				break;
 			}
-			//agent.getCapteurUltrasons().setDistance(); ca le fait deja dans murouRobotDEtecte
 			if(agent.getCapteurUltrasons().murOuRobotDetecte()) {
 				break;
 			}
@@ -58,37 +55,33 @@ public class TestFinal2DemiTour {
 		agent.getAvancerOuReculer().sarreterSynchro();
 		
 		//En fonction des cas :
-		if(agent.getAction().robotEstBloque()) {//Robot bloqué
+		if(agent.getAction().robotEstBloque()) {
 			System.out.println("Le Robot Est Bloqué");
 			Delay.msDelay(5000);
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
-			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(45);//A optimiser droite ou gauche dépend de la distance du mur
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(45);
 			System.out.println("Fin du débloquage");
 			Delay.msDelay(5000);
 			codeBourrinCarLeRobotAvancePasDroit();
 			return;
-		}else if(agent.getCapteurCouleur().couleurEstBlanche()) {//Couleur blanche
+		}else if(agent.getCapteurCouleur().couleurEstBlanche()) {
 			System.out.println("Couleur blanche détéctée sans palet");
 			Delay.msDelay(5000);
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
-			this.demiTour();
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(135);
 			System.out.println("Fin du traitement de la couleur blanche");
 			Delay.msDelay(5000);
 			codeBourrinCarLeRobotAvancePasDroit();
 			return;
 		}else {//Pression tactile
-			System.out.println("Pression tactile détéctée : direction == " + degrestournes);
+			System.out.println("Pression tactile détéctée");
 			Delay.msDelay(5000);
 			agent.getPinces().fermeture();
-			//agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(degrestournes);//Direction l'en but adverse
-			if(!this.bonneDirection) {
-				this.demiTour();
-			}
 			this.avancerJusquaLenButAdverseEnEvitantLesMurs();//Risque de pousser les autres palets
 			//On depose le palet :
 			agent.getPinces().ouverture();
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f); 
-			this.demiTour();//A reflechir car si l'arriere du robot est bloqué il se peut qu'il n'arrive pas a se diriger vers l'en but
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180); 
 			System.out.println("Fin du traitement de la pression tactile");
 			Delay.msDelay(5000);
 			codeBourrinCarLeRobotAvancePasDroit();
@@ -107,37 +100,55 @@ public class TestFinal2DemiTour {
 		while(boucle) {
 			if(agent.getCapteurUltrasons().murOuRobotDetecteAvecDistance(0.150f)) {//Cas d'arret 1
 				agent.getAvancerOuReculer().sarreterSynchro();
-				robotEstBloqueAvecUnPalet();
+				robotEstBloque();
 				break;
 			}else {
-				agent.getCapteurCouleur().setCouleur();
+				detectCouleur();
 				if (agent.getCapteurCouleur().getCouleur() == "blanc") {//Cas d'arret 2
 					agent.getAvancerOuReculer().sarreterSynchro();
-					break;
+					
+					if(this.couleurprec == "vert") {//Inversé
+						System.out.println("On est dans le camp côté bleu");
+						Delay.msDelay(3000);
+						break;
+					}else {
+						System.out.println("On est dans le camp côté vert (Pas bon)");
+						Delay.msDelay(3000);
+						agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
+						agent.getAvancerOuReculer().avancerPourUnTemps(1);
+						avancerJusquaLenButAdverseEnEvitantLesMurs();
+						break;
+					}
+					
 				}
-			agent.getAvancerOuReculer().avancerSynchro();
+				agent.getAvancerOuReculer().avancerSynchro();
 			}
 		}
 	}
-	
 
-	public void robotEstBloqueAvecUnPalet() throws Exception {
-		System.out.println("Le Robot Est Bloqué on le remet en direction de l'en but");//Normalement il est déja en bonne direction vers l'en but ici c'est le cas ou le robot rencontre un autre robot
+	public void robotEstBloque() throws Exception {
+		System.out.println("Le Robot Est Bloqué avec un palet");
 		Delay.msDelay(5000);
 		agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
-		agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(20); //A reflechir (optimiser)
+		agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(45);
 		avancerJusquaLenButAdverseEnEvitantLesMurs();
 	}
-
 	
-	public void demiTour() {
-		nbDemiTour ++;
-		agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
-		if(nbDemiTour % 2 == 1) {
-			bonneDirection = false;
-		}else {
-			bonneDirection = true;
+	public void detectCouleur() {
+		agent.getCapteurCouleur().setCouleur();
+		if(agent.getCapteurCouleur().getCouleur() == "noir") {
+			couleurprec = "noir";
 		}
-		
+		if(agent.getCapteurCouleur().getCouleur() == "bleu") {
+			System.out.println("Couleur bleu enregistree");
+			Delay.msDelay(3000);
+			couleurprec = "bleu";
+		}
+		if(agent.getCapteurCouleur().getCouleur() == "vert") {
+			System.out.println("Couleur verte enregistree");
+			Delay.msDelay(3000);
+			couleurprec = "vert";
+		}
 	}
+
 }

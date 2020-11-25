@@ -65,7 +65,7 @@ public class AvancerOuReculer extends Deplacement {
 				}else{
 					//On a trouvé la bonne couleur on s'arrete
 					sarreterSynchro();
-					action.deposerLePalet(false);
+					action.deposerLePalet();
 					boucle = false;
 				}
 			}else {//On doit changer de trajectoire

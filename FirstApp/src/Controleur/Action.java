@@ -103,26 +103,36 @@ public class Action {
 	}
 	
 //Methode pour la 1ère action: Recuperer le premier palet et le deposer dans l'en-but adverse
-	public void premieresActions() {
+	public void premieresActions(int positionInitiale) {
 		boolean loop = true;
-		System.out.println("Press enter to run premieresActions...");
-		Button.ENTER.waitForPressAndRelease();
 		while(loop) {
 			agent.getPerceptionAct().initCapteurs();
 			if (robotEstBloque()){
 				System.out.println("Je suis bloqué ... appeller la fonction reagirRobotBloque");
+				agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
+				this.premieresActions(positionInitiale);
 				loop = false;
 			}else {
 				this.init();
 				agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonceTest(agent.getCapteurTactile());
 				agent.getPinces().fermeture();
 				
-				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-45);
-				agent.getAvancerOuReculer().avancerPourUnTemps(1);
-				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(45);
+				
+				if(positionInitiale == 0) {//A gauche
+					//Crochet vers la droite.
+					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(70);
+					agent.getAvancerOuReculer().avancerPourUnTemps(1.5f);
+					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-70);
+				}else {//A droite ou millieu
+					//Crochet vers la gauche.
+					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-70);
+					agent.getAvancerOuReculer().avancerPourUnTemps(1.5f);
+					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(70);
+				}
+				
 				
 				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");
-				this.deposerLePalet(true);
+				this.deposerLePalet();
 				loop = false;
 				System.out.println("Fin de la fonction premieresActions");
 			}
@@ -191,24 +201,13 @@ public class Action {
  * Cette fonction permet de déposer le palet : le robot ouvre les pinces pour relacher 
  * le palet, recule puis pivote de 180 degrés (demi-tour).
  */
-	public void deposerLePalet(boolean premieresAction) {
+	public void deposerLePalet() {
 		System.out.println("deposerLePalet");
 		nbPaletMarque++;
 		//agent.getAvancerOuReculer().reculerPourUnTemps(0.4f);en commentaire car il va pas si vite
 		agent.getPinces().ouverture();
-		agent.getAvancerOuReculer().reculerPourUnTemps(0.8f); 
+		agent.getAvancerOuReculer().reculerPourUnTemps(1.2f); 
 		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(180);
-		
-		
-		//------------------ Les cas d'arrets ------------------------
-		
-		if(premieresAction) {//Fin test premieresActions
-			agent.getPinces().fermeture();
-			System.exit(0); //pour le test bourrin
-		}else {
-			//On continue	
-		}
-		
 	}
 
 }

@@ -36,12 +36,9 @@ public class TournerOuPivoter extends Deplacement {
 * La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation
 */
 	public void pivoterAvecDeuxRouesVersLaGauche(int degre) {
-		 Wheel wheel1 = WheeledChassis.modelWheel(this.getLeftMotor(), 56).offset(-72);
-		 Wheel wheel2 = WheeledChassis.modelWheel(this.getRightMotor(), 56).offset(72);
-		 Chassis chassis = new WheeledChassis(new Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL); 
-		 MovePilot pilot = new MovePilot(chassis);
-		 pilot.rotate(degre);
-		 action.enregistrerPositionRobot(-degre);
+		MovePilot movePilot = new MovePilot(56,56,128,this.getLeftMotor(),this.getRightMotor(),true);
+		movePilot.rotate(-degre);
+		action.enregistrerPositionRobot(-degre);
 	}
 
 /*
@@ -50,7 +47,7 @@ public class TournerOuPivoter extends Deplacement {
 */
 	
 	public void pivoterAvecDeuxRouesVersLaDroite(int degre) {
-		MovePilot movePilot = new MovePilot(56,56,117,this.getLeftMotor(),this.getRightMotor(),true);
+		MovePilot movePilot = new MovePilot(56,56,128,this.getLeftMotor(),this.getRightMotor(),true);
 		movePilot.rotate(degre);
 		action.enregistrerPositionRobot(degre);
 	}
