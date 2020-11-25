@@ -23,14 +23,17 @@ public class TournerOuPivoter extends Deplacement {
 
 	private Action action;
 
+	//Constructeur
 	public TournerOuPivoter(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right, Action action) {
 		super(left, right);
 		this.action = action;
 	}
+	
+	//Methodes : 
 
 /*
-* Pivoter à gauche d’un degré passé en paramètre
-* La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré du pivot
+* Pivoter à gauche d’un degré passé en paramètre avec les deux roues
+* La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation
 */
 	public void pivoterAvecDeuxRouesVersLaGauche(int degre) {
 		 Wheel wheel1 = WheeledChassis.modelWheel(this.getLeftMotor(), 56).offset(-72);
@@ -42,8 +45,8 @@ public class TournerOuPivoter extends Deplacement {
 	}
 
 /*
-* Pivoter à droite d’un degré passé en paramètre
-* La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré du pivot
+* Pivoter à droite d’un degré passé en paramètre avec les deux roues
+* La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation
 */
 	
 	public void pivoterAvecDeuxRouesVersLaDroite(int degre) {
@@ -53,18 +56,17 @@ public class TournerOuPivoter extends Deplacement {
 	}
 
 /*
- * Pivoter en crochet d’un degré passé en paramètre
- * La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré du pivot
+ * Pivoter en crochet d’un degré passé en paramètre (la roue gauche)
+ * La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation
  */
 	public void pivoterDunDegreDonneEnCrochet(int degre) {//valeur positive == vers la droite
-		//System.out.println("pivoterDunDegreDonneEnCrochet");
 		this.getLeftMotor().rotate((int) (degre*4.5),true);
 		this.getLeftMotor().waitComplete();
 		action.enregistrerPositionRobot(degre);
 	}
 	
 /* 
- * Methode qui fait pivoter le robot à 360 et detecte tout les objets autour puis aligne le robot vers l'objet le plus proche
+ * Methode qui fait pivoter le robot à un degré passé en paramètre et detecte tout les objets autour puis aligne le robot vers l'objet le plus proche
  */
 	public void pivoterEtDetecterSurUnDegreDonne(Agent agent, int degre) {		
 		System.out.println("pivoterEtDetecterSurUnDegreDonne");
@@ -76,11 +78,10 @@ public class TournerOuPivoter extends Deplacement {
 		int i = 1;
 		
 		while (i <= degre) {
-			pivoterDunDegreDonneEnCrochet(10);//On pivote de 10 degrés à chaque fois
-			//On recupère une distance
+			pivoterDunDegreDonneEnCrochet(10);
 			agent.getCapteurUltrasons().setDistance();
 			distancecourante = agent.getCapteurUltrasons().getDistance();
-			//On la sauvegarde avec une position correspondante
+			//On sauvegarde la distance avec une position correspondante
 			lesdistances.add(distancecourante);
 			lespositions.add(i+1);
 			i+=5;
@@ -99,31 +100,8 @@ public class TournerOuPivoter extends Deplacement {
 		System.out.println("Objet le plus proche" + degremin);	
 		//----------------------------
 		
-		pivoterDunDegreDonneEnCrochet(-degre+(degremin+10));//+10 pour bien s'aligner en face du palet (marge d'erreur)
+		pivoterDunDegreDonneEnCrochet(-degre+(degremin+5));//+5 pour bien s'aligner en face du palet (marge d'erreur)
 		
-	}
-
-	public void tournerJusquaDetecterUneLigne(CapteurCouleur capteurCouleur) {
-		//Vraiment utile ?
-	}
-
-/*
- * Methode pour faire touner un moteur plus vite que l'autre.
- */
-	public void tournerSurUnTempsEtUneDirectionVague(float seconde, int degre) {
-
-		this.getLeftMotor().forward();
-		this.getRightMotor().forward();
-		Delay.msDelay((long) (seconde*1000));
-		//Pour l'instant on tourne légérement à droite si degrés > 0
-		if (degre > 0) {
-			this.getRightMotor().stop();
-			this.getLeftMotor().stop();
-		}
-		else {
-			this.getRightMotor().stop();
-			this.getLeftMotor().stop();
-		}
 	}
 
 }

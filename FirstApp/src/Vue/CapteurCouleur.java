@@ -125,6 +125,7 @@ public class CapteurCouleur extends Capteur {
 
 /*
  * Methode qui permet de changer la valeur de l’attribut couleur dans la classe CapteurCouleur et l’objet Perception.
+ * Utilise scalaire et les données calibrées auparavant (les attributs static).
  */
 	public void setCouleur() {
 		

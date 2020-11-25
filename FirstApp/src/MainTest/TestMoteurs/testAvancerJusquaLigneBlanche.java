@@ -1,4 +1,4 @@
-package MainTest;
+package MainTest.TestMoteurs;
 
 import Robot.Agent;
 import lejos.utility.Delay;

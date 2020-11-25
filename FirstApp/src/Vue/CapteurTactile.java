@@ -20,7 +20,7 @@ public class CapteurTactile extends Capteur {
 	// Methodes :
 	
 /*
- * Methode qui permet de récupérer la valeur de l’attribut perception
+ * Methode qui permet de récupérer la valeur de l’attribut pression
  */
 	public boolean getPression() {
 		return this.pression;

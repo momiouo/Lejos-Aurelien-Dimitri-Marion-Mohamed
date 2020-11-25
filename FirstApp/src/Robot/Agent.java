@@ -41,6 +41,8 @@ public class Agent {
 		System.out.println("Fin de la création de l'Agent.");
 	}
 	
+	//Méthodes:
+	
 	public Action getAction() {
 		return action;
 	}

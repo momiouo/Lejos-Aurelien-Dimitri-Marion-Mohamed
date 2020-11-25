@@ -1,4 +1,4 @@
-package MainTest;
+package MainTest.TestCapteurs;
 
 import Robot.Agent;
 import lejos.utility.Delay;
@@ -6,9 +6,7 @@ import lejos.utility.Delay;
 public class testCapteurCouleur {
 
 	public static void main(String[] args) {
-		Agent agent = new Agent();
-		//agent.getCapteurCouleur().calibrer();
-		
+		Agent agent = new Agent();		
 		
 		boolean loop = true;
 		int i = 0;

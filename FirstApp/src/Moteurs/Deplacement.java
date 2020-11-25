@@ -12,20 +12,18 @@ public abstract class Deplacement {
     private int speed;
     private int acceleration;
     
+    
+    //Constructeur "classe abstraite"
     public Deplacement(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) {
     	this.setLeftMotor(left);
     	this.setRightMotor(right);
-    	
-    	//this.setSpeed((int)right.getMaxSpeed());//Car probleme de moteur
     	this.rightMotor.setAcceleration(200);
     	this.leftMotor.setAcceleration(200);
     	this.rightMotor.setSpeed(600);
     	this.leftMotor.setSpeed(600);
-    	
-    	
-    	//this.setAcceleration(500);
-    	//this.updateAccelerationSpeedMotors();
     }
+    
+    //Méthodes : 
     
 	public EV3LargeRegulatedMotor getRightMotor() {
 		return rightMotor;

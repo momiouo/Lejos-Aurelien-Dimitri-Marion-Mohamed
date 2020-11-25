@@ -4,13 +4,13 @@ import Robot.Agent;
 import lejos.hardware.Button;
 import lejos.utility.Delay;
 
-public class TestBourrinAvecCouleur {
+public class TestFinal3 {
 
 	public static void main(String[] args) throws Exception {
 		
 		//Pour ce test il faut indiquer la couleur du camp adverse au lancement et etre sur que le vert et le bleu se detecte bien et voir le chevauchement du rouge et du jaune sur le bleu et le vert.
 
-		TestBourrinAvecCouleur test = new TestBourrinAvecCouleur();
+		TestFinal3 test = new TestFinal3();
 		test.start();
 		//test.fermerLesPinces();
 		test.codeBourrinCarLeRobotAvancePasDroit();

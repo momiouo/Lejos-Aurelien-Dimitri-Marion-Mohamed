@@ -18,10 +18,7 @@ public class AvancerOuReculer extends Deplacement {
 	public AvancerOuReculer(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) {
 		super(left, right);
 		right.synchronizeWith(new EV3LargeRegulatedMotor[] {left});		
-		//Synchronisation pour que les moteurs des roues gauche et droite tournent en même temps. 
 	}
-	
-	// => https://lejosnews.wordpress.com/2014/10/06/motor-synchronization-problems-part-2/
 	
 	public void avancerSynchro() {
 		this.getLeftMotor().startSynchronization();
@@ -46,7 +43,6 @@ public class AvancerOuReculer extends Deplacement {
  *Utilise le capteur couleur
  * */
 	public void avancerJusquaUneLigne(CapteurCouleur capteurCouleur,String couleur) {
-		boolean boucle = true;
 		avancerSynchro();
 		while(capteurCouleur.getCouleur() != couleur) {
 			capteurCouleur.setCouleur();
@@ -62,10 +58,8 @@ public class AvancerOuReculer extends Deplacement {
 		System.out.println("avancerJusquaUneLigneEtEviterObstacle");
 		boolean boucle = true;
 		while(boucle) {
-			if(!capteurUltrasons.murOuRobotDetecte()) {//Pas de mur ni de robot + pas de palet (+tard)
-				//On set la couleur
+			if(!capteurUltrasons.murOuRobotDetecte()) {
 				capteurCouleur.setCouleur();
-				//On avance si c'est pas la bonne couleur
 				if (capteurCouleur.getCouleur() != couleur) {
 					avancerSynchro();
 				}else{
@@ -74,30 +68,20 @@ public class AvancerOuReculer extends Deplacement {
 					action.deposerLePalet(false);
 					boucle = false;
 				}
-			}else {//A faire : On doit changer de trajectoire
+			}else {//On doit changer de trajectoire
 				action.reagirRobotBloque();
 			}
 		}
 	}
 
-/* Avancer sur une distance passé en parametre
+/* Avancer sur une distance passée en parametre
  * */
 	public void avancerSurUneDistance(float distance) {//Distance en mm
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),false);
 		movePilot.travel(distance);
 	}
 	
-	/*public void avancerSurUneDistanceStopLigneBlanche(float distance,CapteurCouleur capteurCouleur) {//Distance en mm
-		this.resetTachoMetre();
-		int tachoACalculer = 75/(Math.PI*56);
-		while(!capteurCouleur.getCouleur().equals("blanc") && this.getLeftMotor().getTachoCount()<distance) {
-			//Utiliser le tachomètre pour faire un forward jusqu'a un bon nombre de revolution pour avoir la bonne distance
-			this.getLeftMotor().forward();
-			this.getRightMotor().forward();
-		}
-	}*/
-	
-/* Reculer sur une distance passé en parametre
+/* Reculer sur une distance passée en parametre
 * */
 	public void reculerSurUneDistance(float distance) { //distance en mm
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),true);
@@ -118,6 +102,7 @@ public class AvancerOuReculer extends Deplacement {
 		Delay.msDelay((long) (seconde*1000));
 		movePilot.stop();
 	}
+	
 /* Reculer pendant un temps precis
  */
 	public void reculerPourUnTemps(float seconde) {
@@ -126,16 +111,17 @@ public class AvancerOuReculer extends Deplacement {
 		sarreterSynchro();
 	}
 
-
+	/* Avancer tant que la pression du capteur tactile n'est pas activée et que l'on a pas croisé de ligne blanche sinon on re fait une détection des objets autour.
+	 * */
 	public void avancerTqCapteurPressionPasEnfonce(CapteurTactile capteurTactile, Action action, CapteurCouleur capteurCouleur) {
 		System.out.println("avancerTqCapteurPressionPasEnfonce");
 		capteurCouleur.setCouleur();
-		if(capteurCouleur.getCouleur().equals("blanc")) {
+		if(capteurCouleur.getCouleur().equals("blanc")) {//Verification qu'on ne pas pas sur une ligne blanche sinon :
 			System.out.println("J'ai detecte du blanc");
-			action.detecterAutourDuRobot(false,false);
+			action.detecterAutourDuRobot(false,false);//On a raté le palet, on refait une détéction.
 		}else {
 			capteurTactile.setPression();
-			if(capteurTactile.getPression()) {
+			if(capteurTactile.getPression()) {//Capteur enfoncée :
 				action.onAUnPalet();
 			}else {
 				avancerSynchro();
@@ -144,22 +130,22 @@ public class AvancerOuReculer extends Deplacement {
 					capteurTactile.setPression();
 				}
 				sarreterSynchro();
-				//une pression on arrete le robot :
-				if(capteurTactile.getPression()) {
+				if(capteurTactile.getPression()) {//une pression on arrete le robot :
 					action.onAUnPalet();
 				}else {
-					action.detecterAutourDuRobot(false,false);
+					action.detecterAutourDuRobot(false,false);//On a raté le palet, on refait une détéction.
 				}
 			}
 		}
 	}
 	
-	public void avancerTqCapteurPressionPasEnfonceTest(CapteurTactile capteur) {//Pour le codage en moyen dur premieresAction
+	/* Avancer tant que la pression du capteur tactile n'est pas activée
+	 * */
+	public void avancerTqCapteurPressionPasEnfonceTest(CapteurTactile capteur) {//Pour le codage en dur -> premieresAction
 		avancerSynchro();
 		while(capteur.getPression() == false) {
 			capteur.setPression();
 		}
-		//Fin on a détecter une pression on arrete le robot :
 		sarreterSynchro();
 	}
 	

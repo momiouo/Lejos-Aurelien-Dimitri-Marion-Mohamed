@@ -9,11 +9,14 @@ public class Pinces {
 	private RegulatedMotor moteurPinces;
 	private boolean pincesOuvertes;
 	
+//Constructeur
 	public Pinces(RegulatedMotor moteurPinces) {
 		this.moteurPinces = moteurPinces;
 		this.pincesOuvertes = false;
 	}
-
+	
+	
+//Methodes :
 	public RegulatedMotor getMoteurPinces() {
 		return moteurPinces;
 	}
@@ -31,11 +34,11 @@ public class Pinces {
 	}
 
 /*
- * Ouverture des pinces seulement si pincesOuvertes == false
+ * Ouverture des pinces seulement si pincesOuvertes == false à 800 (correct pour attraper et bien maintenir un palet)
  */
 	public void ouverture() {
 		if (!this.pincesOuvertes) {
-			this.moteurPinces.rotate(800);//C'etait 1000 avant
+			this.moteurPinces.rotate(800);
 		}
 		this.pincesOuvertes = true;
 	}

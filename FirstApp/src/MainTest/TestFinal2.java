@@ -4,11 +4,13 @@ import Robot.Agent;
 import lejos.hardware.Button;
 import lejos.utility.Delay;
 
-public class TestBourrinDemiTour {
-	
+public class TestFinal2 {
+
+
 	public static void main(String[] args) throws Exception {	
+				
+		TestFinal2 test = new TestFinal2();
 		
-		TestBourrin test = new TestBourrin();
 		test.start();
 		//test.fermerLesPinces();//car pince ouvertes au depart sinon a enlever
 		test.codeBourrinCarLeRobotAvancePasDroit();
@@ -19,16 +21,13 @@ public class TestBourrinDemiTour {
 
 	private Agent agent;
 	private int degrestournes;
-	private Boolean bonneDirection;
-	private int nbDemiTour;
 	
 	public void start() {
 		agent = new Agent();
-		bonneDirection = true;
-		nbDemiTour = 0;
-		//degrestournes = 0;//Faire avec les couleurs peut-etre.
-		System.out.println("Press enter to run testBourrin...");
-		Button.ENTER.waitForPressAndRelease();
+		agent.getAction().premieresActions();
+		degrestournes = 180;//Faire avec les couleurs peut-etre.
+		//System.out.println("Press enter to run testBourrin...");
+		//Button.ENTER.waitForPressAndRelease();
 	}
 	
 	public void codeBourrinCarLeRobotAvancePasDroit() throws Exception {	
@@ -63,6 +62,8 @@ public class TestBourrinDemiTour {
 			Delay.msDelay(5000);
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
 			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(45);//A optimiser droite ou gauche dépend de la distance du mur
+			degrestournes+=45;
+			verifResetDegreCar360();
 			System.out.println("Fin du débloquage");
 			Delay.msDelay(5000);
 			codeBourrinCarLeRobotAvancePasDroit();
@@ -71,7 +72,9 @@ public class TestBourrinDemiTour {
 			System.out.println("Couleur blanche détéctée sans palet");
 			Delay.msDelay(5000);
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
-			this.demiTour();
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(135);
+			degrestournes+=135;
+			verifResetDegreCar360();
 			System.out.println("Fin du traitement de la couleur blanche");
 			Delay.msDelay(5000);
 			codeBourrinCarLeRobotAvancePasDroit();
@@ -80,20 +83,32 @@ public class TestBourrinDemiTour {
 			System.out.println("Pression tactile détéctée : direction == " + degrestournes);
 			Delay.msDelay(5000);
 			agent.getPinces().fermeture();
-			//agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(degrestournes);//Direction l'en but adverse
-			if(!this.bonneDirection) {
-				this.demiTour();
-			}
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(degrestournes);//Direction l'en but adverse
+			degrestournes -= degrestournes; //- car vers la gauche
+			verifResetDegreCar360();
 			this.avancerJusquaLenButAdverseEnEvitantLesMurs();//Risque de pousser les autres palets
 			//On depose le palet :
 			agent.getPinces().ouverture();
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f); 
-			this.demiTour();//A reflechir car si l'arriere du robot est bloqué il se peut qu'il n'arrive pas a se diriger vers l'en but
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
+			degrestournes+=180;
+			verifResetDegreCar360();
 			System.out.println("Fin du traitement de la pression tactile");
 			Delay.msDelay(5000);
 			codeBourrinCarLeRobotAvancePasDroit();
 			return;
 		}
+	}
+	
+	public void verifResetDegreCar360() throws Exception {
+		if(degrestournes <= 360) {
+			return;
+		}else if(degrestournes <= 720){
+			degrestournes -= 360;
+		}else {
+			throw new Exception("Le robot a tourné a plus de 720 degre erreur dans le reset 360");
+		}
+		
 	}
 	
 	public void fermerLesPinces() {
@@ -104,10 +119,10 @@ public class TestBourrinDemiTour {
 	public void avancerJusquaLenButAdverseEnEvitantLesMurs() throws Exception {
 		System.out.println("avancerJusquaUneLigneBlancheEtEviterObstacle");
 		boolean boucle = true;
-		while(boucle) {
+		while(boucle) {//
 			if(agent.getCapteurUltrasons().murOuRobotDetecteAvecDistance(0.150f)) {//Cas d'arret 1
 				agent.getAvancerOuReculer().sarreterSynchro();
-				robotEstBloqueAvecUnPalet();
+				robotEstBloque();
 				break;
 			}else {
 				agent.getCapteurCouleur().setCouleur();
@@ -121,23 +136,17 @@ public class TestBourrinDemiTour {
 	}
 	
 
-	public void robotEstBloqueAvecUnPalet() throws Exception {
+	public void robotEstBloque() throws Exception {
 		System.out.println("Le Robot Est Bloqué on le remet en direction de l'en but");//Normalement il est déja en bonne direction vers l'en but ici c'est le cas ou le robot rencontre un autre robot
 		Delay.msDelay(5000);
 		agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
-		agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(20); //A reflechir (optimiser)
+		agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(degrestournes);
+		degrestournes -= degrestournes; //- car vers la gauche
+		verifResetDegreCar360();
 		avancerJusquaLenButAdverseEnEvitantLesMurs();
 	}
-
 	
-	public void demiTour() {
-		nbDemiTour ++;
-		agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
-		if(nbDemiTour % 2 == 1) {
-			bonneDirection = false;
-		}else {
-			bonneDirection = true;
-		}
-		
-	}
+	//Trop chiant d'utiliser les degres pour se localiser il vaut mieux utiliser les lignes de couleurs a donner en parametre au debut du match
+	//Si on fait noir puis vert on sait qu'on est dans la bonne direction par exemple. Mais si on fait noir puis bleu alors pas bon
+	
 }

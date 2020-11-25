@@ -1,4 +1,4 @@
-package MainTest;
+package MainTest.TestMoteurs;
 import Moteurs.AvancerOuReculer;
 import Moteurs.Deplacement;
 import Moteurs.TournerOuPivoter;
@@ -14,24 +14,22 @@ import lejos.robotics.RegulatedMotor;
 import lejos.utility.Delay;
 
 public class testDeplacement {
-
+	//Les moteurs des roues doivent etre branch�s sur le port B et C
 	public static void main(String[] args) {
 
-		//System.out.println("Press enter to run testDeplacement...");
-		//Button.ENTER.waitForPressAndRelease();
-
-		//Les moteurs des roues doivent etre branch�s sur le port B et C
+		System.out.println("Press enter to run testDeplacement...");
+		Button.ENTER.waitForPressAndRelease();
+		
 		Agent agent = new Agent();
 
 		System.out.println("J'avance 2 secondes");
-		agent.getAvancerOuReculer().avancerPourUnTemps(4);
-		//agent.getAvancerOuReculer().avancerPourUnTempsMovePilot(4);
-		/*	Delay.msDelay(5000);
+		agent.getAvancerOuReculer().avancerPourUnTemps(2);
+		Delay.msDelay(2000);
 
 		System.out.println("Je recule 2 secondes");
 		agent.getAvancerOuReculer().reculerPourUnTemps(2);
 
-		Delay.msDelay(5000);
+		Delay.msDelay(2000);
 
 		System.out.println("On avance de 30 cm");
 		agent.getAvancerOuReculer().avancerSurUneDistance(300);
@@ -57,19 +55,8 @@ public class testDeplacement {
 		System.out.println("Je pivote de 90 degr�s dans l'autre sens");
 		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-90);
 
-		Delay.msDelay(2000);
-
-
-		System.out.println("Je tourne vers la droite");
-		agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, 1);//1 > 0 => vers la droite
-
-		Delay.msDelay(2000);
-
-		System.out.println("Je tourne vers la gauche");
-		agent.getTournerOuPivoter().tournerSurUnTempsEtUneDirectionVague(3, -1);//-1 < 0 => vers la gauche
-
 		System.out.println("Fin du test");
-		Delay.msDelay(2000);	*/
+		Delay.msDelay(5000);	
 	}
 
 }

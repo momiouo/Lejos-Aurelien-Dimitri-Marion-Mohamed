@@ -1,14 +1,9 @@
 package Controleur;
 
-import Moteurs.AvancerOuReculer;
-import Moteurs.Pinces;
-import Moteurs.TournerOuPivoter;
 import Robot.Agent;
-import Vue.CapteurUltrasons;
 import Vue.Perception;
 import lejos.hardware.Button;
-import lejos.hardware.motor.Motor;
-import lejos.robotics.Color;
+
 
 // Classe pour les actions requises à la compétition
 
@@ -28,12 +23,14 @@ public class Action {
 		this.setHistoriqueDegres(0);
 		this.setNbPaletMarque(0);
 	}
-	// Methodes :
 	
+	// Methodes :
+
+//Récupère l’objet Agent
 	public Agent getAgent() {
 		return agent;
 	}
-
+//Change ou initialise l’attribut Agent.
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
@@ -53,12 +50,24 @@ public class Action {
 	public void setPerceptionAct(Perception perceptionAct) {
 		this.perceptionAct = perceptionAct;
 	}
+//Récupère l’objet historiqueDegres	
 	public int getHistoriqueDegres() {
 		return historiqueDegres;
 	}
-
+	
+//Change ou initialise l’attribut historiqueDegres.
 	public void setHistoriqueDegres(int historiqueDegres) {
 		this.historiqueDegres = historiqueDegres;
+	}
+	
+//Récupère l’objet nbPaletMarque	
+	public int getNbPaletMarque() {
+		return nbPaletMarque;
+	}
+	
+//Change ou initialise l'attribut nbPaletMarque	
+	public void setNbPaletMarque(int nbPaletMarque) {
+		this.nbPaletMarque = nbPaletMarque;
 	}
 
 //Reaction du robot à la recupération d'un palet
@@ -67,7 +76,8 @@ public class Action {
 		agent.getPinces().fermeture();
 		agent.getAction().allerVersLenButAdverse();
 	}
-//Permet de faire pivoter le robot doucement afin de récupérer la majorité des distances des objets environnants
+	
+//Permet de faire pivoter le robot doucement afin de récupérer les distances des objets environnants
 	public void detecterAutourDuRobot(boolean start, boolean detectionDecalee) {
 		System.out.println("detecterAutourDuRobot");
 		int nbligneblancheAfranchir;
@@ -76,12 +86,9 @@ public class Action {
 		}if(detectionDecalee) {
 			agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(90);
 		}
-		//Fonction qui aligne le robot vers un objet
 		agent.getTournerOuPivoter().pivoterEtDetecterSurUnDegreDonne(agent, 180);
-		//fonction qui avance le robot pour verif si c'est un palet
 		if(agent.getCapteurUltrasons().VerifSiObjetDetecteEstUnPalet(agent.getAvancerOuReculer(),agent.getCapteurTactile(),agent.getCapteurCouleur())) {
 			System.out.println("On a un palet en face de soit !!!!");
-			//On a un palet en face de soit, on avance pour declenche la pression capteur tactile.
 			agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonce(agent.getCapteurTactile(),this,agent.getCapteurCouleur());
 		}else {
 			//C'est un mur ou robot adverse ou un palet derriere ligne blanche on recommence la recherche
@@ -95,27 +102,27 @@ public class Action {
 		agent.getAvancerOuReculer().resetTachoMetre();
 	}
 	
-//Methode pour la 1er action: Recuperer le premier paler et le deposer dans l'enbut adverse
+//Methode pour la 1ère action: Recuperer le premier palet et le deposer dans l'en-but adverse
 	public void premieresActions() {
 		boolean loop = true;
 		System.out.println("Press enter to run premieresActions...");
 		Button.ENTER.waitForPressAndRelease();
 		while(loop) {
-			agent.getPerceptionAct().initCapteurs();//On mets à jour les valeurs des capteurs
+			agent.getPerceptionAct().initCapteurs();
 			if (robotEstBloque()){
-				System.out.println("Je suis bloqué ... appeler la fonction reagirRobotBloque");
+				System.out.println("Je suis bloqué ... appeller la fonction reagirRobotBloque");
 				loop = false;
 			}else {
-				this.init();//On ouvre les pinces (position initiale)
-				agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonceTest(agent.getCapteurTactile());//On avance tq on a pas toucher le palet
-				agent.getPinces().fermeture();//On ferme les pinces
+				this.init();
+				agent.getAvancerOuReculer().avancerTqCapteurPressionPasEnfonceTest(agent.getCapteurTactile());
+				agent.getPinces().fermeture();
 				
-				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-45);//On evite les autres palets
+				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-45);
 				agent.getAvancerOuReculer().avancerPourUnTemps(1);
-				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(45);//On re s'aligne
+				agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(45);
 				
-				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");//On avance tant que la couleur n'est pas blanche
-				this.deposerLePalet(true);//On lance les actions pour déposer le palet (codé en dur).
+				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");
+				this.deposerLePalet(true);
 				loop = false;
 				System.out.println("Fin de la fonction premieresActions");
 			}
@@ -140,7 +147,6 @@ public class Action {
 		else if(historiqueDegres<=-180) {
 			agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-360-historiqueDegres);
 		}
-		//Avancer jusqu'a la ligne blanche tout en evitant les murs, robot et palet
 		agent.getAvancerOuReculer().avancerJusquaUneLigneEtEviterObstacle(agent.getCapteurCouleur(),agent.getCapteurUltrasons(),agent.getAction(),"blanc");
 	}
 	
@@ -153,11 +159,10 @@ public class Action {
 		else if (historiqueDegres <= -360) {
 			historiqueDegres = historiqueDegres + 360;
 		}
-		//Eventuellement : A chaque passage sur une ligne de couleur on enregistre la couleur si elle nous intérresse (Notre camp + couleur blanche)
 	}
 
-/*Verifier si le robot est bloqué
- * Cette fonction permet de calculer de combien de degré le robot a pivoté depuis le lancement du programme
+/*Verifier si le robot est bloqué en faisant appel à murOuRoboDetecte de la classe CapteurUltrasons.
+ * 
  */
 	public boolean robotEstBloque() {
 		return agent.getCapteurUltrasons().murOuRobotDetecte();
@@ -170,66 +175,40 @@ public class Action {
  fait chercher un palet en analysant ce qui l’entoure
  */
 
-	public void reagirRobotBloque() {//ça c'est plus si le robot est coincé vraiment dans un coin
+	public void reagirRobotBloque() {
 		System.out.println("reagirRobotBloque");
 		if(agent.getPinces().isPincesOuvertes()==false) {
-				agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
+				agent.getAvancerOuReculer().reculerPourUnTemps(2);
 				allerVersLenButAdverse();
 		}
 		else {
-			agent.getAvancerOuReculer().reculerPourUnTemps(2);//On recule
+			agent.getAvancerOuReculer().reculerPourUnTemps(2);
 			detecterAutourDuRobot(false, true);
 		}
-		
-		//utiliser detecterAutourDuRobot ?
-		//A faire : On pivote pour recup des distances et voir quelle est la meilleur direction où on peut aller.
 	}
 
 /*Deposer le palet
- * Cette fonction permet de déposer le palet : le robot recule pendant un court instant, ouvre les pinces pour relacher 
- * le palet, recule de nouveau puis pivote de 50 degrés (ou 90 ?)
+ * Cette fonction permet de déposer le palet : le robot ouvre les pinces pour relacher 
+ * le palet, recule puis pivote de 180 degrés (demi-tour).
  */
 	public void deposerLePalet(boolean premieresAction) {
 		System.out.println("deposerLePalet");
 		nbPaletMarque++;
-		//On recule un peu
 		//agent.getAvancerOuReculer().reculerPourUnTemps(0.4f);en commentaire car il va pas si vite
-		//On ouvre les pinces
 		agent.getPinces().ouverture();
-		//On recule
 		agent.getAvancerOuReculer().reculerPourUnTemps(0.8f); 
-		//on pivote de 50 degrees environ
 		agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(180);
 		
 		
 		//------------------ Les cas d'arrets ------------------------
 		
 		if(premieresAction) {//Fin test premieresActions
-			//agent.getPinces().fermeture();
-			//System.exit(0); pour le test bourrin
-		}else {
-			//Pour le test d'1 palet on se stop--------------
 			agent.getPinces().fermeture();
-			System.exit(0);
-			//---------------------------------
-			
-			//Sinon
-			if(nbPaletMarque == 4) {//On donne un nombre de palet à rentrer puis on le stop si il a atteint
-				agent.getPinces().fermeture();
-				System.exit(0);
-			}else {
-				this.detecterAutourDuRobot(false,false);
-			}
+			System.exit(0); //pour le test bourrin
+		}else {
+			//On continue	
 		}
 		
-	}
-
-	public int getNbPaletMarque() {
-		return nbPaletMarque;
-	}
-
-	public void setNbPaletMarque(int nbPaletMarque) {
-		this.nbPaletMarque = nbPaletMarque;
 	}
 
 }
