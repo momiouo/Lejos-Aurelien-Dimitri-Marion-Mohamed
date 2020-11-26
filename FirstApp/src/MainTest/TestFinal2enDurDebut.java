@@ -5,6 +5,29 @@ import lejos.hardware.Button;
 import lejos.utility.Delay;
 
 public class TestFinal2enDurDebut {
+	/*
+	 * Ce test est le programme qui va être lancé lors de la compétition. Il utilise de nombreuses fonctions développées dans les différentes classes
+	 * des packages Controleur,Moteurs,Robot et Agent. Cependant il utilise seulement des fonctions de bas niveau car vu que nous avons changé notre stratégie
+	 * il aurait fallu changer le contenu des fonctions. C'est pour cela que ce test s'éxecute surtout dans cette classe (TestFinal2enDurDebut).
+	 * Il est composé d'une première partie qui gère les premières actions (récupérer le premier palet et l'amener vers l'en-but adverse), d'une boucle principale qui fait avancer
+	 * le robot tant qu'il n'est pas bloqué, qu'il n'a pas toucher un palet ou qu''il n'a pas atteint une ligne blanche. Ce programme pourrait être bien plus optimisé
+	 * cependant par manque de temps et de précision nous avons préféré une stratégie comme telle. Voici les principales conditions :
+	 * 
+	 * Robot bloqué -> Reculer + Rotation de 45°.
+	 * 
+	 * Robot atteint une ligne blanche sans palet -> Reculer + rotation de 135°.
+	 * 									avec palet -> Ouvrir Les pinces + reculer + Rotation 180°
+	 * 
+	 * Robot touche un palet -> Si on est dans la bonneDirection -> avancer
+	 * 							-> sinon -> rotation 180° 
+	 * 
+	 * Pour calculer la bonne direction nous avons utilisé un attribut degrestournes qui enregistre toutes les rotations du robot précisément sauf dans le cas 
+	 * où le robot serait bloqué dans sa rotation (un palet, un autre robot ou un mur le gêne).Ainsi si l'attribut degrestournes est compris entre 0 et 180 il est
+	 * dans la bonne direction et l'inverse sinon. A savoir : le robot regardant l'en but adverse perpendiculairement est à 90°.
+	 *
+	 * Exemple : direction à gauche = 0/ direction en face = 90°/ direction à droite = 180°/direction derrière = 270° et direction à gauche = 360° ou 0°.
+	 * 
+	 */
 	
 
 	public static void main(String[] args) throws Exception {	

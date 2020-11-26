@@ -5,6 +5,10 @@ import lejos.hardware.Button;
 import lejos.utility.Delay;
 
 public class TestFinal2PasEnDur {
+	/*
+	 * Ce test est le même que testFinal2enDurDebut sauf que la première partie n'est pas codé en dur, il peut être lancer lorsque la position de départ du
+	 * robot adverse est en face de notre robot.
+	 */
 	
 
 	public static void main(String[] args) throws Exception {	

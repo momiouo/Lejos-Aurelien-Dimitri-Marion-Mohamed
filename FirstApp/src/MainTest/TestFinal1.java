@@ -6,11 +6,11 @@ import lejos.utility.Delay;
 
 public class TestFinal1 {
 	/*
-	 * Premier test final elaboré qui utilisait detecter autour du robot afin de detecter les palets qui l'entourait.
+	 * Premier test final élaboré qui utilise la fonction : "detecterAutourDuRobot" qui a pour but de détecter les palets qui l'entourent.
 	 * Cependant par manque de précision (le robot n'avance pas droit). il a été préférable d'adopter une autre stratégie
-	 * ne se basant pas sur la précision lors de verification si c'est un palet ou non => Cette strategie consistait a avancer lentement
-	 * vers le palet afin de voir si la distance devenait plus grande d'un coup et que donc c'était un palet. Malheuresement le robot
-	 * n'avancant pas droit cela créer des biais et il croit voir un palet alors que le capteur ultrason est juste passé à gauche ou à droite
+	 * ne se basant pas sur la précision car lorsque l'on doit vérifier si c'est un palet ou non => cela consistait à avancer lentement
+	 * vers le palet afin de voir si la distance devenait plus grande d'un coup et que donc c'était un palet. Malheureusement le robot
+	 * n'avançant pas droit cela crée des imprécisions et il croit détecter un palet alors que le capteur ultrason à détecter plus à gauche ou plus à droite
 	 * du palet...
 	 */
 
