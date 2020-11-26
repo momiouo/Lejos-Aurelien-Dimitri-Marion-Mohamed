@@ -44,6 +44,7 @@ public class TestFinal2enDurDebut {
 	private Agent agent;
 	private int degrestournes;
 	private boolean bonneDirection;
+	private boolean finVersLaDroite;
 	
 	public void start() {
 		agent = new Agent();
@@ -68,6 +69,7 @@ public class TestFinal2enDurDebut {
 				//A changer en fonction de si on mets premieresAction ou pas
 		degrestournes = 270;//Par rapport au stade (car de base le robot est à 90 degrés il est perpendiculaire à l'horizontale)
 		bonneDirection = false;
+		finVersLaDroite = true;
 	}
 	
 	public void mainLoop() throws Exception {	
@@ -126,8 +128,15 @@ public class TestFinal2enDurDebut {
 			//On depose le palet :
 			agent.getPinces().ouverture();
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f); 
-			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
-			calculDegre(180);
+			if(finVersLaDroite) {
+				agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
+				calculDegre(180);
+				finVersLaDroite = false;
+			}else {
+				agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(180);
+				calculDegre(-180);
+				finVersLaDroite = true;
+			}
 			System.out.println("Fin du traitement de la pression tactile");
 			//Delay.msDelay(5000);
 			mainLoop();
@@ -142,6 +151,8 @@ public class TestFinal2enDurDebut {
 		
 		if(degrestournes > 360) {
 			degrestournes -= 360;
+		}else if(degrestournes < 0) {
+			degrestournes += 360;
 		}
 		
 		if(degrestournes >= 0 && degrestournes <= 180) {
