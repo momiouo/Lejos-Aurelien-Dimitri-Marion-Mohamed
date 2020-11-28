@@ -72,7 +72,8 @@ public class TestFinal2enDurDebut {
 		finVersLaDroite = true;
 	}
 	
-	public void mainLoop() throws Exception {	
+	public void mainLoop() throws Exception {
+		//System.out.println("Lancement de la boucle");
 		boolean loop = true;
 		agent.getPerceptionAct().initCapteurs();//On init la valeur initiale à tous les capteurs
 		agent.getPinces().ouverture();//Ouvre que si pas déja ouvert
@@ -100,28 +101,26 @@ public class TestFinal2enDurDebut {
 			System.out.println("Le Robot Est Bloqué");
 			//Delay.msDelay(5000);
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
-			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(45);//A optimiser droite ou gauche dépend de la distance du mur
+			agent.getTournerOuPivoter().pivoterAvecDeuxRoues(45);
 			calculDegre(45);
 			System.out.println("Fin du débloquage");
 			//Delay.msDelay(5000);
 			mainLoop();
-			return;
 		}else if(agent.getCapteurCouleur().couleurEstBlanche()) {//Couleur blanche
 			System.out.println("Couleur blanche détéctée sans palet");
 			//Delay.msDelay(5000);
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
-			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(135);
+			agent.getTournerOuPivoter().pivoterAvecDeuxRoues(135);
 			calculDegre(135);
 			System.out.println("Fin du traitement de la couleur blanche");
 			//Delay.msDelay(5000);
 			mainLoop();
-			return;
-		}else {//Pression tactile
+		}else if(agent.getCapteurTactile().getPression()){//Pression tactile
 			System.out.println("Pression tactile détéctée : direction == " + bonneDirection);
 			//Delay.msDelay(5000);
 			agent.getPinces().fermeture();
 			if(!bonneDirection) {
-				agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
+				agent.getTournerOuPivoter().pivoterAvecDeuxRouesAvecPalet(180);
 				calculDegre(180);
 			}
 			this.avancerJusquaLenButAdverseEnEvitantLesMurs();
@@ -129,18 +128,23 @@ public class TestFinal2enDurDebut {
 			agent.getPinces().ouverture();
 			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f); 
 			if(finVersLaDroite) {
-				agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
+				agent.getTournerOuPivoter().pivoterAvecDeuxRoues(180);
 				calculDegre(180);
 				finVersLaDroite = false;
 			}else {
-				agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaGauche(180);
+				agent.getTournerOuPivoter().pivoterAvecDeuxRoues(-180);
 				calculDegre(-180);
 				finVersLaDroite = true;
 			}
 			System.out.println("Fin du traitement de la pression tactile");
 			//Delay.msDelay(5000);
 			mainLoop();
-			return;
+		}else {
+			//On a un mur mal détécter
+			agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
+			agent.getTournerOuPivoter().pivoterAvecDeuxRoues(45);
+			calculDegre(45);
+			mainLoop();
 		}
 	}
 	
@@ -192,11 +196,15 @@ public class TestFinal2enDurDebut {
 		//Delay.msDelay(5000);
 		agent.getAvancerOuReculer().reculerPourUnTemps(1.5f);
 		if(!bonneDirection) {
-			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(180);
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesAvecPalet(180);
 			calculDegre(180);
 		}else{
-			agent.getTournerOuPivoter().pivoterAvecDeuxRouesVersLaDroite(45);
+			agent.getTournerOuPivoter().pivoterAvecDeuxRouesAvecPalet(45);
 			calculDegre(45);
+			if(!bonneDirection) {
+				agent.getTournerOuPivoter().pivoterAvecDeuxRouesAvecPalet(180);
+				calculDegre(180);	
+			}
 		}
 		avancerJusquaLenButAdverseEnEvitantLesMurs();
 	}

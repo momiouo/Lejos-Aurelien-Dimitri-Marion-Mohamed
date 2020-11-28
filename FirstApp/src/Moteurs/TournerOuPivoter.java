@@ -22,35 +22,35 @@ import lejos.utility.Delay;
 public class TournerOuPivoter extends Deplacement {
 
 	private Action action;
+	private MovePilot movePilotAvecPalet;
+	private MovePilot movePilotSansPalet;
 
 	//Constructeur
 	public TournerOuPivoter(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right, Action action) {
 		super(left, right);
 		this.action = action;
+		movePilotAvecPalet = new MovePilot(56,56,140,this.getLeftMotor(),this.getRightMotor(),true);
+		movePilotAvecPalet.setAngularAcceleration(200);
+		movePilotSansPalet = new MovePilot(56,56,129,this.getLeftMotor(),this.getRightMotor(),true);//131 pour demi tour et 135.5f pour le quart
+		movePilotSansPalet.setAngularAcceleration(200);
 	}
 	
 	//Methodes : 
 
 /*
-* Pivoter à gauche d’un degré passé en paramètre avec les deux roues
+* Pivoter à gauche ou à droite d’un degré passé en paramètre avec les deux roues
 * La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation
 */
-	public void pivoterAvecDeuxRouesVersLaGauche(int degre) {
-		MovePilot movePilot = new MovePilot(56,56,128,this.getLeftMotor(),this.getRightMotor(),true);
-		movePilot.rotate(-degre);
-		action.enregistrerPositionRobot(-degre);
-	}
-
-/*
-* Pivoter à droite d’un degré passé en paramètre avec les deux roues
-* La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation
-*/
-	
-	public void pivoterAvecDeuxRouesVersLaDroite(int degre) {
-		MovePilot movePilot = new MovePilot(56,56,128,this.getLeftMotor(),this.getRightMotor(),true);
-		movePilot.rotate(degre);
+	public void pivoterAvecDeuxRoues(int degre) {//valeur Positive == vers la droite
+		movePilotSansPalet.rotate(degre);
 		action.enregistrerPositionRobot(degre);
 	}
+	
+	public void pivoterAvecDeuxRouesAvecPalet(int degre) {//valeur Positive == vers la droite
+		movePilotSansPalet.rotate(degre);
+		action.enregistrerPositionRobot(degre);
+	}
+
 
 /*
  * Pivoter en crochet d’un degré passé en paramètre (la roue gauche)

@@ -122,17 +122,24 @@ public class Action {
 					//Crochet vers la droite.
 					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(70);
 					agent.getAvancerOuReculer().avancerPourUnTemps(1.5f);
-					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-70);
+					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-71);//Correction du léger décalage
 				}else {//A droite ou millieu
 					//Crochet vers la gauche.
 					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-70);
 					agent.getAvancerOuReculer().avancerPourUnTemps(1.5f);
-					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(70);
+					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(71);//Correction du léger décalage
 				}
 				
 				
 				agent.getAvancerOuReculer().avancerJusquaUneLigne(agent.getCapteurCouleur(), "blanc");
-				this.deposerLePalet();
+				agent.getPinces().ouverture();
+				agent.getAvancerOuReculer().reculerPourUnTemps(1.2f); 
+				if(positionInitiale == 0) {
+					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(180);
+				}else {
+					agent.getTournerOuPivoter().pivoterDunDegreDonneEnCrochet(-180);
+				}
+				
 				loop = false;
 				System.out.println("Fin de la fonction premieresActions");
 			}
