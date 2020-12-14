@@ -19,13 +19,33 @@ import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
 
+/**
+ * 
+ * La classe TournerOuPivoter gère toutes les rotations du robot.
+ * 
+ * @author LejosTeam
+ *
+ */
 public class TournerOuPivoter extends Deplacement {
 
+	/**
+	 * Objet de la classe Action.
+	 */
 	private Action action;
+	/**
+	 * Objet MovePilot1 pour les rotations avec palet.
+	 */
 	private MovePilot movePilotAvecPalet;
+	/**
+	 * Objet MovePilot2 pour les rotations sans palet.
+	 */
 	private MovePilot movePilotSansPalet;
 
-	//Constructeur
+	/**
+	 * @param left
+	 * @param right
+	 * @param action
+	 */
 	public TournerOuPivoter(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right, Action action) {
 		super(left, right);
 		this.action = action;
@@ -35,36 +55,50 @@ public class TournerOuPivoter extends Deplacement {
 		movePilotSansPalet.setAngularAcceleration(200);
 	}
 	
-	//Methodes : 
 
-/*
-* Pivoter à gauche ou à droite d’un degré passé en paramètre avec les deux roues
-* La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation
-*/
+	/**
+	 * Pivoter à gauche ou à droite d’un degré passé en paramètre avec les deux roues.
+	 * La méthode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation.
+	 * 
+	 * @param degre
+	 */
 	public void pivoterAvecDeuxRoues(int degre) {//valeur Positive == vers la droite
 		movePilotSansPalet.rotate(degre);
 		action.enregistrerPositionRobot(degre);
 	}
 	
+	/**
+	 * Méthode qui gère la rotation lorsque le robot a un palet dans ses pinces (essai de calculer le frottement du palet au sol).
+	 * La méthode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation.
+	 * 
+	 * @param degre
+	 */
 	public void pivoterAvecDeuxRouesAvecPalet(int degre) {//valeur Positive == vers la droite
 		movePilotSansPalet.rotate(degre);
 		action.enregistrerPositionRobot(degre);
 	}
 
 
-/*
- * Pivoter en crochet d’un degré passé en paramètre (la roue gauche)
- * La methode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation
- */
+
+	/**
+	 * Pivoter en crochet d’un degré passé en paramètre (la roue gauche).
+	 * La méthode fait appel à enregistrePositionRobot(int degre) pour enregistrer le degré de la rotation.
+	 * 
+	 * @param degre
+	 */
 	public void pivoterDunDegreDonneEnCrochet(int degre) {//valeur positive == vers la droite
 		this.getLeftMotor().rotate((int) (degre*4.5),true);
 		this.getLeftMotor().waitComplete();
 		action.enregistrerPositionRobot(degre);
 	}
 	
-/* 
- * Methode qui fait pivoter le robot à un degré passé en paramètre et detecte tout les objets autour puis aligne le robot vers l'objet le plus proche
- */
+
+	/**
+	 * Methode qui fait pivoter le robot à un degré passé en paramètre et détecte tout les objets autour puis aligne le robot vers l'objet le plus proche.
+	 * 
+	 * @param agent
+	 * @param degre
+	 */
 	public void pivoterEtDetecterSurUnDegreDonne(Agent agent, int degre) {		
 		System.out.println("pivoterEtDetecterSurUnDegreDonne");
 		int miniRotate = 0;

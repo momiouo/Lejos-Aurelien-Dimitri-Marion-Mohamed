@@ -13,13 +13,26 @@ import lejos.robotics.chassis.Chassis;
 import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
 
+/**
+ * La classe AvancerOuReculer gère les déplacements linéaires.
+ * 
+ * @author LejosTeam
+ *
+ */
 public class AvancerOuReculer extends Deplacement {
 
+	/**
+	 * @param left
+	 * @param right
+	 */
 	public AvancerOuReculer(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right) {
 		super(left, right);
 		right.synchronizeWith(new EV3LargeRegulatedMotor[] {left});		
 	}
 	
+	/**
+	 * Permet de faire touner vers l'avant (sens horaire) les deux moteurs en synchronisation
+	 */
 	public void avancerSynchro() {
 		this.getLeftMotor().startSynchronization();
 		this.getLeftMotor().forward();
@@ -27,6 +40,9 @@ public class AvancerOuReculer extends Deplacement {
 		this.getLeftMotor().endSynchronization();
 	}
 	
+	/**
+	 * Permet de faire tourner les deux moteurs en sens anti-horaire et en synchronisation
+	 */
 	public void reculerSynchro() {
 		this.getLeftMotor().startSynchronization();
 		this.getLeftMotor().backward();
@@ -34,14 +50,23 @@ public class AvancerOuReculer extends Deplacement {
 		this.getLeftMotor().endSynchronization();
 	}
 	
+	/**
+	 * Permet d'arreter les deux moteurs en même temps
+	 */
 	public void sarreterSynchro() {
 		this.getRightMotor().stop(true);
 		this.getLeftMotor().stop();
 	}
 	
-/*Methode pour avancer jusqu'à une ligne de couleur passé en parametre
- *Utilise le capteur couleur
- * */
+
+	/**
+	 * 
+	 * Methode pour avancer jusqu'à une ligne de couleur passé en paramètre.
+	 * Utilise le capteur couleur.
+ 	 *
+	 * @param capteurCouleur
+	 * @param couleur
+	 */
 	public void avancerJusquaUneLigne(CapteurCouleur capteurCouleur,String couleur) {
 		avancerSynchro();
 		while(capteurCouleur.getCouleur() != couleur) {
@@ -50,10 +75,17 @@ public class AvancerOuReculer extends Deplacement {
 		sarreterSynchro();
 	}
 	
-/*Methode pour avancer jusqu'à une ligne de couleur passé en parametre, en evitant les obstacles, càd les murs ou le robot adverse
- *Permet de reagir face à un obstacle, si par exemple le robot fait face à un mur ou est bloqué
- *Utilise le capteur couleur et ultrasons
- * */
+	
+	/**
+	 * Methode pour avancer jusqu'à une ligne de couleur passé en paramètre, en evitant les obstacles, càd les murs ou le robot adverse.
+	 *Permet de reagir face à un obstacle, si par exemple le robot fait face à un mur ou est bloqué.
+ 	 *Utilise le capteur couleur et ultrasons.
+ 	 *
+	 * @param capteurCouleur
+	 * @param capteurUltrasons
+	 * @param action
+	 * @param couleur
+	 */
 	public void avancerJusquaUneLigneEtEviterObstacle(CapteurCouleur capteurCouleur,CapteurUltrasons capteurUltrasons,Action action,String couleur) {
 		System.out.println("avancerJusquaUneLigneEtEviterObstacle");
 		boolean boucle = true;
@@ -74,28 +106,42 @@ public class AvancerOuReculer extends Deplacement {
 		}
 	}
 
-/* Avancer sur une distance passée en parametre
- * */
+
+	/**
+	 * Avancer sur une distance passée en paramètre.
+	 * @param distance
+	 */
 	public void avancerSurUneDistance(float distance) {//Distance en mm
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),false);
 		movePilot.travel(distance);
 	}
 	
-/* Reculer sur une distance passée en parametre
-* */
+
+	/**
+	 * Reculer sur une distance passée en paramètre.
+	 * @param distance
+	 */
 	public void reculerSurUneDistance(float distance) { //distance en mm
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),true);
 		movePilot.travel(distance);
 	}
 
-/* Avancer pendant un temps precis
- */
+
+	/**
+	 * Avancer pendant un temps précis.
+	 * @param seconde
+	 */
 	public void avancerPourUnTemps(float seconde) {
 		avancerSynchro();
 		Delay.msDelay((long) (seconde*1000));
 		sarreterSynchro();
 	}
 	
+	/**
+	 * Avancer pendant un temps précis avec la classe MovePilot afin de voir si c'est plus précis.
+	 * 
+	 * @param seconde
+	 */
 	public void avancerPourUnTempsMovePilot(float seconde) {
 		MovePilot movePilot = new MovePilot(56,56,147,this.getLeftMotor(),this.getRightMotor(),false);
 		movePilot.forward();
@@ -103,16 +149,25 @@ public class AvancerOuReculer extends Deplacement {
 		movePilot.stop();
 	}
 	
-/* Reculer pendant un temps precis
- */
+
+	/**
+	 * Reculer pendant un temps précis
+	 * 
+	 * @param seconde
+	 */
 	public void reculerPourUnTemps(float seconde) {
 		this.reculerSynchro();
 		Delay.msDelay((long) (seconde*1000));
 		sarreterSynchro();
 	}
 
-	/* Avancer tant que la pression du capteur tactile n'est pas activée et que l'on a pas croisé de ligne blanche sinon on re fait une détection des objets autour.
-	 * */
+	/**
+	 * Avancer tant que la pression du capteur tactile n'est pas activée et que l'on a pas croisé de ligne blanche sinon on re fait une détection des objets autour.
+	 *
+	 * @param capteurTactile
+	 * @param action
+	 * @param capteurCouleur
+	 */
 	public void avancerTqCapteurPressionPasEnfonce(CapteurTactile capteurTactile, Action action, CapteurCouleur capteurCouleur) {
 		System.out.println("avancerTqCapteurPressionPasEnfonce");
 		capteurCouleur.setCouleur();
@@ -139,8 +194,12 @@ public class AvancerOuReculer extends Deplacement {
 		}
 	}
 	
-	/* Avancer tant que la pression du capteur tactile n'est pas activée
-	 * */
+
+	/**
+	 * Avancer tant que la pression du capteur tactile n'est pas activée
+	 * 
+	 * @param capteur
+	 */
 	public void avancerTqCapteurPressionPasEnfonceTest(CapteurTactile capteur) {//Pour le codage en dur -> premieresAction
 		avancerSynchro();
 		while(capteur.getPression() == false) {

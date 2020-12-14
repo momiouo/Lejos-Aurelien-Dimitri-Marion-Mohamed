@@ -2,49 +2,86 @@ package Moteurs;
 
 import lejos.robotics.RegulatedMotor;
 
+/**
+ * La classe Pinces gère l'ouverture et la fermeture de la pince.
+ * 
+ * @author LejosTeam
+ *
+ */
 public class Pinces { 
 
-// Les pinces sont fermé à l'état initial
 	
+	/**
+	 * Moteur qui est relié à la pince.
+	 */
 	private RegulatedMotor moteurPinces;
+	/**
+	 * Valeur pour savoir si la pince est déjà en position ouverte.
+	 */
 	private boolean pincesOuvertes;
 	
-//Constructeur
+	/**
+	 * @param moteurPinces
+	 */
 	public Pinces(RegulatedMotor moteurPinces) {
 		this.moteurPinces = moteurPinces;
 		this.pincesOuvertes = false;
 	}
 	
 	
-//Methodes :
+	/**
+	 * Retourne l'attribut moteurPinces.
+	 * 
+	 * @return L'objet RegulatedMotor, qui correspond au moteur relié à la pince.
+	 */
 	public RegulatedMotor getMoteurPinces() {
 		return moteurPinces;
 	}
 
+	/**
+	 * 
+	 * Met à jour l'attribut moteurPinces.
+	 * 
+	 * @param moteurPinces
+	 */
 	public void setMoteurPinces(RegulatedMotor moteurPinces) {
 		this.moteurPinces = moteurPinces;
 	}
 
+	/**
+	 * 
+	 * Retourne l'attribut pincesOuvertes.
+	 * 
+	 * @return
+	 */
 	public boolean isPincesOuvertes() {
 		return pincesOuvertes;
 	}
 
+	/**
+	 * 
+	 * Met à jour l'attribut pincesOuvertes.
+	 * 
+	 * @param pincesOuvertes
+	 */
 	public void setPincesOuvertes(boolean pincesOuvertes) {
 		this.pincesOuvertes = pincesOuvertes;
 	}
 
-/*
- * Ouverture des pinces seulement si pincesOuvertes == false à 800 (correct pour attraper et bien maintenir un palet)
- */
+
+	/**
+	 * Ouverture de la pince seulement si pincesOuvertes == false, On rotate le moteur à 800, qui est une bonne valeur pour attraper et bien maintenir un palet.
+	 */
 	public void ouverture() {
 		if (!this.pincesOuvertes) {
 			this.moteurPinces.rotate(800);
 		}
 		this.pincesOuvertes = true;
 	}
-/*
- * Fermeture seulement si pinceOuvertes == true
- */
+
+	/**
+	 * Fermeture de la pince seulement si pinceOuvertes == true
+	 */
 	public void fermeture() {
 		if (this.pincesOuvertes) {
 			this.moteurPinces.rotate(-800);
