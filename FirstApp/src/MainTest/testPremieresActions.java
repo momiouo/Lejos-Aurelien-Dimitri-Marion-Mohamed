@@ -4,6 +4,14 @@ import Robot.Agent;
 import lejos.hardware.Button;
 import lejos.utility.Delay;
 
+/**
+ * 
+ * Cette classe permet de lancer le premier test afin de participer à la compétition.
+ * Le robot avance, attrape un palet, le dépose dans l'en-but adverse.
+ * 
+ * @author LejosTeam
+ *
+ */
 public class testPremieresActions {
 
 	public static void main(String[] args) {
