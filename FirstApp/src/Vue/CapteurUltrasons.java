@@ -6,25 +6,47 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
+/**
+ * La classe CapteurUltrasons gère les interactions avec le capteur à ultrasons.
+ * 
+ * @author LejosTeam
+ *
+ */
 public class CapteurUltrasons extends Capteur implements SensorPort {
+	/**
+	 * Attribut qui enregistre la dernière distance récupérée par le capteur.
+	 */
 	private float distance;
+	/**
+	 * Objet de la classe EV3UltrasonicSensor.
+	 */
 	private EV3UltrasonicSensor donneesCapteur;
 	
-	// Constructeur:
 	
+	/**
+	 * @param perception
+	 * @param port
+	 */
 	public CapteurUltrasons(Perception perception, Port port) {
 		super(perception,port);
 		donneesCapteur = new EV3UltrasonicSensor((lejos.hardware.port.Port) this.getPort());
 		setDistance();
 	}
 	
-	// Methodes :
 	
 /*
- * Methode qui permet de verifier si l'objet detecter est un palet
- * On a pas le droit de franchir la ligne blanche afin de ne pas recuperer les palais deja deposer ou dans l'enbut adverse
- * Prends en compte si un palet est attrapé pendant le deplacement
+ * 
  */
+	/**
+	 * Methode qui permet de verifier si l'objet detecté est un palet.
+	 * On doît éviter de franchir la ligne blanche pour ne pas récuperer les palets dans les en-buts.
+ 	 * Prend en compte si un palet est attrapé pendant le deplacement
+  	 *	 
+	 * @param moteurdeplacement
+	 * @param capteurTactile
+	 * @param capteurCouleur
+	 * @return
+	 */
 	public boolean VerifSiObjetDetecteEstUnPalet(AvancerOuReculer moteurdeplacement, CapteurTactile capteurTactile, CapteurCouleur capteurCouleur) {
 		System.out.println("VerifSiObjetDetecteEstUnPalet");
 		boolean palet = true;
@@ -67,16 +89,20 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		}
 		return palet;
 	}
-/*
- * Methode qui permet de récupérer la distance entre le robot (capteur) et un éventuel objet (mur, palet, robot adverse)
- */
+
+	/**
+	 * Méthode qui permet de récupérer la distance entre le robot (capteur) et un éventuel objet (mur, palet, robot adverse).
+	 * 
+	 * @return
+	 */
 	public float getDistance() {
 		return this.distance;
 	}
 	
-/*
- * Methode qui permet de changer la valeur de l’attribut distance dans la classe CapteurUltrason et l’objet Perception.
- */
+
+	/**
+	 * Méthode qui permet de changer la valeur de l’attribut distance dans la classe CapteurUltrason et l’objet Perception.
+	 */
 	public void setDistance() {
 		final SampleProvider sp = donneesCapteur.getDistanceMode();
 		float distanceValue = 0;
@@ -89,9 +115,10 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		this.getPerception().distanceCapteurUltrasons = distanceValue;
 	}
 	
-/*
- * Verifier si l'objet detecter est un mur ou un robot
- */
+	/**
+	 * Verifie si l'objet detecté est un mur ou un robot.
+	 * @return
+	 */
 	public boolean murOuRobotDetecte() {
 		//System.out.println("murOuRobotDetecte");
 		boolean murOuRobot = false;
@@ -101,10 +128,13 @@ public class CapteurUltrasons extends Capteur implements SensorPort {
 		}
 		return murOuRobot;
 	}
-	
-/*
- * Verifier si l'objet detecter sur une distance est un mur ou un robot
- */
+
+	/**
+	 * Vérifie si un objet a été detecté dans une distance donnée.
+	 * 
+	 * @param distanceparam
+	 * @return
+	 */
 	public boolean murOuRobotDetecteAvecDistance(float distanceparam) {
 		//System.out.println("murOuRobotDetecte");
 		boolean murOuRobot = false;

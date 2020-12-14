@@ -5,17 +5,40 @@ import Vue.Perception;
 import lejos.hardware.Button;
 
 
-// Classe pour les actions requises à la compétition
-
+/**
+ * Classe pour gérer toutes les actions requises à la compétition.
+ * 
+ * @author LejosTeam
+ *
+ */
 public class Action {
 	
+	/**
+	 * Objet de la classe agent.
+	 */
 	private Agent agent;
+	/**
+	 * Objet de la classe Perception, qui correspond à la perception la plus récente.
+	 */
 	private Perception perceptionAct;
+	/**
+	 * Objet de la classe Perception, qui correspond à l'ancienne perception.
+	 */
 	private Perception perceptionPrec;
+	/**
+	 * Valeur pour enregister l'orientation du robot.
+	 */
 	private int historiqueDegres;
+	/**
+	 * Valeur pour enregistrer le nombre de palet marqué.
+	 */
 	private int nbPaletMarque;
 	
-	// Constructeur:
+	/**
+	 * @param p1
+	 * @param p2
+	 * @param agent
+	 */
 	public Action(Perception p1, Perception p2, Agent agent) {
 		this.setPerceptionAct(p1);
 		this.setPerceptionPrec(p2);
@@ -24,60 +47,121 @@ public class Action {
 		this.setNbPaletMarque(0);
 	}
 	
-	// Methodes :
 
-//Récupère l’objet Agent
+	/**
+	 * Retourne l’objet Agent.
+	 * 
+	 * @return
+	 */
 	public Agent getAgent() {
 		return agent;
 	}
-//Change ou initialise l’attribut Agent.
+
+	/**
+	 * Met à jour l’attribut Agent.
+	 * 
+	 * @param agent
+	 */
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
-//Récupère l’objet perception précédent
+
+	/**
+	 * Retourne l'attribut perception précédent.
+	 * 
+	 * @return
+	 */
 	public Perception getPerceptionPrec() {
 		return perceptionPrec;
 	}
-//Change ou initialise l’attribut perceptionPrec.
+
+	/**
+	 * 
+	 * Met à jour l’attribut perceptionPrec.
+	 * 
+	 * @param perceptionPrec
+	 */
 	public void setPerceptionPrec(Perception perceptionPrec) {
 		this.perceptionPrec = perceptionPrec;
 	}
-//Récupère l’objet perception le plus récent
+
+	/**
+	 * Retourne l'attribut perception le plus récent.
+	 * 
+	 * @return
+	 */
 	public Perception getPerceptionAct() {
 		return perceptionAct;
 	}
-//Change ou initialise l’attribut perceptionAct.
+
+	/**
+	 * 
+	 * Met à jour l’attribut perceptionAct.
+	 * 
+	 * @param perceptionAct
+	 */
 	public void setPerceptionAct(Perception perceptionAct) {
 		this.perceptionAct = perceptionAct;
 	}
-//Récupère l’objet historiqueDegres	
+
+	/**
+	 * Retourne l'attribut historiqueDegres.
+	 * 
+	 * @return
+	 */
 	public int getHistoriqueDegres() {
 		return historiqueDegres;
 	}
 	
-//Change ou initialise l’attribut historiqueDegres.
+
+	/**
+	 * Met à jour l’attribut historiqueDegres.
+	 * 
+	 * @param historiqueDegres
+	 */
 	public void setHistoriqueDegres(int historiqueDegres) {
 		this.historiqueDegres = historiqueDegres;
 	}
 	
-//Récupère l’objet nbPaletMarque	
+
+	/**
+	 * Retourne l'attribut nbPaletMarque.
+	 * 
+	 * @return
+	 */
 	public int getNbPaletMarque() {
 		return nbPaletMarque;
 	}
 	
-//Change ou initialise l'attribut nbPaletMarque	
+
+	/**
+	 * Met à jour l'attribut nbPaletMarque.
+	 * 
+	 * @param nbPaletMarque
+	 */
 	public void setNbPaletMarque(int nbPaletMarque) {
 		this.nbPaletMarque = nbPaletMarque;
 	}
 
-//Reaction du robot à la recupération d'un palet
+	
+	/**
+	 * Gère le comportement du robot à la recupération d'un palet.
+	 * 
+	 */
 	public void onAUnPalet() {
 		System.out.println("onAUnPalet");
 		agent.getPinces().fermeture();
 		agent.getAction().allerVersLenButAdverse();
 	}
 	
-//Permet de faire pivoter le robot doucement afin de récupérer les distances des objets environnants
+
+	/**
+	 * 
+	 * Permet de faire pivoter le robot doucement afin de récupérer les distances des objets environnants.
+	 * 
+	 * @param start
+	 * @param detectionDecalee
+	 */
 	public void detecterAutourDuRobot(boolean start, boolean detectionDecalee) {
 		System.out.println("detecterAutourDuRobot");
 		int nbligneblancheAfranchir;
@@ -95,14 +179,23 @@ public class Action {
 			detecterAutourDuRobot(false,true);
 		}
 	}
-//ouvre les pinces du robot, remet à O les tachometres, perceptionprec = perceptionact
+	
+	/**
+	 * Ouvre les pinces du robot, remet à O les tachometres, perceptionPrec prend la valeur de la perceptionAct.
+	 */
 	public void init() {
 		this.perceptionPrec = this.perceptionAct;
 		agent.getPinces().ouverture();
 		agent.getAvancerOuReculer().resetTachoMetre();
 	}
 	
-//Methode pour la 1ère action: Recuperer le premier palet et le deposer dans l'en-but adverse
+
+	/**
+	 * 
+	 * Méthode pour la première action : récuperer le premier palet et le deposer dans l'en-but adverse.
+	 * 
+	 * @param positionInitiale
+	 */
 	public void premieresActions(int positionInitiale) {
 		boolean loop = true;
 		while(loop) {
@@ -146,12 +239,15 @@ public class Action {
 		}
 	}
 	
-/*Methode pour aller vers l'enbut adverse
- * Cette fonction permet d’une part d’orienter le robot en direction de l’en-but adverse en le faisant pivoter du nombre
- * de degré pivoté depuis le lancement du programme (de + ou - 360 degrés selon la direction souhaitée)
- * Et d’une autre part, une fois le robot orienté en direction de l’en-but adverse, la fonction permet de faire avancer le robot
- jusqu’à atteindre la ligne blanche
- */
+
+	/**
+	 * 
+	 * Méthode pour se diriger vers l'en-but adverse.
+	 * Cette fonction permet d’une part d’orienter le robot en direction de l’en-but adverse en le faisant pivoter du nombre
+	 * de degré pivoté depuis le lancement du programme (de + ou - 360 degrés selon la direction souhaitée).
+	 * Et d’une autre part, une fois le robot orienté en direction de l’en-but adverse, le robot avance
+ 	 * jusqu’à atteindre la ligne blanche
+	 */
 	public void allerVersLenButAdverse() {
 		System.out.println("allerVersLenButAdverse");
 		//On oriente notre robot vers l'en but adverse en regardant de combien on a deja pivoter de degré notre robot.
@@ -167,7 +263,11 @@ public class Action {
 		agent.getAvancerOuReculer().avancerJusquaUneLigneEtEviterObstacle(agent.getCapteurCouleur(),agent.getCapteurUltrasons(),agent.getAction(),"blanc");
 	}
 	
-//Methode qui permet d'enregistrer de combien le robot pivote.
+	/**
+	 * Méthode qui permet d'enregistrer de combien le robot pivote.
+	 * 
+	 * @param degre
+	 */
 	public void enregistrerPositionRobot(int degre) {
 		this.historiqueDegres += degre;
 		if(historiqueDegres>=360) {
@@ -178,20 +278,24 @@ public class Action {
 		}
 	}
 
-/*Verifier si le robot est bloqué en faisant appel à murOuRoboDetecte de la classe CapteurUltrasons.
- * 
- */
+
+	/**
+	 * Verifie si le robot est bloqué en faisant appel à murOuRoboDetecte de la classe CapteurUltrasons.
+	 * 
+	 * @return
+	 */
 	public boolean robotEstBloque() {
 		return agent.getCapteurUltrasons().murOuRobotDetecte();
 	}
 
-/*Reagir quand le robot est bloqué
- * Cette fonction permet de réagir en cas de blocage du robot : si les pinces sont fermées (= le robot tient un palet) alors
- * on fait reculer le robot pendant 2 secondes puis on le fait aller vers l’en-but adverse.
- * Si les pinces sont ouvertes (= pas de palet entre les pinces) la fonction fait reculer le robot pendant 2 secondes puis lui
- fait chercher un palet en analysant ce qui l’entoure
- */
 
+	/**
+	 * Est actionnée quand le robot est bloqué.
+	 * Cette fonction permet de réagir en cas de blocage du robot : si les pinces sont fermées (= le robot tient un palet) alors
+	 * on fait reculer le robot pendant 2 secondes puis on le fait aller vers l’en-but adverse.
+	 * Si les pinces sont ouvertes (= pas de palet entre les pinces), la fonction fait reculer le robot pendant 2 secondes puis lui
+ 	 * fait chercher un palet en analysant ce qui l’entoure
+	 */
 	public void reagirRobotBloque() {
 		System.out.println("reagirRobotBloque");
 		if(agent.getPinces().isPincesOuvertes()==false) {
@@ -204,10 +308,10 @@ public class Action {
 		}
 	}
 
-/*Deposer le palet
- * Cette fonction permet de déposer le palet : le robot ouvre les pinces pour relacher 
- * le palet, recule puis pivote de 180 degrés (demi-tour).
- */
+	/**
+	 * Cette fonction permet de déposer le palet : le robot ouvre les pinces pour relâcher 
+	 * le palet, recule puis pivote de 180 degrés (demi-tour).
+	 */
 	public void deposerLePalet() {
 		System.out.println("deposerLePalet");
 		nbPaletMarque++;

@@ -6,29 +6,46 @@ import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
 
+/**
+ * La classe CapteurTactile gère les interactions avec le capteur tactile.
+ * 
+ * @author LejosTeam
+ *
+ */
 public class CapteurTactile extends Capteur {
+	/**
+	 * Attribut qui permet d'enregistrer s'il y a eu pression sur le capteur tactile.
+	 */
 	private boolean pression;
+	/**
+	 * Objet de la classe EV3TouchSensor.
+	 */
 	private EV3TouchSensor donneesCapteur;
 
-	// Constructeur:
+	/**
+	 * @param perception
+	 * @param port
+	 */
 	public CapteurTactile(Perception perception, Port port){
 		super(perception, port);
 		donneesCapteur = new EV3TouchSensor((lejos.hardware.port.Port) this.getPort());
 		setPression();
 	}
 	
-	// Methodes :
 	
-/*
- * Methode qui permet de récupérer la valeur de l’attribut pression
- */
+	/**
+	 * Retourne l’attribut pression.
+	 * 
+	 * @return
+	 */
 	public boolean getPression() {
 		return this.pression;
 	}
 
-/*
- * Methode qui permet de changer la valeur de l’attribut pression dans la classe CapteurTactile et l’objet Perception.
- */
+
+	/**
+	 * Met à jour l'attribut pression dans la classe CapteurTactile et l'objet Perception.
+	 */
 	public void setPression() {
 		final SampleProvider sp = donneesCapteur.getTouchMode();
 		boolean touchValue = false;
